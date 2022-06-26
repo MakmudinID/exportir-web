@@ -52,7 +52,7 @@
                     <div class="main-menu-wrap">
                         <!-- logo -->
                         <div class="site-logo">
-                            <a href="index.html">
+                            <a href="<?=base_url('/')?>">
                                 <img src="<?=base_url()?>/fruitkha/assets/img/logo.png" alt="">
                             </a>
                         </div>
@@ -61,12 +61,7 @@
                         <!-- menu start -->
                         <nav class="main-menu">
                             <ul>
-                                <li class="current-list-item"><a href="#">Home</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="index.html">Static Home</a></li>
-                                        <li><a href="index_2.html">Slider Home</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="<?=base_url('/')?>">Home</a></li>
                                 <li><a href="#">Kategori</a>
                                     <ul class="sub-menu">
                                         <li><a href="404.html">404 page</a></li>
@@ -78,11 +73,11 @@
                                         <li><a href="shop.html">Shop</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="about.html">Berita</a></li>
-                                <li><a href="contact.html">Tentang</a></li>
+                                <li><a href="<?=base_url('/news')?>">Berita</a></li>
+                                <li><a href="<?=base_url('/about')?>">Tentang</a></li>
                                 <li>
                                     <div class="header-icons">
-                                        <a class="shopping-cart" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                                        <a class="shopping-cart" href="<?=base_url('/cart')?>"><i class="fas fa-shopping-cart"></i></a>
                                         <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
                                     </div>
                                 </li>

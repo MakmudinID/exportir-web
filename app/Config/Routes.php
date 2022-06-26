@@ -36,6 +36,10 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Frontend::index');
+$routes->get('category', 'Frontend::kategori');
+$routes->get('news', 'Frontend::berita');
+$routes->get('about', 'Frontend::tentang');
+$routes->get('cart', 'Frontend::keranjang');
 
 //UMKM BackOffice
 $routes->get('umkm/produk', 'Umkm::produk');
