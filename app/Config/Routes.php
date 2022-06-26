@@ -37,6 +37,14 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Frontend::index');
 
+//UMKM BackOffice
+$routes->get('umkm/produk', 'Umkm::produk');
+
+//ADMIN BackOffice
+$routes->get('admin/produk', 'Admin::produk');
+$routes->get('admin/umkm', 'Admin::umkm');
+$routes->get('admin/reseller', 'Admin::reseller');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
