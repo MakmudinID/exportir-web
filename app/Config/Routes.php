@@ -40,6 +40,7 @@ $routes->get('category', 'Frontend::kategori');
 $routes->get('news', 'Frontend::berita');
 $routes->get('about', 'Frontend::tentang');
 $routes->get('cart', 'Frontend::keranjang');
+$routes->get('produk/(:any)', 'Frontend::produk/$1');
 
 //UMKM BackOffice
 $routes->get('umkm/produk', 'Umkm::produk');
@@ -48,6 +49,7 @@ $routes->get('umkm/produk', 'Umkm::produk');
 $routes->get('admin/produk', 'Admin::produk');
 $routes->get('admin/umkm', 'Admin::umkm');
 $routes->get('admin/reseller', 'Admin::reseller');
+$routes->get('admin/modul', 'Admin::modul');
 
 /*
  * --------------------------------------------------------------------

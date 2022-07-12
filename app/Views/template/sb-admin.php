@@ -124,9 +124,29 @@
                 </footer>
             </div>
         </div>
+		<!-- <script src="<?php echo base_url() ?>/my-js/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="<?=base_url()?>/sb-admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="<?=base_url()?>/sb-admin/js/datatables-simple-demo.js"></script>
+        <script src="<?=base_url()?>/sb-admin/js/datatables-simple-demo.js"></script> -->
+
+        <script src="<?=base_url('/assets/admin')?>/js/jquery.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/js/bootstrap.bundle.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/simplebar/simplebar.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/feather-icons/feather.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/js/script.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/sweetalert/sweetalert.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/inputmask/jquery.inputmask.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/datatables/jquery.dataTables.bootstrap4.responsive.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/summernote/summernote-bs4.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/select2/js/select2.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/flatpickr/flatpickr.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/slugify/slugify.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+        <script src="<?=base_url('/assets/admin')?>/plugins/validation/jquery.validate.min.js"></script>
+        <script>let base_url="<?=base_url()?>";</script>
+        <?php if (isset($js)) : foreach ($js as $j) : ?>
+			<script src="<?php echo base_url() ?>/my-js/<?php echo $j ?>"></script>
+		<?php endforeach; endif; ?>
     </body>
 </html>

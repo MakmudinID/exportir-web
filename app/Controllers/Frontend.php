@@ -19,6 +19,14 @@ class Frontend extends BaseController
         return view('welcome_message');
     }
 
+    public function produk($id=NULL)
+    {
+        //Berita
+        $data['js'] = array("produk.js?r=".uniqid());
+		$data['main_content']   = 'frontend/produk'; 
+		echo view('template/fruitkha', $data);
+    }
+
     public function berita()
     {
         //Berita

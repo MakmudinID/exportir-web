@@ -1,0 +1,10 @@
+// fit to content for td or th tag
+.nostretch {
+  width: 1%;
+  white-space: nowrap;
+}
+
+// Make table-sm font size smaller
+.table-sm {
+  font-size: $font-size-sm;
+}
