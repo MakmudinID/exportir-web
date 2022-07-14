@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 12 Jul 2022 pada 06.56
+-- Waktu pembuatan: 14 Jul 2022 pada 19.25
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 8.0.11
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `exportir-web`
+-- Database: `ex-web`
 --
 
 -- --------------------------------------------------------
@@ -92,6 +92,16 @@ CREATE TABLE `tbl_menu` (
   `status` enum('ACTIVE','INACTIVE') DEFAULT NULL COMMENT '1:Aktif, 2:Nonaktif'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `tbl_menu`
+--
+
+INSERT INTO `tbl_menu` (`id`, `id_menu_head`, `urutan`, `title`, `url`, `icon`, `status`) VALUES
+(1, 1, 1, 'Dashboard', 'dashboard', 'nav-icon fas fa-tachometer-alt', 'ACTIVE'),
+(2, 2, 2, 'Transaksi Penjualan', 'transaksi', 'fa fa-wallet', 'ACTIVE'),
+(3, 2, 3, 'Berita', 'berita', 'fas fa-list-alt', 'ACTIVE'),
+(4, 2, 4, 'Berita Kategori', 'berita', 'fas fa-list-alt', 'ACTIVE');
+
 -- --------------------------------------------------------
 
 --
@@ -105,6 +115,17 @@ CREATE TABLE `tbl_menu_head` (
   `status` enum('ACTIVE','INACTIVE') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `tbl_menu_head`
+--
+
+INSERT INTO `tbl_menu_head` (`id`, `urutan`, `title`, `status`) VALUES
+(1, 1, 'DASHBOARD', 'ACTIVE'),
+(2, 2, 'LAPORAN', 'ACTIVE'),
+(3, 3, 'BERITA', 'ACTIVE'),
+(4, 4, 'DATA', 'ACTIVE'),
+(5, 5, 'SETTING', 'ACTIVE');
+
 -- --------------------------------------------------------
 
 --
@@ -116,6 +137,20 @@ CREATE TABLE `tbl_menu_role` (
   `id_menu_head` int(11) DEFAULT NULL COMMENT 'IDMenuHead',
   `role` enum('SUPERADMIN','UMKM','RESELLER') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tbl_menu_role`
+--
+
+INSERT INTO `tbl_menu_role` (`id`, `id_menu_head`, `role`) VALUES
+(1, 1, 'SUPERADMIN'),
+(2, 2, 'SUPERADMIN'),
+(3, 3, 'SUPERADMIN'),
+(4, 4, 'SUPERADMIN'),
+(5, 5, 'SUPERADMIN'),
+(6, 1, 'UMKM'),
+(7, 2, 'UMKM'),
+(8, 3, 'UMKM');
 
 -- --------------------------------------------------------
 
@@ -141,10 +176,11 @@ CREATE TABLE `tbl_menu_sub` (
 
 CREATE TABLE `tbl_pengguna` (
   `id` int(11) NOT NULL,
-  `role` enum('SEPERADMIN','UMKM','RESELLER') DEFAULT NULL,
+  `role` enum('SUPERADMIN','UMKM','RESELLER') DEFAULT NULL,
   `nama` varchar(150) DEFAULT NULL,
   `username` varchar(150) DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
+  `no_hp` varchar(20) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
   `foto` text DEFAULT NULL,
   `status` enum('ACTIVE','INACTIVE') DEFAULT NULL,
@@ -153,6 +189,13 @@ CREATE TABLE `tbl_pengguna` (
   `edit_date` datetime DEFAULT NULL,
   `edit_user` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tbl_pengguna`
+--
+
+INSERT INTO `tbl_pengguna` (`id`, `role`, `nama`, `username`, `email`, `no_hp`, `password`, `foto`, `status`, `create_date`, `create_user`, `edit_date`, `edit_user`) VALUES
+(5, 'SUPERADMIN', 'makmudin', NULL, 'id.makmudin@gmail.com', '089672231770', '$2y$10$jdtb46saCnkEbPJwvpTTyOxfKZ/hrDpy3ZCRwPwq3z5XVopqpxi1S', 'http://localhost:8080/assets/photo-user/ypia-uai_1.png', 'ACTIVE', '2022-07-14 11:49:49', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -254,19 +297,19 @@ ALTER TABLE `tbl_berita_kategori`
 -- AUTO_INCREMENT untuk tabel `tbl_menu`
 --
 ALTER TABLE `tbl_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_menu_head`
 --
 ALTER TABLE `tbl_menu_head`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_menu_role`
 --
 ALTER TABLE `tbl_menu_role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_menu_sub`
@@ -278,7 +321,7 @@ ALTER TABLE `tbl_menu_sub`
 -- AUTO_INCREMENT untuk tabel `tbl_pengguna`
 --
 ALTER TABLE `tbl_pengguna`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
