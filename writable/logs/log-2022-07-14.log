@@ -1,0 +1,136 @@
+ERROR - 2022-07-14 05:25:50 --> Error connecting to the database: Unknown database 'exportir-web'
+CRITICAL - 2022-07-14 05:25:50 --> Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'exportir-web'
+in SYSTEMPATH\Database\BaseConnection.php on line 416.
+ 1 SYSTEMPATH\Database\BaseConnection.php(586): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tbl_pengguna`
+ORDER BY `role` DESC', [], false)
+ 3 APPPATH\Models\ServerSideModel.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 4 APPPATH\Controllers\Admin.php(74): App\Models\ServerSideModel->limitRows('tbl_pengguna', '*', [], [], [], [...], null)
+ 5 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->user_()
+ 6 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 05:26:12 --> Undefined property: App\Controllers\Admin::$donatur
+in APPPATH\Controllers\Admin.php on line 93.
+ 1 APPPATH\Controllers\Admin.php(93): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: App\\Controllers\\Admin::$donatur', 'APPPATH\\Controllers\\Admin.php', 93)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->user_()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 05:26:13 --> Undefined property: App\Controllers\Admin::$donatur
+in APPPATH\Controllers\Admin.php on line 93.
+ 1 APPPATH\Controllers\Admin.php(93): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: App\\Controllers\\Admin::$donatur', 'APPPATH\\Controllers\\Admin.php', 93)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->user_()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 05:26:14 --> Undefined property: App\Controllers\Admin::$donatur
+in APPPATH\Controllers\Admin.php on line 93.
+ 1 APPPATH\Controllers\Admin.php(93): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: App\\Controllers\\Admin::$donatur', 'APPPATH\\Controllers\\Admin.php', 93)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->user_()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-07-14 10:39:40 --> Unknown column 'photo' in 'field list'
+CRITICAL - 2022-07-14 10:39:40 --> Unknown column 'photo' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('INSERT INTO `tbl_pengguna` (`role`, `nama`, `email`, `no_hp`, `password`, `status`, `create_user`, `create_date`, `photo`) VALUES (\'SUPERADMIN\', \'Makmudin\', \'makmudin@uswah.id\', \'089672231770\', \'$2y$10$dwuEjQB5kAwAoXXB1agIduY2aLIMkHF/E4VLso152iiRxQqg5emL.\', \'ACTIVE\', NULL, \'2022-07-14 10:39:40\', \'C:\\\\xampp\\\\htdocs\\\\exportir-web\\\\writable\\\\assets/photo-user/20220714/1657813180_1722ca58b9282b1c3a6d.png\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tbl_pengguna` (`role`, `nama`, `email`, `no_hp`, `password`, `status`, `create_user`, `create_date`, `photo`) VALUES (\'SUPERADMIN\', \'Makmudin\', \'makmudin@uswah.id\', \'089672231770\', \'$2y$10$dwuEjQB5kAwAoXXB1agIduY2aLIMkHF/E4VLso152iiRxQqg5emL.\', \'ACTIVE\', NULL, \'2022-07-14 10:39:40\', \'C:\\\\xampp\\\\htdocs\\\\exportir-web\\\\writable\\\\assets/photo-user/20220714/1657813180_1722ca58b9282b1c3a6d.png\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tbl_pengguna` (`role`, `nama`, `email`, `no_hp`, `password`, `status`, `create_user`, `create_date`, `photo`) VALUES (\'SUPERADMIN\', \'Makmudin\', \'makmudin@uswah.id\', \'089672231770\', \'$2y$10$dwuEjQB5kAwAoXXB1agIduY2aLIMkHF/E4VLso152iiRxQqg5emL.\', \'ACTIVE\', NULL, \'2022-07-14 10:39:40\', \'C:\\\\xampp\\\\htdocs\\\\exportir-web\\\\writable\\\\assets/photo-user/20220714/1657813180_1722ca58b9282b1c3a6d.png\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1904): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tbl_pengguna` (`role`, `nama`, `email`, `no_hp`, `password`, `status`, `create_user`, `create_date`, `photo`) VALUES (:role:, :nama:, :email:, :no_hp:, :password:, :status:, :create_user:, :create_date:, :photo:)', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(52): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\Admin.php(91): App\Models\ServerSideModel->createRows([...], 'tbl_pengguna')
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->create_user()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-07-14 10:40:02 --> Unknown column 'photo' in 'field list'
+CRITICAL - 2022-07-14 10:40:02 --> Unknown column 'photo' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('INSERT INTO `tbl_pengguna` (`role`, `nama`, `email`, `no_hp`, `password`, `status`, `create_user`, `create_date`, `photo`) VALUES (\'SUPERADMIN\', \'Makmudin\', \'makmudin@uswah.id\', \'089672231770\', \'$2y$10$77ZQWPkV0gnsxMCaXoQzZ.OZCZ6mzzGsK5HGHp.TtxKamBF3GEpfC\', \'ACTIVE\', NULL, \'2022-07-14 10:40:02\', \'C:\\\\xampp\\\\htdocs\\\\exportir-web\\\\writable\\\\assets/photo-user/20220714/1657813202_c0e104dd93be04d2f970.png\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tbl_pengguna` (`role`, `nama`, `email`, `no_hp`, `password`, `status`, `create_user`, `create_date`, `photo`) VALUES (\'SUPERADMIN\', \'Makmudin\', \'makmudin@uswah.id\', \'089672231770\', \'$2y$10$77ZQWPkV0gnsxMCaXoQzZ.OZCZ6mzzGsK5HGHp.TtxKamBF3GEpfC\', \'ACTIVE\', NULL, \'2022-07-14 10:40:02\', \'C:\\\\xampp\\\\htdocs\\\\exportir-web\\\\writable\\\\assets/photo-user/20220714/1657813202_c0e104dd93be04d2f970.png\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tbl_pengguna` (`role`, `nama`, `email`, `no_hp`, `password`, `status`, `create_user`, `create_date`, `photo`) VALUES (\'SUPERADMIN\', \'Makmudin\', \'makmudin@uswah.id\', \'089672231770\', \'$2y$10$77ZQWPkV0gnsxMCaXoQzZ.OZCZ6mzzGsK5HGHp.TtxKamBF3GEpfC\', \'ACTIVE\', NULL, \'2022-07-14 10:40:02\', \'C:\\\\xampp\\\\htdocs\\\\exportir-web\\\\writable\\\\assets/photo-user/20220714/1657813202_c0e104dd93be04d2f970.png\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1904): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tbl_pengguna` (`role`, `nama`, `email`, `no_hp`, `password`, `status`, `create_user`, `create_date`, `photo`) VALUES (:role:, :nama:, :email:, :no_hp:, :password:, :status:, :create_user:, :create_date:, :photo:)', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(52): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\Admin.php(91): App\Models\ServerSideModel->createRows([...], 'tbl_pengguna')
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->create_user()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 10:43:12 --> Undefined property: stdClass::$photo
+in APPPATH\Controllers\Admin.php on line 178.
+ 1 APPPATH\Controllers\Admin.php(178): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$photo', 'APPPATH\\Controllers\\Admin.php', 178)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->user_()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 11:35:56 --> Undefined array key 1
+in APPPATH\Models\ServerSideModel.php on line 174.
+ 1 APPPATH\Models\ServerSideModel.php(174): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 1', 'APPPATH\\Models\\ServerSideModel.php', 174)
+ 2 APPPATH\Models\ServerSideModel.php(114): App\Models\ServerSideModel->selectField('tbl_pengguna', '*', [], [], [], [...], null, null, null)
+ 3 APPPATH\Controllers\Admin.php(173): App\Models\ServerSideModel->limitRows('tbl_pengguna', '*', [], [], [], [...], null)
+ 4 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->user_()
+ 5 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 11:35:58 --> Undefined array key 2
+in APPPATH\Models\ServerSideModel.php on line 174.
+ 1 APPPATH\Models\ServerSideModel.php(174): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 2', 'APPPATH\\Models\\ServerSideModel.php', 174)
+ 2 APPPATH\Models\ServerSideModel.php(114): App\Models\ServerSideModel->selectField('tbl_pengguna', '*', [], [], [], [...], null, null, null)
+ 3 APPPATH\Controllers\Admin.php(173): App\Models\ServerSideModel->limitRows('tbl_pengguna', '*', [], [], [], [...], null)
+ 4 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->user_()
+ 5 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 11:36:00 --> Undefined array key 3
+in APPPATH\Models\ServerSideModel.php on line 174.
+ 1 APPPATH\Models\ServerSideModel.php(174): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 3', 'APPPATH\\Models\\ServerSideModel.php', 174)
+ 2 APPPATH\Models\ServerSideModel.php(114): App\Models\ServerSideModel->selectField('tbl_pengguna', '*', [], [], [], [...], null, null, null)
+ 3 APPPATH\Controllers\Admin.php(173): App\Models\ServerSideModel->limitRows('tbl_pengguna', '*', [], [], [], [...], null)
+ 4 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->user_()
+ 5 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 11:48:42 --> Undefined property: App\Controllers\Admin::$sm
+in APPPATH\Controllers\Admin.php on line 159.
+ 1 APPPATH\Controllers\Admin.php(159): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: App\\Controllers\\Admin::$sm', 'APPPATH\\Controllers\\Admin.php', 159)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->delete_user()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 11:56:51 --> Call to undefined function form_open()
+in APPPATH\Views\login.php on line 28.
+ 1 SYSTEMPATH\View\View.php(213): include()
+ 2 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('login', [], true)
+ 4 APPPATH\Controllers\Login.php(9): view('login')
+ 5 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Login->index()
+ 6 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+ 7 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-07-14 12:04:49 --> Undefined variable $validation
+in APPPATH\Views\login.php on line 27.
+ 1 APPPATH\Views\login.php(27): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $validation', 'APPPATH\\Views\\login.php', 27)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\login.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('login', [], true)
+ 5 APPPATH\Controllers\Login.php(9): view('login')
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Login->index()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

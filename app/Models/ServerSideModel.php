@@ -15,36 +15,106 @@ class ServerSideModel extends Model
         $this->db = db_connect();
     }
 
-    public function format_tanggal($Tgal,$jam="yes",$idBahasa = 'id'){
-		if($Tgal == ""){
-			return;
-		}
-		$tanggal = explode(' ',$Tgal);
-		$mdy=explode('-',$tanggal[0]);
-		$mBul=$mdy[1];
-		
-		if($idBahasa == "id"){
-	
-		    if($mBul=='01'){$isBulan='Januari';}elseif($mBul=='02'){$isBulan='Februari';}
-		    elseif($mBul=='03'){$isBulan='Maret';}elseif($mBul=='04'){$isBulan='April';}
-		    elseif($mBul=='05'){$isBulan='Mei';}elseif($mBul=='06'){$isBulan='Juni';}
-		    elseif($mBul=='07'){$isBulan='Juli';}elseif($mBul=='08'){$isBulan='Agustus';}
-		    elseif($mBul=='09'){$isBulan='September';}elseif($mBul=='10'){$isBulan='Oktober';}
-		    elseif($mBul=='11'){$isBulan='Nopember';}elseif($mBul=='12'){$isBulan='Desember';}
-		    elseif($mBul=='00'){$isBulan='00';}
-		    
-		    $hasil = $mdy[2].' '.$isBulan.' '.$mdy[0];
-		    if(count($tanggal) == 2) {
-			if($jam == "yes"){
-			    $hasil = $mdy[2].' '.$isBulan.' '.$mdy[0]. ', '. substr($tanggal[1],0,5).' WIB';
-			}else{
-			    $hasil = $mdy[2].' '.$isBulan.' '.$mdy[0];
-			}
-		    }
-		    
-		}
-		return $hasil;
-	}
+    public function getHead()
+    {
+        $role = session()->get('role');
+        $sql = "SELECT DISTINCT tbl_menu_head.id, tbl_menu_head.title 
+        FROM `tbl_menu_head`
+        JOIN tbl_menu_role ON tbl_menu_role.id_menu_head = tbl_menu_head.id
+        WHERE tbl_menu_role.role = ?
+        AND tbl_menu_head.status = ?
+        ORDER BY tbl_menu_head.urutan ASC;";
+        $query = $this->db->query($sql, array($role, 'ACTIVE'));
+        return $query->getResult();
+    }
+
+    public function getMenu($id)
+    {
+        $sql = "SELECT tbl_menu.* 
+        FROM tbl_menu 
+        WHERE tbl_menu.status = ?
+        AND tbl_menu.id_menu_head = ?
+        ORDER BY tbl_menu.urutan ASC
+        ";
+        $query = $this->db->query($sql, array('ACTIVE', $id));
+        return $query->getResult();
+    }
+
+    public function verify($email, $password)
+    {
+        $builder =  $this->db->table('tbl_pengguna');
+        $builder->select('*');
+        $builder->where('email', $email);
+        $builder->where('status', 'ACTIVE');
+        $num = $builder->countAllResults(false);
+        $row = $builder->get()->getRow();
+
+        if ($num == 1 && password_verify($password, $row->password)) {
+            $myid = $row->id;
+
+            $data = [
+                'id'  => $row->id,
+                'nama' => $row->nama,
+                'email'  => $row->email,
+                'foto'  => $row->foto,
+                'role' => $row->role,
+            ];
+            return $data;
+        } else {
+            return 0;
+        }
+    }
+
+    public function formatTanggal($Tgal, $jam = "yes", $idBahasa = 'id')
+    {
+        if ($Tgal == "") {
+            return;
+        }
+        $tanggal = explode(' ', $Tgal);
+        $mdy = explode('-', $tanggal[0]);
+        $mBul = $mdy[1];
+
+        if ($idBahasa == "id") {
+
+            if ($mBul == '01') {
+                $isBulan = 'Januari';
+            } elseif ($mBul == '02') {
+                $isBulan = 'Februari';
+            } elseif ($mBul == '03') {
+                $isBulan = 'Maret';
+            } elseif ($mBul == '04') {
+                $isBulan = 'April';
+            } elseif ($mBul == '05') {
+                $isBulan = 'Mei';
+            } elseif ($mBul == '06') {
+                $isBulan = 'Juni';
+            } elseif ($mBul == '07') {
+                $isBulan = 'Juli';
+            } elseif ($mBul == '08') {
+                $isBulan = 'Agustus';
+            } elseif ($mBul == '09') {
+                $isBulan = 'September';
+            } elseif ($mBul == '10') {
+                $isBulan = 'Oktober';
+            } elseif ($mBul == '11') {
+                $isBulan = 'Nopember';
+            } elseif ($mBul == '12') {
+                $isBulan = 'Desember';
+            } elseif ($mBul == '00') {
+                $isBulan = '00';
+            }
+
+            $hasil = $mdy[2] . ' ' . $isBulan . ' ' . $mdy[0];
+            if (count($tanggal) == 2) {
+                if ($jam == "yes") {
+                    $hasil = $mdy[2] . ' ' . $isBulan . ' ' . $mdy[0] . ', ' . substr($tanggal[1], 0, 5) . ' WIB';
+                } else {
+                    $hasil = $mdy[2] . ' ' . $isBulan . ' ' . $mdy[0];
+                }
+            }
+        }
+        return $hasil;
+    }
 
     public function createRows($data, $table)
     {

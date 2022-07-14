@@ -46,10 +46,17 @@ $routes->get('produk/(:any)', 'Frontend::produk/$1');
 $routes->get('umkm/produk', 'Umkm::produk');
 
 //ADMIN BackOffice
+$routes->get('login', 'Login::index');
+$routes->post('login/proses', 'Login::proses');
 $routes->get('admin/produk', 'Admin::produk');
 $routes->get('admin/umkm', 'Admin::umkm');
 $routes->get('admin/reseller', 'Admin::reseller');
 $routes->get('admin/modul', 'Admin::modul');
+$routes->get('admin/user', 'Admin::user');
+$routes->post('admin/user_', 'Admin::user_');
+$routes->post('admin/create_user', 'Admin::create_user');
+$routes->post('admin/update_user', 'Admin::update_user');
+$routes->post('admin/delete_user', 'Admin::delete_user');
 
 /*
  * --------------------------------------------------------------------
