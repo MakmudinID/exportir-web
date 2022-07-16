@@ -78,7 +78,7 @@ $this->server_side = new ServerSideModel();
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" role="button">
+                    <a class="nav-link" href="<?=base_url()?>/logout" role="button">
                         <i class="fas fa-sign-out"></i> Keluar
                     </a>
                 </li>
@@ -107,9 +107,9 @@ $this->server_side = new ServerSideModel();
                 </div>
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <?php foreach ($this->server_side->getHead() as $h) : ?>
+                        <?php foreach ($this->server_side->getMenuTitle() as $h) : ?>
                             <li class="nav-header"><?= strtoupper($h->title) ?></li>
-                            <?php foreach ($this->server_side->getMenu($h->id) as $m) : ?>
+                            <?php foreach ($this->server_side->getMenu($h->id_menu_title) as $m) : ?>
                                 <li class="nav-item">
                                     <a class="nav-link <?= ($m->title == $title) ? 'active' : '' ?>" href="<?= base_url($m->url) ?>"><i class="<?= $m->icon?>"></i> <?= $m->title ?></a>
                                 </li>

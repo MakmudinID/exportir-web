@@ -34,7 +34,13 @@ class Login extends BaseController
             $result = $this->server_side->verify($email, $password);
             if ($result) {
                 session()->set($result);
-                return redirect()->to('/admin/user');
+                if($result['role'] == 'SUPERADMIN'){
+                    return redirect()->to('/admin/user');
+                }else if($result['role'] == 'UMKM'){
+                    return redirect()->to('/umkm/index');
+                }else{
+                    return redirect()->to('/reseller/index');
+                }
             } else {
                 $data['error'] = 'Could not enter, please contact your administrator';
                 echo view('login', $data);
@@ -43,5 +49,11 @@ class Login extends BaseController
             $data['validation'] = $this->validator;
             echo view('login', $data);
         }
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->route('login');
     }
 }

@@ -15,28 +15,30 @@ class ServerSideModel extends Model
         $this->db = db_connect();
     }
 
-    public function getHead()
+    public function getMenuTitle()
     {
         $role = session()->get('role');
-        $sql = "SELECT DISTINCT tbl_menu_head.id, tbl_menu_head.title 
-        FROM `tbl_menu_head`
-        JOIN tbl_menu_role ON tbl_menu_role.id_menu_head = tbl_menu_head.id
-        WHERE tbl_menu_role.role = ?
-        AND tbl_menu_head.status = ?
-        ORDER BY tbl_menu_head.urutan ASC;";
+        $sql = "SELECT DISTINCT tbl_menu.id_menu_title, tbl_menu_title.title
+        FROM `tbl_menu`
+        JOIN tbl_menu_title ON tbl_menu_title.id=tbl_menu.id_menu_title
+        WHERE role=?
+        AND tbl_menu.status=?
+        ORDER BY tbl_menu_title.urutan ASC;";
         $query = $this->db->query($sql, array($role, 'ACTIVE'));
         return $query->getResult();
     }
 
     public function getMenu($id)
     {
+        $role = session()->get('role');
         $sql = "SELECT tbl_menu.* 
         FROM tbl_menu 
         WHERE tbl_menu.status = ?
-        AND tbl_menu.id_menu_head = ?
+        AND tbl_menu.id_menu_title = ?
+        AND tbl_menu.role = ?
         ORDER BY tbl_menu.urutan ASC
         ";
-        $query = $this->db->query($sql, array('ACTIVE', $id));
+        $query = $this->db->query($sql, array('ACTIVE', $id, $role));
         return $query->getResult();
     }
 
@@ -205,7 +207,7 @@ class ServerSideModel extends Model
 
         if ($where != NULL) {
             for ($i = 0; $i < count($where); $i++) {
-                $this->builder->whereIn($where[$i][0], $where[$i][1]);
+                $this->builder->where($where[$i][0], $where[$i][1]);
             }
         };
 

@@ -20,7 +20,9 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
-$routes->set404Override();
+$routes->set404Override(function() {
+    return view("template/404");
+});
 // The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
@@ -43,10 +45,17 @@ $routes->get('cart', 'Frontend::keranjang');
 $routes->get('produk/(:any)', 'Frontend::produk/$1');
 
 //UMKM BackOffice
+$routes->get('umkm/index', 'Umkm::index');
 $routes->get('umkm/produk', 'Umkm::produk');
+$routes->get('umkm/kategori-produk', 'Umkm::kategori_produk');
+$routes->post('umkm/kategori_produk_', 'Umkm::kategori_produk_');
+$routes->post('umkm/create_kategori', 'Umkm::create_kategori');
+$routes->post('umkm/update_kategori', 'Umkm::update_kategori');
+$routes->post('umkm/delete_kategori', 'Umkm::delete_kategori');
 
 //ADMIN BackOffice
 $routes->get('login', 'Login::index');
+$routes->get('logout', 'Login::logout');
 $routes->post('login/proses', 'Login::proses');
 $routes->get('admin/produk', 'Admin::produk');
 $routes->get('admin/umkm', 'Admin::umkm');

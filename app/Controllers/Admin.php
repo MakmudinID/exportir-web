@@ -4,9 +4,19 @@ namespace App\Controllers;
 
 class Admin extends BaseController
 {
+    public function __construct()
+	{
+		$this->db = \Config\Database::connect();
+		$this->db = db_connect();
+		helper(['url', 'form', 'array']);
+	}
+    
     public function index()
     {
         //Profil
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
         $data['title'] = 'Admin | Profil';
         $data['js'] = array("admin-profil.js?r=" . uniqid());
         $data['main_content']   = 'admin/profil';
@@ -16,6 +26,9 @@ class Admin extends BaseController
     public function reseller()
     {
         //Reseller
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
         $data['title'] = 'Admin | Reseller';
         $data['js'] = array("admin-reseller.js?r=" . uniqid());
         $data['main_content']   = 'admin/reseller';
@@ -24,6 +37,9 @@ class Admin extends BaseController
 
     public function reseller_()
     {
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
     }
 
     public function umkm()
@@ -37,11 +53,17 @@ class Admin extends BaseController
 
     public function umkm_()
     {
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
     }
 
     public function produk()
     {
         //Produk management
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
         $data['title'] = 'Admin | Produk';
         $data['js'] = array("admin-produk.js?r=" . uniqid());
         $data['main_content']   = 'admin/produk';
@@ -50,10 +72,16 @@ class Admin extends BaseController
 
     public function produk_()
     {
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
     }
 
     public function create_user()
     {
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
         $photo = $this->request->getFile('photo');
 
         $data['role']   = htmlspecialchars($this->request->getPost('role'), ENT_QUOTES);
@@ -103,6 +131,9 @@ class Admin extends BaseController
 
     public function update_user()
     {
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
         $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
         $photo = $this->request->getFile('photo');
         $photo_ = $this->request->getPost('photo_');
@@ -154,6 +185,9 @@ class Admin extends BaseController
 
     public function delete_user()
     {
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
         $table = 'tbl_pengguna';
         $id_ = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
         if ($this->server_side->deleteRows($id_, $table)) {
@@ -170,6 +204,9 @@ class Admin extends BaseController
 
     public function user()
     {
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
         $data['title'] = 'Admin | User';
         $data['js'] = array("admin-user.js?r=" . uniqid());
         $data['main_content']   = 'admin/user';
@@ -178,6 +215,9 @@ class Admin extends BaseController
 
     public function user_()
     {
+        if(session()->get('role') != 'SUPERADMIN'){
+            return redirect()->route('logout');
+        }
         $table = 'tbl_pengguna';
         $select = '*';
         $join = NULL;
@@ -212,54 +252,6 @@ class Admin extends BaseController
             "data" => $data,
         );
         //output dalam format JSON
-        echo json_encode($output);
-    }
-
-    public function modul()
-    {
-        //Modul Management
-        $data['title'] = 'Admin | Modul';
-        $data['js'] = array("admin-modul.js?r=" . uniqid());
-        $data['main_content']  = 'admin/modul';
-        echo view('template/sb-admin', $data);
-    }
-
-    public function modul_()
-    {
-        $column_order = array('program.nama', 'program.judul', 'layanan.nama', 'program_kategori.nama', 'program.target_dana');
-        $column_search = array('program.nama', 'program.judul');
-        $order = array('program.create_date' => 'desc');
-
-        $table = 'modul';
-        $select = '*';
-        $join = array();
-        $whereIn = array();
-        $like = array();
-        $notlike = array();
-
-        $list = $this->server_side->limitRows($table, $select, $whereIn, $column_order, $column_search, $order, $join, $like, $notlike);
-        $data = array();
-        $no = $this->request->getPost('start');
-        foreach ($list as $field) {
-            $row = array();
-            $no++;
-            $row['no'] = $no;
-            $row['nama'] = $field->modul;
-            $row['group'] = $field->groups;
-            $row['status'] = ($field->status == 'ACTIVE') ? '<span class="badge bg-primary">' . $field->status . '</span>' : '<span class="badge bg-danger">' . $field->status . '</span>';
-            $row['action'] = '<div class="d-flex justify-content-center align-items-center">
-                                <a href="' . base_url() . '/data/edit-program/" class="text-warning align-items-center text-decoration-none" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</a>
-                                <div class="ms-2 text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-modul="' . $field->modul . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
-                              </div>';
-            $data[] = $row;
-        }
-
-        $output = array(
-            "draw" => $this->request->getPost('draw'),
-            "recordsTotal" => $this->server_side->countAll($table),
-            "recordsFiltered" => $this->server_side->countFiltered($table, $select, $whereIn, $column_order, $column_search, $order, $join, $like, $notlike),
-            "data" => $data,
-        );
         echo json_encode($output);
     }
 }
