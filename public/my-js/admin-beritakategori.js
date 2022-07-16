@@ -5,7 +5,7 @@ let editor, table, save_method; // use a global for the submit and return data r
 jQuery(document).ready(function() {
     table = $('#table').DataTable({
         ajax: {
-            url: base_url + "/admin/umkm_",
+            url: base_url + "/admin/berita_kategori_",
             type: "POST",
         },
         lengthMenu: [10, 20, 30, 40, 50, 60, 80, 100],
@@ -18,15 +18,12 @@ jQuery(document).ready(function() {
                 "data": 'no',
                 "sortable": false,
             },
-            { "data": "nama_pengguna" },
-            { "data": "nama_umkm" },
-            { "data": "foto" },
-            { "data": "deskripsi" },
+            { "data": "nama" },
             { "data": "status" },
             { "data": "aksi" },
         ],
         columnDefs: [{
-            targets: [0, 6],
+            targets: [0, 3],
             orderable: false,
             searchable: false,
             className: "text-center"
@@ -35,25 +32,19 @@ jQuery(document).ready(function() {
 
     $(document).on('click', '.add', function() {
         save_method = 'add';
-        document.getElementById("row-display").style.display = "none";
         $('#form-user')[0].reset();
         $('#modal-default').modal('show');
-        $('.modal-title').text('Tambah UMKM');
+        $('.modal-title').text('Tambah Berita Kategori');
     });
 
     $(document).on('click', '.edit', function() {
         save_method = 'update';
         $('#form-user')[0].reset();
-        document.getElementById("row-display").style.display = "block";
-        document.getElementById("output_image").src = $(this).data('foto');
         $('#modal-default').modal('show');
         $('.update').text('Update');
-        $('.modal-title').text('Edit UMKM');
+        $('.modal-title').text('Edit Berita Kategori');
         $('[name="id"]').val($(this).data('id'));
-        $('[name="id_pengguna"]').val($(this).data('idpengguna'));
-        $('[name="nama"]').val($(this).data('umkm'));
-        $('[name="deskripsi"]').val($(this).data('deskripsi'));
-        $('[name="foto_"]').val($(this).data('foto'));
+        $('[name="nama"]').val($(this).data('nama'));
         $('[name="status"]').val($(this).data('status'));
     });
 
@@ -62,7 +53,7 @@ jQuery(document).ready(function() {
         var nama = $(this).data('nama');
         Swal.fire({
             title: 'Anda Yakin?',
-            html: "UMKM " + nama + "<br><br><b>Akan Dihapus!</b>",
+            html: "Berita Kategori " + nama + "<br><br><b>Akan Dihapus!</b>",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -72,7 +63,7 @@ jQuery(document).ready(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: base_url + "/admin/delete_umkm",
+                    url: base_url + "/admin/delete_berita_kategori",
                     type: "POST",
                     data: {
                         id: id
@@ -106,9 +97,6 @@ jQuery(document).ready(function() {
             nama: {
                 required: true
             },
-            id_pengguna: {
-                required: true
-            },
             status: {
                 required: true
             },
@@ -116,9 +104,9 @@ jQuery(document).ready(function() {
         submitHandler: function(form) {
             let url;
             if (save_method == 'update') {
-                url = base_url + '/admin/update_umkm';
+                url = base_url + '/admin/update_berita_kategori';
             } else {
-                url = base_url + '/admin/create_umkm';
+                url = base_url + '/admin/create_berita_kategori';
             }
             $.ajax({
                 url: url,
@@ -132,7 +120,7 @@ jQuery(document).ready(function() {
                     if (data.result != true) {
                         Swal.fire({
                             title: 'Gagal',
-                            html: "Gagal Tambah UMKM",
+                            html: "Gagal Tambah Barita Kategori",
                             icon: 'error',
                             timer: 3000,
                             showCancelButton: false,
@@ -143,7 +131,7 @@ jQuery(document).ready(function() {
                     } else {
                         Swal.fire({
                             title: 'Berhasil',
-                            html: "UMKM Berhasil Ditambahkan!",
+                            html: "Berita Kategori Berhasil Ditambahkan!",
                             icon: 'success',
                             timer: 3000,
                             showCancelButton: false,
@@ -162,13 +150,3 @@ jQuery(document).ready(function() {
         }
     });
 });
-
-function preview_image(event) {
-    document.getElementById("row-display").style.display = "block";
-    var reader = new FileReader();
-    reader.onload = function() {
-        var output = document.getElementById('output_image');
-        output.src = reader.result;
-    }
-    reader.readAsDataURL(event.target.files[0]);
-}

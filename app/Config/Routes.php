@@ -57,15 +57,31 @@ $routes->post('umkm/delete_kategori', 'Umkm::delete_kategori');
 $routes->get('login', 'Login::index');
 $routes->get('logout', 'Login::logout');
 $routes->post('login/proses', 'Login::proses');
-$routes->get('admin/produk', 'Admin::produk');
-$routes->get('admin/umkm', 'Admin::umkm');
 $routes->get('admin/reseller', 'Admin::reseller');
 $routes->get('admin/modul', 'Admin::modul');
+$routes->get('admin/dashboard', 'Admin::dashboard');
 $routes->get('admin/user', 'Admin::user');
 $routes->post('admin/user_', 'Admin::user_');
 $routes->post('admin/create_user', 'Admin::create_user');
 $routes->post('admin/update_user', 'Admin::update_user');
 $routes->post('admin/delete_user', 'Admin::delete_user');
+$routes->get('admin/umkm', 'Admin::umkm');
+$routes->post('admin/umkm_', 'Admin::umkm_');
+$routes->post('admin/create_umkm', 'Admin::create_umkm');
+$routes->post('admin/update_umkm', 'Admin::update_umkm');
+$routes->post('admin/delete_umkm', 'Admin::delete_umkm');
+$routes->get('admin/berita_kategori', 'Admin::berita_kategori');
+$routes->post('admin/berita_kategori_', 'Admin::berita_kategori_');
+$routes->post('admin/create_berita_kategori', 'Admin::create_berita_kategori');
+$routes->post('admin/update_berita_kategori', 'Admin::update_berita_kategori');
+$routes->post('admin/delete_berita_kategori', 'Admin::delete_berita_kategori');
+$routes->get('admin/berita', 'Admin::berita');
+$routes->post('admin/berita_', 'Admin::berita_');
+$routes->post('admin/create_berita', 'Admin::create_berita');
+$routes->post('admin/update_berita', 'Admin::update_berita');
+$routes->post('admin/delete_berita', 'Admin::delete_berita');
+$routes->get('admin/produk', 'Admin::produk');
+$routes->post('admin/produk_', 'Admin::produk_');
 
 /*
  * --------------------------------------------------------------------

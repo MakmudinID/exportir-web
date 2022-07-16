@@ -5,7 +5,7 @@ let editor, table, save_method; // use a global for the submit and return data r
 jQuery(document).ready(function() {
     table = $('#table').DataTable({
         ajax: {
-            url: base_url + "/admin/umkm_",
+            url: base_url + "/admin/berita_",
             type: "POST",
         },
         lengthMenu: [10, 20, 30, 40, 50, 60, 80, 100],
@@ -18,15 +18,17 @@ jQuery(document).ready(function() {
                 "data": 'no',
                 "sortable": false,
             },
-            { "data": "nama_pengguna" },
-            { "data": "nama_umkm" },
+            { "data": "judul" },
+            { "data": "nama_kategori" },
+            { "data": "isi" },
+            { "data": "slug" },
             { "data": "foto" },
-            { "data": "deskripsi" },
+            { "data": "penulis" },
             { "data": "status" },
             { "data": "aksi" },
         ],
         columnDefs: [{
-            targets: [0, 6],
+            targets: [0, 8],
             orderable: false,
             searchable: false,
             className: "text-center"
@@ -38,7 +40,7 @@ jQuery(document).ready(function() {
         document.getElementById("row-display").style.display = "none";
         $('#form-user')[0].reset();
         $('#modal-default').modal('show');
-        $('.modal-title').text('Tambah UMKM');
+        $('.modal-title').text('Tambah Berita');
     });
 
     $(document).on('click', '.edit', function() {
@@ -48,18 +50,20 @@ jQuery(document).ready(function() {
         document.getElementById("output_image").src = $(this).data('foto');
         $('#modal-default').modal('show');
         $('.update').text('Update');
-        $('.modal-title').text('Edit UMKM');
+        $('.modal-title').text('Edit Berita');
         $('[name="id"]').val($(this).data('id'));
-        $('[name="id_pengguna"]').val($(this).data('idpengguna'));
-        $('[name="nama"]').val($(this).data('umkm'));
-        $('[name="deskripsi"]').val($(this).data('deskripsi'));
+        $('[name="id_kategori"]').val($(this).data('idkategori'));
+        $('[name="judul"]').val($(this).data('judul'));
+        $('[name="isi"]').val($(this).data('isi'));
+        $('[name="slug"]').val($(this).data('slug'));
+        $('[name="penulis"]').val($(this).data('penulis'));
         $('[name="foto_"]').val($(this).data('foto'));
         $('[name="status"]').val($(this).data('status'));
     });
 
     $(document).on('click', '.delete', function() {
         var id = $(this).data('id');
-        var nama = $(this).data('nama');
+        var nama = $(this).data('judul');
         Swal.fire({
             title: 'Anda Yakin?',
             html: "UMKM " + nama + "<br><br><b>Akan Dihapus!</b>",
@@ -72,7 +76,7 @@ jQuery(document).ready(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: base_url + "/admin/delete_umkm",
+                    url: base_url + "/admin/delete_berita",
                     type: "POST",
                     data: {
                         id: id
@@ -103,10 +107,19 @@ jQuery(document).ready(function() {
         errorClass: "is-invalid",
         // validClass: "is-valid",
         rules: {
-            nama: {
+            judul: {
                 required: true
             },
-            id_pengguna: {
+            id_kategori: {
+                required: true
+            },
+            isi: {
+                required: true
+            },
+            slug: {
+                required: true
+            },
+            penulis: {
                 required: true
             },
             status: {
@@ -116,9 +129,9 @@ jQuery(document).ready(function() {
         submitHandler: function(form) {
             let url;
             if (save_method == 'update') {
-                url = base_url + '/admin/update_umkm';
+                url = base_url + '/admin/update_berita';
             } else {
-                url = base_url + '/admin/create_umkm';
+                url = base_url + '/admin/create_berita';
             }
             $.ajax({
                 url: url,
@@ -132,7 +145,7 @@ jQuery(document).ready(function() {
                     if (data.result != true) {
                         Swal.fire({
                             title: 'Gagal',
-                            html: "Gagal Tambah UMKM",
+                            html: "Gagal Tambah Berita",
                             icon: 'error',
                             timer: 3000,
                             showCancelButton: false,
@@ -143,7 +156,7 @@ jQuery(document).ready(function() {
                     } else {
                         Swal.fire({
                             title: 'Berhasil',
-                            html: "UMKM Berhasil Ditambahkan!",
+                            html: "Berita Berhasil Ditambahkan!",
                             icon: 'success',
                             timer: 3000,
                             showCancelButton: false,
