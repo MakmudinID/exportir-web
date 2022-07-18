@@ -47,6 +47,8 @@ $routes->get('produk/(:any)', 'Frontend::produk/$1');
 //UMKM BackOffice
 $routes->get('umkm/index', 'Umkm::index');
 $routes->get('umkm/produk', 'Umkm::produk');
+$routes->get('umkm/profil', 'Umkm::profil');
+$routes->post('umkm/edit_profil', 'Umkm::edit_profil');
 $routes->get('umkm/kategori-produk', 'Umkm::kategori_produk');
 $routes->post('umkm/kategori_produk_', 'Umkm::kategori_produk_');
 $routes->post('umkm/create_kategori', 'Umkm::create_kategori');

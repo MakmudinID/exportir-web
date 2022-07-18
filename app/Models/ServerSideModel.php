@@ -15,6 +15,11 @@ class ServerSideModel extends Model
         $this->db = db_connect();
     }
 
+    public function get_profil(){
+        $q = $this->db->query("select tbl_pengguna.*, tbl_umkm.id as id_umkm,tbl_umkm.nama as nama_umkm from tbl_pengguna left join tbl_umkm on tbl_umkm.id_pengguna = tbl_pengguna.id where tbl_pengguna.id = ?", array(session()->get('id')))->getRow();
+        return $q;
+    }
+
     public function getMenuTitle()
     {
         $role = session()->get('role');

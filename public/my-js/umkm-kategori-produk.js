@@ -21,14 +21,13 @@ jQuery(document).ready(function() {
             },
             { "data": "nama" },
             { "data": "status" },
+            { "data": "aksi" },
         ],
         columnDefs: [{
-            targets: [0, 1, 4, 5, 6],
-            className: "text-center"
-        }, {
-            targets: [0, 6],
+            targets: [0, 3],
             orderable: false,
             searchable: false,
+            className: 'text-center'
         }],
     });
 
