@@ -56,14 +56,57 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label for="foto" class="col-sm-2 col-form-label">Foto</label>
+                                <div class="col-sm-10">
+                                    <input type="file" class="form-control" name="foto" id="foto"  accept="image/*" onchange="preview_image_profil(event)">
+                                    <input type="hidden" id="foto_" name="foto_" value="<?= $get_profil->foto ?>">
+                                    <img id="output_image_foto" src="<?= $get_profil->foto ?>" class="img-thumbnail mt-2" width="200" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <div class="offset-sm-2 col-sm-10">
                                     <button type="submit" class="btn btn-primary">Update Profil</button>
                                 </div>
                             </div>
                         </form>
-        
                     </div>
-            
+                </div>
+                <div class="card">
+                    <div class="card-header p-2">
+                        <h4>Data UMKM</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" id="edit-umkm">
+                            <div class="form-group row">
+                                <label for="nama" class="col-sm-2 col-form-label">Nama UMKM</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="nama_umkm" id="nama_umkm" placeholder="Nama" value="<?= $get_profil->nama_umkm ?>">
+                                    <input type="hidden" class="form-control" name="id_umkm" id="id_umkm"  value="<?= $get_profil->id_umkm ?>">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="nohp" class="col-sm-2 col-form-label">Deskripsi UMKM</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="deskripsi_umkm" id="deskripsi_umkm" placeholder="Deskripsi" row="5"><?= $get_profil->deskripsi ?></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="foto" class="col-sm-2 col-form-label">Foto UMKM</label>
+                                <div class="col-sm-10">
+                                    <input type="file" class="form-control" name="foto_umkm" id="foto_umkm"  accept="image/*" onchange="preview_image(event)">
+                                    <input type="hidden" id="foto_umkm_" name="foto_umkm_" value="<?= $get_profil->foto_umkm ?>">
+                                    <img id="output_image" src="<?= $get_profil->foto_umkm ?>" class="img-thumbnail mt-2" width="200" />
+                                </div>
+                            </div>
+                
+                            
+                            <div class="form-group row">
+                                <div class="offset-sm-2 col-sm-10">
+                                    <button type="submit" class="btn btn-primary">Update UMKM</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 

@@ -16,7 +16,7 @@ class ServerSideModel extends Model
     }
 
     public function get_profil(){
-        $q = $this->db->query("select tbl_pengguna.*, tbl_umkm.id as id_umkm,tbl_umkm.nama as nama_umkm from tbl_pengguna left join tbl_umkm on tbl_umkm.id_pengguna = tbl_pengguna.id where tbl_pengguna.id = ?", array(session()->get('id')))->getRow();
+        $q = $this->db->query("select tbl_pengguna.*, tbl_umkm.id as id_umkm, tbl_umkm.nama as nama_umkm, tbl_umkm.deskripsi, tbl_umkm.foto as foto_umkm from tbl_pengguna left join tbl_umkm on tbl_umkm.id_pengguna = tbl_pengguna.id where tbl_pengguna.id = ?", array(session()->get('id')))->getRow();
         return $q;
     }
 
@@ -50,9 +50,10 @@ class ServerSideModel extends Model
     public function verify($email, $password)
     {
         $builder =  $this->db->table('tbl_pengguna');
-        $builder->select('*');
-        $builder->where('email', $email);
-        $builder->where('status', 'ACTIVE');
+        $builder->select('tbl_pengguna.*, tbl_umkm.id as id_umkm');
+        $builder->join('tbl_umkm', 'tbl_umkm.id_pengguna = tbl_pengguna.id', 'left');
+        $builder->where('tbl_pengguna.email', $email);
+        $builder->where('tbl_pengguna.status', 'ACTIVE');
         $num = $builder->countAllResults(false);
         $row = $builder->get()->getRow();
 
@@ -61,6 +62,7 @@ class ServerSideModel extends Model
 
             $data = [
                 'id'  => $row->id,
+                'id_umkm' => $row->id_umkm,
                 'nama' => $row->nama,
                 'email'  => $row->email,
                 'foto'  => $row->foto,
