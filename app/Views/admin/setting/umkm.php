@@ -34,7 +34,7 @@
                                     <th>Nama Pengguna</th>
                                     <th>Nama UMKM</th>
                                     <th>Foto</th>
-                                    <th>Deskripsi</th>
+                                    <th>Kategori</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>
@@ -50,7 +50,7 @@
 </section>
 
 <div class="modal fade" id="modal-default">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form id='form-user'>
                 <div class="modal-header">
@@ -75,8 +75,17 @@
                         <input type="text" name="nama" id="nama" class="form-control">
                     </div>
                     <div class="form-group">
+                        <label for="id_kategori">Kategori UMKM</label>
+                        <select id = "id_kategori" name="id_kategori" class="form-control">
+                            <option value=''>- Pilih Kategori -</option>
+                            <?php foreach($kategori_umkm as $val) {?>
+                                <option value="<?= $val->id ?>"> <?= $val->nama ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="deskripsi">Deskripsi</label>
-                        <textarea name="deskripsi" id="deskripsi" class="form-control" rows="5"></textarea>
+                        <textarea name="deskripsi" id="deskripsi" class="form-control summernote"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="foto">Foto</label><br>

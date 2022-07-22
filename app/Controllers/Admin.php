@@ -59,6 +59,7 @@ class Admin extends BaseController
         $data['title'] = 'Admin | UMKM';
         $data['js'] = array("admin-umkm.js?r=" . uniqid());
         $data['pengguna'] = $this->db->query('select * from tbl_pengguna')->getResult();
+        $data['kategori_umkm'] = $this->db->query('select * from tbl_kategori_umkm')->getResult();
         $data['main_content']   = 'admin/setting/umkm';
         echo view('template/adminlte', $data);
     }
@@ -69,9 +70,10 @@ class Admin extends BaseController
             return redirect()->route('logout');
         }
         $table = 'tbl_umkm';
-        $select = 'tbl_umkm.*, tbl_pengguna.nama as nama_pengguna';
+        $select = 'tbl_umkm.*, tbl_pengguna.nama as nama_pengguna, tbl_kategori_umkm.nama as nama_kategori';
         $join = array(
-            array('tbl_pengguna', 'tbl_pengguna.id = tbl_umkm.id_pengguna')
+            array('tbl_pengguna', 'tbl_pengguna.id = tbl_umkm.id_pengguna'),
+            array('tbl_kategori_umkm', 'tbl_kategori_umkm.id = tbl_umkm.id_kategori')
         );
         $where = array();
         $column_order = array(NULL, 'nama_pengguna', 'tbl_umkm.nama','tbl_umkm.foto', 'tbl_umkm.deskripsi','tbl_umkm.status');
@@ -89,10 +91,10 @@ class Admin extends BaseController
             $row['nama_pengguna'] = $field->nama_pengguna;
             $row['nama_umkm'] = $field->nama;
             $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';
-            $row['deskripsi'] = $field->deskripsi;
+            $row['kategori'] = $field->nama_kategori;
             $row['status'] = ($field->status == 'ACTIVE') ? $field->status : $field->status;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-idpengguna="' . $field->id_pengguna . '" data-umkm="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-idpengguna="' . $field->id_pengguna . '" data-idkategori="' . $field->id_kategori . '" data-umkm="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
       </div>';
             $data[] = $row;
@@ -116,6 +118,7 @@ class Admin extends BaseController
         $foto = $this->request->getFile('foto');
 
         $data['id_pengguna']  = htmlspecialchars($this->request->getPost('id_pengguna'), ENT_QUOTES);
+        $data['id_kategori']  = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
@@ -163,6 +166,7 @@ class Admin extends BaseController
         $foto = $this->request->getFile('foto');
 
         $data['id_pengguna']  = htmlspecialchars($this->request->getPost('id_pengguna'), ENT_QUOTES);
+        $data['id_kategori']  = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);

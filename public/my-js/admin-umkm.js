@@ -3,6 +3,9 @@
 let editor, table, save_method; // use a global for the submit and return data rendering in the examples
 
 jQuery(document).ready(function() {
+    $('.summernote').summernote({
+        height:300
+    });
     table = $('#table').DataTable({
         ajax: {
             url: base_url + "/admin/umkm_",
@@ -21,7 +24,7 @@ jQuery(document).ready(function() {
             { "data": "nama_pengguna" },
             { "data": "nama_umkm" },
             { "data": "foto" },
-            { "data": "deskripsi" },
+            { "data": "kategori" },
             { "data": "status" },
             { "data": "aksi" },
         ],
@@ -36,6 +39,7 @@ jQuery(document).ready(function() {
     $(document).on('click', '.add', function() {
         save_method = 'add';
         document.getElementById("row-display").style.display = "none";
+        $('[name="deskripsi"]').summernote('code','');
         $('#form-user')[0].reset();
         $('#modal-default').modal('show');
         $('.modal-title').text('Tambah UMKM');
@@ -51,8 +55,9 @@ jQuery(document).ready(function() {
         $('.modal-title').text('Edit UMKM');
         $('[name="id"]').val($(this).data('id'));
         $('[name="id_pengguna"]').val($(this).data('idpengguna'));
+        $('[name="id_kategori"]').val($(this).data('idkategori'));
         $('[name="nama"]').val($(this).data('umkm'));
-        $('[name="deskripsi"]').val($(this).data('deskripsi'));
+        $('[name="deskripsi"]').summernote('code',$(this).data('deskripsi'));
         $('[name="foto_"]').val($(this).data('foto'));
         $('[name="status"]').val($(this).data('status'));
     });
@@ -107,6 +112,9 @@ jQuery(document).ready(function() {
                 required: true
             },
             id_pengguna: {
+                required: true
+            },
+            id_kategori: {
                 required: true
             },
             status: {
