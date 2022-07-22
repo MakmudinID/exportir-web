@@ -3,6 +3,9 @@
 let editor, table, save_method; // use a global for the submit and return data rendering in the examples
 
 jQuery(document).ready(function() {
+    $('.summernote').summernote({
+        height:300
+    });
     table = $('#table').DataTable({
         ajax: {
             url: base_url + "/umkm/produk_",
@@ -19,13 +22,14 @@ jQuery(document).ready(function() {
                 "sortable": false,
                 "searchable": false,
             },
+            { "data": "foto" },
             { "data": "nama" },
-            { "data": "deskripsi" },
+            { "data": "kategori" },
             { "data": "qty" },
             { "data": "aksi" },
         ],
         columnDefs: [{
-            targets: [0, 4],
+            targets: [0, 5],
             orderable: false,
             searchable: false,
             className: 'text-center'
@@ -34,7 +38,9 @@ jQuery(document).ready(function() {
 
     $(document).on('click', '.add', function() {
         save_method = 'add';
+        document.getElementById("row-display").style.display = "none";
         document.getElementById('form-produk').reset()
+        $('[name="deskripsi"]').summernote('code','');
         $('#modal-default').modal('show');
         $('.modal-title').text('Tambah Produk');
     });
@@ -42,13 +48,20 @@ jQuery(document).ready(function() {
     $(document).on('click', '.edit', function() {
         save_method = 'update';
         document.getElementById('form-produk').reset()
+        document.getElementById("row-display").style.display = "block";
+        document.getElementById("output_image").src = $(this).data('foto');
         $('#modal-default').modal('show');
         $('.update').text('Update');
         $('.modal-title').text('Edit Produk');
         $('[name="id"]').val($(this).data('id'));
+        $('[name="id_kategori"]').val($(this).data('id_kategori'));
         $('[name="nama"]').val($(this).data('nama'));
-        $('[name="deskripsi"]').val($(this).data('deskripsi'));
+        $('[name="deskripsi"]').summernote('code',$(this).data('deskripsi'));
         $('[name="qty"]').val($(this).data('qty'));
+        $('[name="qty_min"]').val($(this).data('qty_min'));
+        $('[name="satuan"]').val($(this).data('satuan'));
+        $('[name="status"]').val($(this).data('status'));
+        $('[name="foto_"]').val($(this).data('foto'));
     });
 
     $(document).on('click', '.delete', function() {
@@ -100,10 +113,22 @@ jQuery(document).ready(function() {
             nama: {
                 required: true
             },
+            id_kategori: {
+                required: true
+            },
             deskripsi: {
                 required: true
             },
             qty: {
+                required: true
+            },
+            qty_min: {
+                required: true
+            },
+            satuan: {
+                required: true
+            },
+            status: {
                 required: true
             },
         },
@@ -156,3 +181,13 @@ jQuery(document).ready(function() {
         }
     });
 });
+
+function preview_image(event) {
+    document.getElementById("row-display").style.display = "block";
+    var reader = new FileReader();
+    reader.onload = function() {
+        var output = document.getElementById('output_image');
+        output.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}

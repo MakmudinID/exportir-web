@@ -473,7 +473,7 @@ class Admin extends BaseController
             array('tbl_berita_kategori', 'tbl_berita_kategori.id = tbl_berita.id_kategori')
         );
         $where = array();
-        $column_order = array(NULL, 'tbl_berita.judul', 'nama_kategori', 'tbl_berita.isi', 'tbl_berita.slug', 'tbl_berita.foto', 'tbl_berita.penulis', 'tbl_berita.status');
+        $column_order = array(NULL, NULL,'tbl_berita.judul', 'nama_kategori','tbl_berita.slug', 'tbl_berita.flag', 'tbl_berita.penulis', 'tbl_berita.status');
         $column_search = array('tbl_berita.judul', 'nama_kategori');
         $order = array('tbl_berita.id' => 'desc');
 
@@ -487,13 +487,13 @@ class Admin extends BaseController
             $row['no'] = $no;
             $row['judul'] = $field->judul;
             $row['nama_kategori'] = $field->nama_kategori;
-            $row['isi'] = $field->isi;
             $row['slug'] = $field->slug;
+            $row['flag'] = $field->flag;
             $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';
             $row['penulis'] = $field->penulis;
             $row['status'] = ($field->status == 'ACTIVE') ? $field->status : $field->status;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-idkategori="' . $field->id_kategori . '" data-judul="' . $field->judul . '" data-isi="' . $field->isi . '" data-slug="' . $field->slug . '" data-penulis="' . $field->penulis . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-idkategori="' . $field->id_kategori . '" data-judul="' . $field->judul . '" data-isi="' . $field->isi . '" data-slug="' . $field->slug . '" data-flag="' . $field->flag . '" data-penulis="' . $field->penulis . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-judul="' . $field->judul . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
             </div>';
             $data[] = $row;
@@ -520,6 +520,7 @@ class Admin extends BaseController
         $data['judul']   = htmlspecialchars($this->request->getPost('judul'), ENT_QUOTES);
         $data['isi']  = htmlspecialchars($this->request->getPost('isi'), ENT_QUOTES);
         $data['slug']  = htmlspecialchars($this->request->getPost('slug'), ENT_QUOTES);
+        $data['flag']  = htmlspecialchars($this->request->getPost('flag'), ENT_QUOTES);
         $data['penulis']  = htmlspecialchars($this->request->getPost('penulis'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
         $data['create_user'] = session()->get('nama');
@@ -569,6 +570,7 @@ class Admin extends BaseController
         $data['judul']   = htmlspecialchars($this->request->getPost('judul'), ENT_QUOTES);
         $data['isi']  = htmlspecialchars($this->request->getPost('isi'), ENT_QUOTES);
         $data['slug']  = htmlspecialchars($this->request->getPost('slug'), ENT_QUOTES);
+        $data['flag']  = htmlspecialchars($this->request->getPost('flag'), ENT_QUOTES);
         $data['penulis']  = htmlspecialchars($this->request->getPost('penulis'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
         $data['edit_user'] = session()->get('nama');

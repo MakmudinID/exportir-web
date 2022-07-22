@@ -22,6 +22,7 @@ $this->server_side = new ServerSideModel();
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <!-- Theme style -->
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/summernote/summernote-bs4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/css/adminlte.min.css">
     <style>
         tr.group,
@@ -169,7 +170,8 @@ $this->server_side = new ServerSideModel();
     <!-- jquery-validation -->
     <script src="<?= base_url() ?>/assets/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="<?= base_url() ?>/assets/admin/plugins/jquery-validation/additional-methods.min.js"></script>
-    <!-- SweetAlert2 -->
+    <!-- SweetAlert2 -->    
+    <script src="<?= base_url() ?>/assets/admin/plugins/summernote/summernote-bs4.min.js"></script>
     <script src="<?= base_url() ?>/assets/admin/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script>
         let base_url = "<?= base_url() ?>";

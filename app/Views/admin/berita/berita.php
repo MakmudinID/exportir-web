@@ -31,11 +31,11 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Foto</th>
                                     <th>Judul</th>
                                     <th>Kategori</th>
-                                    <th>Konten</th>
                                     <th>Slug</th>
-                                    <th>Foto</th>
+                                    <th>Flag</th>
                                     <th>Penulis</th>
                                     <th>Status</th>
                                     <th></th>
@@ -85,7 +85,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="isi">Konten</label>
-                            <textarea name="isi" id="isi" class="form-control" rows="5"></textarea>
+                            <textarea name="isi" id="isi" class="form-control summernote"></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -94,18 +94,11 @@
                             <input type="text" name="slug" id="slug" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="foto">Foto</label><br>
-                                <input type="file" name="foto" id="foto" accept="image/*" onchange="preview_image(event)">
-                                <input type="hidden" name="foto_" id="foto_">
-                            </div>
-                            <div class="form-group" style="display:none" id="row-display">
-                                <hr>
-                                <label for="output_image">Preview</label>
-                                <div class="mt-2">
-                                    <img id="output_image" class="img-thumbnail" width="200" />
-                                </div>
-                            </div>
+                            <label for="slug">Flag</label>
+                            <select class="form-control" name="flag" id="flag">
+                                <option value="BLOG">BLOG</option>
+                                <option value="INFO">INFO</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -120,6 +113,23 @@
                                     <option value="ACTIVE">ACTIVE</option>
                                     <option value="INACTIVE">INACTIVE</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="foto">Foto</label><br>
+                                <input type="file" name="foto" id="foto" accept="image/*" onchange="preview_image(event)">
+                                <input type="hidden" name="foto_" id="foto_">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" style="display:none" id="row-display">
+                                <label for="output_image">Preview</label>
+                                <div class="mt-2">
+                                    <img id="output_image" class="img-thumbnail" width="200" />
+                                </div>
                             </div>
                         </div>
                     </div>

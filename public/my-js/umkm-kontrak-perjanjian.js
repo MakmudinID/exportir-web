@@ -5,7 +5,7 @@ let table // use a global for the submit and return data rendering in the exampl
 jQuery(document).ready(function() {
     table = $('#table').DataTable({
         ajax: {
-            url: base_url + "/umkm/kerjasama_",
+            url: base_url + "/umkm/kontrak_perjanjian_",
             type: "POST",
         },
         lengthMenu: [10, 20, 30, 40, 50, 60, 80, 100],

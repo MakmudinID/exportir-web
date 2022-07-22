@@ -32,8 +32,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Foto</th>
                                     <th>Nama Barang</th>
-                                    <th>Deskripsi</th>
+                                    <th>Kategori</th>
                                     <th>Stok</th>
                                     <th></th>
                                 </tr>
@@ -59,19 +60,82 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan nama">
-                        <input type="hidden" name="id" id="id">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nama">Nama</label>
+                                <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan nama">
+                                <input type="hidden" name="id" id="id">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_kategori">Kategori</label>
+                                <select class="form-control" name="id_kategori" id="id_kategori">
+                                    <option value="">- Pilih Kategori -</option>
+                                    <?php foreach($kategori as $val){ ?>
+                                        <option value="<?= $val->id ?>"><?= $val->nama ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>                       
                     </div>
-                    <div class="form-group">
-                        <label for="nama">Deskripsi</label>
-                        <textarea class="form-control" id="deskripsi" name="deskripsi" row="5"></textarea>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="deskripsi">Deskripsi</label>
+                                <textarea class="form-control summernote" id="deskripsi" name="deskripsi"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="nama">Stok</label>
-                        <input type="number" class="form-control" id="qty" name="qty" >
-                    </div>            
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="qty">Stok</label>
+                                <input type="number" class="form-control" id="qty" name="qty" >
+                            </div>    
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="qty_min">Stok (Non Kerjasama)</label>
+                                <input type="number" class="form-control" id="qty_min" name="qty_min" >
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="satuan">Satuan</label>
+                                <input type="text" name="satuan" id="satuan" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="status">status</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option value="ACTIVE"> ACTIVE</option>
+                                    <option value="INACTIVE"> INACTIVE</option>
+                                </select>
+                            </div>     
+                        </div>
+                    </div>      
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="foto">Foto</label><br>
+                                <input type="file" class="form-control" name="foto" id="foto" accept="image/*" onchange="preview_image(event)">
+                                <input type="hidden" name="foto_" id="foto_">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" style="display:none" id="row-display">
+                                <label for="output_image">Preview</label>
+                                <div class="mt-2">
+                                    <img id="output_image" class="img-thumbnail" width="200" />
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>

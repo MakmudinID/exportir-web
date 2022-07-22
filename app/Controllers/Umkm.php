@@ -117,6 +117,7 @@ class Umkm extends BaseController
         }
         $data['title'] = 'UMKM | Produk';
         $data['js'] = array("umkm-produk.js?r=".uniqid());
+        $data['kategori'] = $this->server_side->getKategoriProduk(session()->get('id_umkm'));
 		$data['main_content']   = 'umkm/produk'; 
 		echo view('template/adminlte', $data);
     }
@@ -127,14 +128,16 @@ class Umkm extends BaseController
         }
         $cek = session()->get('id_umkm');
         $table = 'tbl_produk_umkm';
-        $select = '*';
-        $join = null;
-        $where = array(
-            array('id_umkm', $cek)
+        $select = 'tbl_produk_umkm.*, tbl_kategori_produk.nama as nama_kategori';
+        $join = array(
+            array('tbl_kategori_produk', 'tbl_kategori_produk.id = tbl_produk_umkm.id_kategori')
         );
-        $column_order = array(NULL, 'nama', 'deskripsi', 'qty');
-        $column_search = array('nama');
-        $order = array('nama' => 'asc');
+        $where = array(
+            array('tbl_produk_umkm.id_umkm', $cek)
+        );
+        $column_order = array(NULL, 'tbl_produk_umkm.nama', 'nama_kategori', 'tbl_produk_umkm.qty');
+        $column_search = array('tbl_produk_umkm.nama');
+        $order = array('tbl_produk_umkm.nama' => 'asc');
 
         $list = $this->server_side->limitRows($table, $select, $where, $column_order, $column_search, $order, $join);
         // var_dump(session()->get('id'));die;
@@ -144,11 +147,12 @@ class Umkm extends BaseController
             $no++;
             $row = array();
             $row['no'] = $no;
+            $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';;
             $row['nama'] = $field->nama;
-            $row['deskripsi'] = $field->deskripsi;
-            $row['qty'] = $field->qty;
+            $row['kategori'] = $field->nama_kategori;
+            $row['qty'] = $field->qty." ".$field->satuan;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="'. $field->qty .'" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="'. $field->qty .'" data-qty_min="'. $field->qty_min .'" data-satuan="'. $field->satuan .'" data-status="'. $field->status .'" data-foto="'. $field->foto .'" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
             </div>';
             $data[] = $row;
@@ -170,11 +174,34 @@ class Umkm extends BaseController
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }
+        $foto = $this->request->getFile('foto');
         $id_umkm = session()->get('id_umkm');
         $data['id_umkm'] = $id_umkm;
+        $data['id_kategori']   = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['qty']  = htmlspecialchars($this->request->getPost('qty'), ENT_QUOTES);
+        $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
+        $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
+        $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+
+        if ($foto->getName() != '') {
+            $foto->move('../public/assets/photo-produk/', $foto->getName());
+            $filepath = base_url() . '/assets/photo-produk/' . $foto->getName();
+            $path = $foto->getName();
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif') {
+                $data['foto'] = $filepath;
+            } else {
+                $r['result'] = false;
+                $r['title'] = 'Gagal!';
+                $r['icon'] = 'error';
+                $r['status'] = 'Format File Tidak Diijinkan!';
+            }
+        } else {
+            $data['foto'] = base_url('/assets/admin/img/avatar5.png');
+        }
+
 
         $r['result'] = true;
 
@@ -196,12 +223,34 @@ class Umkm extends BaseController
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }
+        $foto = $this->request->getFile('foto');
         $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
         $id_umkm = session()->get('id_umkm');
         $data['id_umkm'] = $id_umkm;
+        $data['id_kategori']   = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['qty']  = htmlspecialchars($this->request->getPost('qty'), ENT_QUOTES);
+        $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
+        $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
+        $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+
+        if ($foto->getName() != '') {
+            $foto->move('../public/assets/photo-produk/', $foto->getName());
+            $filepath = base_url() . '/assets/photo-produk/' . $foto->getName();
+            $path = $foto->getName();
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif') {
+                $data['foto'] = $filepath;
+            } else {
+                $r['result'] = false;
+                $r['title'] = 'Gagal!';
+                $r['icon'] = 'error';
+                $r['status'] = 'Format File Tidak Diijinkan!';
+            }
+        } else {
+            $data['foto'] = $this->request->getPost('foto_');
+        }
 
         $r['result'] = true;
 
@@ -365,17 +414,17 @@ class Umkm extends BaseController
         echo json_encode($r);
     }
 
-    public function kerjasama(){
+    public function kontrak_perjanjian(){
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }
-        $data['title'] = 'UMKM | Kerjasama';
-        $data['js'] = array("umkm-kerjasama.js?r=".uniqid());
-		$data['main_content']  = 'umkm/kerjasama'; 
+        $data['title'] = 'UMKM | Kontrak Perjanjian';
+        $data['js'] = array("umkm-kontrak-perjanjian.js?r=".uniqid());
+		$data['main_content']  = 'umkm/kontrak-perjanjian'; 
 		echo view('template/adminlte', $data);
     }
 
-    public function kerjasama_(){
+    public function kontrak_perjanjian_(){
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }

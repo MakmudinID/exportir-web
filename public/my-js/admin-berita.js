@@ -3,6 +3,11 @@
 let editor, table, save_method; // use a global for the submit and return data rendering in the examples
 
 jQuery(document).ready(function() {
+
+    $('.summernote').summernote({
+        height:300
+    });
+
     table = $('#table').DataTable({
         ajax: {
             url: base_url + "/admin/berita_",
@@ -18,17 +23,17 @@ jQuery(document).ready(function() {
                 "data": 'no',
                 "sortable": false,
             },
+            { "data": "foto" },
             { "data": "judul" },
             { "data": "nama_kategori" },
-            { "data": "isi" },
             { "data": "slug" },
-            { "data": "foto" },
+            { "data": "flag" },
             { "data": "penulis" },
             { "data": "status" },
             { "data": "aksi" },
         ],
         columnDefs: [{
-            targets: [0, 8],
+            targets: [0,1, 8],
             orderable: false,
             searchable: false,
             className: "text-center"
@@ -39,6 +44,7 @@ jQuery(document).ready(function() {
         save_method = 'add';
         document.getElementById("row-display").style.display = "none";
         $('#form-user')[0].reset();
+        $('[name="isi"]').summernote('code','');
         $('#modal-default').modal('show');
         $('.modal-title').text('Tambah Berita');
     });
@@ -54,8 +60,9 @@ jQuery(document).ready(function() {
         $('[name="id"]').val($(this).data('id'));
         $('[name="id_kategori"]').val($(this).data('idkategori'));
         $('[name="judul"]').val($(this).data('judul'));
-        $('[name="isi"]').val($(this).data('isi'));
+        $('[name="isi"]').summernote('code',$(this).data('isi'));
         $('[name="slug"]').val($(this).data('slug'));
+        $('[name="flag"]').val($(this).data('flag'));
         $('[name="penulis"]').val($(this).data('penulis'));
         $('[name="foto_"]').val($(this).data('foto'));
         $('[name="status"]').val($(this).data('status'));
@@ -117,6 +124,9 @@ jQuery(document).ready(function() {
                 required: true
             },
             slug: {
+                required: true
+            },
+            flag: {
                 required: true
             },
             penulis: {

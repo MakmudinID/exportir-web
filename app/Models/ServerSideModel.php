@@ -20,6 +20,11 @@ class ServerSideModel extends Model
         return $q;
     }
 
+    public function getKategoriProduk($id){
+        $q = $this->db->query("select * from tbl_kategori_produk where id_umkm = $id");
+        return $q->getResult();
+    }
+
     public function getMenuTitle()
     {
         $role = session()->get('role');
