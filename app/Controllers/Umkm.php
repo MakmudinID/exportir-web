@@ -147,7 +147,7 @@ class Umkm extends BaseController
             $no++;
             $row = array();
             $row['no'] = $no;
-            $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';;
+            $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';
             $row['nama'] = $field->nama;
             $row['kategori'] = $field->nama_kategori;
             $row['qty'] = $field->qty." ".$field->satuan;

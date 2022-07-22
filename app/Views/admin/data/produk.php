@@ -25,10 +25,12 @@
                         <table id="table" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>Nama</th>
+                                    <th>No</th>
                                     <th>UMKM</th>
-                                    <th>deskripsi</th>
-                                    <th>qty</th>
+                                    <th>Foto</th>
+                                    <th>Nama Barang</th>
+                                    <th>Kategori</th>
+                                    <th>Stok</th>
                                 </tr>
                             </thead>
                             <tbody>
