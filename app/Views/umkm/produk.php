@@ -34,6 +34,7 @@
                                     <th>No</th>
                                     <th>Foto</th>
                                     <th>Nama Barang</th>
+                                    <th>Harga</th>
                                     <th>Kategori</th>
                                     <th>Stok</th>
                                     <th></th>
@@ -89,15 +90,21 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="harga">Harga</label>
+                                <input type="number" class="form-control" id="harga" name="harga" >
+                            </div>    
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="qty">Stok</label>
                                 <input type="number" class="form-control" id="qty" name="qty" >
                             </div>    
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="qty_min">Stok (Non Kerjasama)</label>
+                                <label for="qty_min">Min. Pemesanan (Non Kerjasama)</label>
                                 <input type="number" class="form-control" id="qty_min" name="qty_min" >
                             </div>  
                         </div>

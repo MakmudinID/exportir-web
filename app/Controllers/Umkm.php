@@ -149,10 +149,11 @@ class Umkm extends BaseController
             $row['no'] = $no;
             $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';
             $row['nama'] = $field->nama;
+            $row['harga'] = number_format($field->harga);
             $row['kategori'] = $field->nama_kategori;
             $row['qty'] = $field->qty." ".$field->satuan;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="'. $field->qty .'" data-qty_min="'. $field->qty_min .'" data-satuan="'. $field->satuan .'" data-status="'. $field->status .'" data-foto="'. $field->foto .'" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-harga="' . $field->harga . '" data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="'. $field->qty .'" data-qty_min="'. $field->qty_min .'" data-satuan="'. $field->satuan .'" data-status="'. $field->status .'" data-foto="'. $field->foto .'" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
             </div>';
             $data[] = $row;
@@ -182,6 +183,7 @@ class Umkm extends BaseController
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['qty']  = htmlspecialchars($this->request->getPost('qty'), ENT_QUOTES);
         $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
+        $data['harga']  = htmlspecialchars($this->request->getPost('harga'), ENT_QUOTES);
         $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
 
@@ -190,7 +192,7 @@ class Umkm extends BaseController
             $filepath = base_url() . '/assets/photo-produk/' . $foto->getName();
             $path = $foto->getName();
             $ext = pathinfo($path, PATHINFO_EXTENSION);
-            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif') {
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif' || 'JPEG') {
                 $data['foto'] = $filepath;
             } else {
                 $r['result'] = false;
@@ -231,6 +233,7 @@ class Umkm extends BaseController
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['qty']  = htmlspecialchars($this->request->getPost('qty'), ENT_QUOTES);
+        $data['harga']  = htmlspecialchars($this->request->getPost('harga'), ENT_QUOTES);
         $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
         $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
@@ -240,16 +243,16 @@ class Umkm extends BaseController
             $filepath = base_url() . '/assets/photo-produk/' . $foto->getName();
             $path = $foto->getName();
             $ext = pathinfo($path, PATHINFO_EXTENSION);
-            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif') {
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif' || 'JPEG') {
                 $data['foto'] = $filepath;
             } else {
                 $r['result'] = false;
                 $r['title'] = 'Gagal!';
                 $r['icon'] = 'error';
                 $r['status'] = 'Format File Tidak Diijinkan!';
+                echo json_encode($r);
+                return;
             }
-        } else {
-            $data['foto'] = $this->request->getPost('foto_');
         }
 
         $r['result'] = true;

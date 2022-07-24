@@ -20,6 +20,21 @@ class ServerSideModel extends Model
         return $q;
     }
 
+    public function getProdukRand(){
+        $q = $this->db->query("select tbl_kategori_produk.nama as kategori, tbl_produk_umkm.* from tbl_produk_umkm join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori where tbl_produk_umkm.status = 'ACTIVE' LIMIT 9");
+        return $q->getResult();
+    }
+
+    public function getKategoriUMKM(){
+        $q = $this->db->query("select tbl_kategori_umkm.id, tbl_kategori_umkm.nama from tbl_kategori_umkm join tbl_umkm on tbl_umkm.id_kategori = tbl_kategori_umkm.id where tbl_umkm.status = 'ACTIVE'");
+        return $q->getResult();
+    }
+
+    public function getBerita(){
+        $q = $this->db->query("select tbl_berita_kategori.nama as kategori, tbl_berita.* from tbl_berita join tbl_berita_kategori on tbl_berita.id_kategori = tbl_berita_kategori.id where tbl_berita.status = 'ACTIVE' and flag='BLOG'");
+        return $q->getResult();
+    }
+    
     public function getKategoriProduk($id){
         $q = $this->db->query("select * from tbl_kategori_produk where id_umkm = $id");
         return $q->getResult();

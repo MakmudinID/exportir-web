@@ -84,6 +84,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
+                            <label for="ringkasan">Ringkasan</label>
+                            <textarea name="ringkasan" id="ringkasan" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <label for="isi">Konten</label>
                             <textarea name="isi" id="isi" class="form-control summernote"></textarea>
                         </div>

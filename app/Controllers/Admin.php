@@ -5,15 +5,15 @@ namespace App\Controllers;
 class Admin extends BaseController
 {
     public function __construct()
-	{
-		$this->db = \Config\Database::connect();
-		$this->db = db_connect();
-		helper(['url', 'form', 'array']);
-	}
+    {
+        $this->db = \Config\Database::connect();
+        $this->db = db_connect();
+        helper(['url', 'form', 'array']);
+    }
 
     public function dashboard()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Admin | dashboard';
@@ -21,11 +21,11 @@ class Admin extends BaseController
         $data['main_content']   = 'admin/dashboard';
         echo view('template/adminlte', $data);
     }
-    
+
     public function index()
     {
         //Profil
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Admin | Profil';
@@ -37,7 +37,7 @@ class Admin extends BaseController
     public function reseller()
     {
         //Reseller
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Admin | Reseller';
@@ -48,7 +48,7 @@ class Admin extends BaseController
 
     public function reseller_()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
     }
@@ -66,7 +66,7 @@ class Admin extends BaseController
 
     public function umkm_()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_umkm';
@@ -76,7 +76,7 @@ class Admin extends BaseController
             array('tbl_kategori_umkm', 'tbl_kategori_umkm.id = tbl_umkm.id_kategori')
         );
         $where = array();
-        $column_order = array(NULL, 'nama_pengguna', 'tbl_umkm.nama','tbl_umkm.foto', 'tbl_umkm.deskripsi','tbl_umkm.status');
+        $column_order = array(NULL, 'nama_pengguna', 'tbl_umkm.nama', 'tbl_umkm.foto', 'tbl_umkm.deskripsi', 'tbl_umkm.status');
         $column_search = array('nama_pengguna', 'tbl_umkm.nama');
         $order = array('role' => 'desc');
 
@@ -112,7 +112,7 @@ class Admin extends BaseController
 
     public function create_umkm()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $foto = $this->request->getFile('foto');
@@ -159,7 +159,7 @@ class Admin extends BaseController
 
     public function update_umkm()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
@@ -188,8 +188,6 @@ class Admin extends BaseController
                 $r['icon'] = 'error';
                 $r['status'] = 'Format File Tidak Diijinkan!';
             }
-        } else {
-            $data['foto'] = base_url('/assets/admin/img/avatar5.png');
         }
 
         $table = 'tbl_umkm';
@@ -207,7 +205,7 @@ class Admin extends BaseController
 
     public function delete_umkm()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_umkm';
@@ -228,7 +226,7 @@ class Admin extends BaseController
     public function produk()
     {
         //Produk management
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Admin | Produk';
@@ -239,7 +237,7 @@ class Admin extends BaseController
 
     public function produk_()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_produk_umkm';
@@ -249,7 +247,7 @@ class Admin extends BaseController
             array('tbl_kategori_produk', 'tbl_kategori_produk.id = tbl_produk_umkm.id_kategori')
         );
         $where = array();
-        $column_order = array(NULL, 'tbl_produk_umkm.nama', null,'tbl_produk_umkm.nama','nama_kategori', 'tbl_produk_umkm.qty');
+        $column_order = array(NULL, 'tbl_produk_umkm.nama', null, 'tbl_produk_umkm.nama', 'nama_kategori', 'tbl_produk_umkm.qty');
         $column_search = array('tbl_produk_umkm.nama');
         $order = array('tbl_produk_umkm.id' => 'desc');
 
@@ -265,7 +263,7 @@ class Admin extends BaseController
             $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';
             $row['nama'] = $field->nama;
             $row['kategori'] = $field->nama_kategori;
-            $row['qty'] = $field->qty." ".$field->satuan;
+            $row['qty'] = $field->qty . " " . $field->satuan;
             $data[] = $row;
         }
 
@@ -281,7 +279,7 @@ class Admin extends BaseController
 
     public function create_user()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $photo = $this->request->getFile('photo');
@@ -333,7 +331,7 @@ class Admin extends BaseController
 
     public function update_user()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
@@ -387,7 +385,7 @@ class Admin extends BaseController
 
     public function delete_user()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_pengguna';
@@ -406,7 +404,7 @@ class Admin extends BaseController
 
     public function user()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Admin | User';
@@ -417,7 +415,7 @@ class Admin extends BaseController
 
     public function user_()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_pengguna';
@@ -459,7 +457,7 @@ class Admin extends BaseController
 
     public function berita()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Admin | Berita';
@@ -471,7 +469,7 @@ class Admin extends BaseController
 
     public function berita_()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_berita';
@@ -480,7 +478,7 @@ class Admin extends BaseController
             array('tbl_berita_kategori', 'tbl_berita_kategori.id = tbl_berita.id_kategori')
         );
         $where = array();
-        $column_order = array(NULL, NULL,'tbl_berita.judul', 'nama_kategori','tbl_berita.slug', 'tbl_berita.flag', 'tbl_berita.penulis', 'tbl_berita.status');
+        $column_order = array(NULL, NULL, 'tbl_berita.judul', 'nama_kategori', 'tbl_berita.slug', 'tbl_berita.flag', 'tbl_berita.penulis', 'tbl_berita.status');
         $column_search = array('tbl_berita.judul', 'nama_kategori');
         $order = array('tbl_berita.id' => 'desc');
 
@@ -500,7 +498,7 @@ class Admin extends BaseController
             $row['penulis'] = $field->penulis;
             $row['status'] = ($field->status == 'ACTIVE') ? $field->status : $field->status;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-idkategori="' . $field->id_kategori . '" data-judul="' . $field->judul . '" data-isi="' . $field->isi . '" data-slug="' . $field->slug . '" data-flag="' . $field->flag . '" data-penulis="' . $field->penulis . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-ringkasan="' . $field->ringkasan . '" data-idkategori="' . $field->id_kategori . '" data-judul="' . $field->judul . '" data-isi="' . $field->isi . '" data-slug="' . $field->slug . '" data-flag="' . $field->flag . '" data-penulis="' . $field->penulis . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-judul="' . $field->judul . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
             </div>';
             $data[] = $row;
@@ -518,13 +516,14 @@ class Admin extends BaseController
 
     public function create_berita()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $foto = $this->request->getFile('foto');
 
         $data['id_kategori']  = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
         $data['judul']   = htmlspecialchars($this->request->getPost('judul'), ENT_QUOTES);
+        $data['ringkasan']  = htmlspecialchars($this->request->getPost('ringkasan'), ENT_QUOTES);
         $data['isi']  = htmlspecialchars($this->request->getPost('isi'), ENT_QUOTES);
         $data['slug']  = htmlspecialchars($this->request->getPost('slug'), ENT_QUOTES);
         $data['flag']  = htmlspecialchars($this->request->getPost('flag'), ENT_QUOTES);
@@ -540,13 +539,15 @@ class Admin extends BaseController
             $filepath = base_url() . '/assets/photo-berita/' . $foto->getName();
             $path = $foto->getName();
             $ext = pathinfo($path, PATHINFO_EXTENSION);
-            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif') {
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif' || $ext == 'JPG') {
                 $data['foto'] = $filepath;
             } else {
                 $r['result'] = false;
                 $r['title'] = 'Gagal!';
                 $r['icon'] = 'error';
                 $r['status'] = 'Format File Tidak Diijinkan!';
+                echo json_encode($r);
+                return;
             }
         } else {
             $data['foto'] = base_url('/assets/admin/img/avatar5.png');
@@ -567,7 +568,7 @@ class Admin extends BaseController
 
     public function update_berita()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
@@ -576,6 +577,7 @@ class Admin extends BaseController
         $data['id_kategori']  = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
         $data['judul']   = htmlspecialchars($this->request->getPost('judul'), ENT_QUOTES);
         $data['isi']  = htmlspecialchars($this->request->getPost('isi'), ENT_QUOTES);
+        $data['ringkasan']  = htmlspecialchars($this->request->getPost('ringkasan'), ENT_QUOTES);
         $data['slug']  = htmlspecialchars($this->request->getPost('slug'), ENT_QUOTES);
         $data['flag']  = htmlspecialchars($this->request->getPost('flag'), ENT_QUOTES);
         $data['penulis']  = htmlspecialchars($this->request->getPost('penulis'), ENT_QUOTES);
@@ -590,16 +592,16 @@ class Admin extends BaseController
             $filepath = base_url() . '/assets/photo-berita/' . $foto->getName();
             $path = $foto->getName();
             $ext = pathinfo($path, PATHINFO_EXTENSION);
-            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif') {
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif' || 'JPEG') {
                 $data['foto'] = $filepath;
             } else {
                 $r['result'] = false;
                 $r['title'] = 'Gagal!';
                 $r['icon'] = 'error';
                 $r['status'] = 'Format File Tidak Diijinkan!';
+                echo json_encode($r);
+                return;
             }
-        } else {
-            $data['foto'] = base_url('/assets/admin/img/avatar5.png');
         }
 
         $table = 'tbl_berita';
@@ -617,7 +619,7 @@ class Admin extends BaseController
 
     public function delete_berita()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_berita';
@@ -645,7 +647,7 @@ class Admin extends BaseController
 
     public function berita_kategori_()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_berita_kategori';
@@ -685,10 +687,10 @@ class Admin extends BaseController
 
     public function create_berita_kategori()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
-    
+
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
         $data['create_user'] = session()->get('nama');
@@ -711,7 +713,7 @@ class Admin extends BaseController
 
     public function update_berita_kategori()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
@@ -737,7 +739,7 @@ class Admin extends BaseController
 
     public function delete_berita_kategori()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_berita_kategori';
@@ -765,7 +767,7 @@ class Admin extends BaseController
 
     public function kategori_umkm_()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_kategori_umkm';
@@ -805,10 +807,10 @@ class Admin extends BaseController
 
     public function create_kategori_umkm()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
-    
+
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
         $data['create_user'] = session()->get('nama');
@@ -831,7 +833,7 @@ class Admin extends BaseController
 
     public function update_kategori_umkm()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
@@ -857,7 +859,7 @@ class Admin extends BaseController
 
     public function delete_kategori_umkm()
     {
-        if(session()->get('role') != 'SUPERADMIN'){
+        if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
         $table = 'tbl_kategori_umkm';
@@ -873,7 +875,4 @@ class Admin extends BaseController
         }
         echo json_encode($r);
     }
-
-    
-
 }

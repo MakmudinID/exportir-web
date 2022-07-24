@@ -5,7 +5,7 @@ let editor, table, save_method; // use a global for the submit and return data r
 jQuery(document).ready(function() {
 
     $('.summernote').summernote({
-        height:300
+        height: 300
     });
 
     table = $('#table').DataTable({
@@ -33,7 +33,7 @@ jQuery(document).ready(function() {
             { "data": "aksi" },
         ],
         columnDefs: [{
-            targets: [0,1, 8],
+            targets: [0, 1, 8],
             orderable: false,
             searchable: false,
             className: "text-center"
@@ -44,7 +44,7 @@ jQuery(document).ready(function() {
         save_method = 'add';
         document.getElementById("row-display").style.display = "none";
         $('#form-user')[0].reset();
-        $('[name="isi"]').summernote('code','');
+        $('[name="isi"]').summernote('code', '');
         $('#modal-default').modal('show');
         $('.modal-title').text('Tambah Berita');
     });
@@ -60,7 +60,8 @@ jQuery(document).ready(function() {
         $('[name="id"]').val($(this).data('id'));
         $('[name="id_kategori"]').val($(this).data('idkategori'));
         $('[name="judul"]').val($(this).data('judul'));
-        $('[name="isi"]').summernote('code',$(this).data('isi'));
+        $('[name="isi"]').summernote('code', $(this).data('isi'));
+        $('[name="ringkasan"]').val($(this).data('ringkasan'));
         $('[name="slug"]').val($(this).data('slug'));
         $('[name="flag"]').val($(this).data('flag'));
         $('[name="penulis"]').val($(this).data('penulis'));

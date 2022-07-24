@@ -4,7 +4,7 @@ let editor, table, save_method; // use a global for the submit and return data r
 
 jQuery(document).ready(function() {
     $('.summernote').summernote({
-        height:300
+        height: 300
     });
     table = $('#table').DataTable({
         ajax: {
@@ -24,6 +24,7 @@ jQuery(document).ready(function() {
             },
             { "data": "foto" },
             { "data": "nama" },
+            { "data": "harga" },
             { "data": "kategori" },
             { "data": "qty" },
             { "data": "aksi" },
@@ -40,7 +41,7 @@ jQuery(document).ready(function() {
         save_method = 'add';
         document.getElementById("row-display").style.display = "none";
         document.getElementById('form-produk').reset()
-        $('[name="deskripsi"]').summernote('code','');
+        $('[name="deskripsi"]').summernote('code', '');
         $('#modal-default').modal('show');
         $('.modal-title').text('Tambah Produk');
     });
@@ -56,7 +57,8 @@ jQuery(document).ready(function() {
         $('[name="id"]').val($(this).data('id'));
         $('[name="id_kategori"]').val($(this).data('id_kategori'));
         $('[name="nama"]').val($(this).data('nama'));
-        $('[name="deskripsi"]').summernote('code',$(this).data('deskripsi'));
+        $('[name="harga"]').val($(this).data('harga'));
+        $('[name="deskripsi"]').summernote('code', $(this).data('deskripsi'));
         $('[name="qty"]').val($(this).data('qty'));
         $('[name="qty_min"]').val($(this).data('qty_min'));
         $('[name="satuan"]').val($(this).data('satuan'));

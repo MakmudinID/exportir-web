@@ -64,13 +64,9 @@
                                 <li><a href="<?=base_url('/')?>">Home</a></li>
                                 <li><a href="#">Kategori</a>
                                     <ul class="sub-menu">
-                                        <li><a href="404.html">404 page</a></li>
-                                        <li><a href="about.html">About</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Check Out</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="news.html">News</a></li>
-                                        <li><a href="shop.html">Shop</a></li>
+                                        <?php foreach($kategori as $k): ?>
+                                            <li><a href="<?=base_url('/kategori/'.$k->id)?>"><?= $k->nama;?></a></li>
+                                        <?php endforeach; ?>
                                     </ul>
                                 </li>
                                 <li><a href="<?=base_url('/news')?>">Berita</a></li>
