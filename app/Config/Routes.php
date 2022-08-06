@@ -43,6 +43,8 @@ $routes->get('news', 'Frontend::berita');
 $routes->get('about', 'Frontend::tentang');
 $routes->get('cart', 'Frontend::keranjang');
 $routes->get('produk/(:any)', 'Frontend::produk/$1');
+$routes->get('list-produk', 'Frontend::list_produk');
+$routes->post('list_produk_', 'Frontend::list_produk_');
 
 //UMKM BackOffice
 $routes->get('umkm/index', 'Umkm::index');

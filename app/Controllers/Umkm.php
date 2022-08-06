@@ -117,7 +117,7 @@ class Umkm extends BaseController
         }
         $data['title'] = 'UMKM | Produk';
         $data['js'] = array("umkm-produk.js?r=".uniqid());
-        $data['kategori'] = $this->server_side->getKategoriProduk(session()->get('id_umkm'));
+        $data['kategori'] = $this->server_side->getKategoriProdukById(session()->get('id_umkm'));
 		$data['main_content']   = 'umkm/produk'; 
 		echo view('template/adminlte', $data);
     }
