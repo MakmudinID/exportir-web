@@ -1,3 +1,17 @@
+	<div class="hero-area hero-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9 offset-lg-2 text-center">
+					<div class="hero-text">
+						<div class="hero-text-tablecell">
+							<p class="subtitle">Fresh & Organic</p>
+							<h1>Delicious Seasonal Fruits</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!-- product section -->
 	<div class="product-section mt-100 mb-100">
 		<div class="container">
@@ -15,7 +29,7 @@
 				<div class="col-lg-4 col-md-4 col-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="<?=base_url('/produk/')?>1"><img src="<?=$p->foto?>" alt="<?=$p->nama?>"></a>
+							<a href="<?=base_url('/produk/'.$p->id)?>"><img src="<?=$p->foto?>" alt="<?=$p->nama?>"></a>
 						</div>
 						<h3 ><?= $p->nama;?></h3>
 						<p class="product-price"><span>Per <?= $p->satuan;?></span> Rp. <?= number_format($p->harga);?> </p>
@@ -102,15 +116,15 @@
 			<?php foreach($berita as $b){ ?>
 				<div class="col-lg-4 col-md-6">
 					<div class="single-latest-news">
-						<a href="single-news.html"><img src="<?=$b->foto?>" alt="<?= $b->judul;?>" style="float: left;width:100%;height:200px;object-fit: cover;"></a>
+						<a href="<?=base_url('/berita/'.$b->id) ?>"><img src="<?=$b->foto?>" alt="<?= $b->judul;?>" style="float: left;width:100%;height:200px;object-fit: cover;"></a>
 						<div class="news-text-box">
-							<h3><a href="single-news.html"><?= $b->judul;?></a></h3>
+							<h3><a href="<?=base_url('/berita/'.$b->id) ?>"><?= $b->judul;?></a></h3>
 	                        <p class="blog-meta">
 	                            <span class="author"><i class="fas fa-user"></i> <?= $b->penulis;?></span>
 	                            <span class="date"><i class="fas fa-calendar"></i> <?= $b->create_date;?></span>
 	                        </p>
 	                        <p class="excerpt"><?= html_entity_decode($b->ringkasan);?></p>
-	                        <a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+	                        <a href="<?=base_url('/berita/'.$b->id) ?>" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
 						</div>
 					</div>
 				</div>
@@ -120,7 +134,7 @@
 	</div>
 	<div class="row mb-100">
 		<div class="col-lg-12 text-center">
-			<a href="news.html" class="boxed-btn">More News</a>
+			<a href="<?=base_url('/list-berita') ?>" class="boxed-btn">Lihat Lebih Lengkap</a>
 		</div>
 	</div>
 	<!-- end latest news -->

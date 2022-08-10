@@ -44,13 +44,62 @@ class ServerSideModel extends Model
         return $q->getResult();
     }
 
+    public function getProdukById($id){
+        $sql = "select tbl_produk_umkm.*, tbl_kategori_produk.nama as nama_kategori 
+                from tbl_produk_umkm 
+                left join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori
+                where tbl_produk_umkm.id= $id and tbl_produk_umkm.status = 'ACTIVE'";
+        $q = $this->db->query($sql)->getRow();
+        return $q;
+    }
+
+    public function getProdukRelated($kategori){
+        $sql = "select 
+                    tbl_kategori_produk.nama as kategori, 
+                    tbl_produk_umkm.* 
+                from tbl_produk_umkm 
+                left join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
+                left join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
+                where tbl_produk_umkm.status = 'ACTIVE' and tbl_kategori_produk.id = $kategori order by rand() limit 3";
+        $q = $this->db->query($sql);
+        return $q->getResult();
+    }
+
     public function getKategoriUMKM(){
         $q = $this->db->query("select tbl_kategori_umkm.id, tbl_kategori_umkm.nama from tbl_kategori_umkm join tbl_umkm on tbl_umkm.id_kategori = tbl_kategori_umkm.id where tbl_umkm.status = 'ACTIVE'");
         return $q->getResult();
     }
 
     public function getBerita(){
-        $q = $this->db->query("select tbl_berita_kategori.nama as kategori, tbl_berita.* from tbl_berita join tbl_berita_kategori on tbl_berita.id_kategori = tbl_berita_kategori.id where tbl_berita.status = 'ACTIVE' and flag='BLOG'");
+        $q = $this->db->query("select tbl_berita_kategori.nama as kategori, tbl_berita.* from tbl_berita join tbl_berita_kategori on tbl_berita.id_kategori = tbl_berita_kategori.id where tbl_berita.status = 'ACTIVE' and flag='BLOG' limit 3");
+        return $q->getResult();
+    }
+
+    public function getBeritaById($id){
+        $q = $this->db->query("select * from tbl_berita where status = 'ACTIVE' and id = $id")->getRow();
+        return $q;
+    }
+
+    public function getBeritaRandom(){
+        $q = $this->db->query("select tbl_berita_kategori.nama as kategori, tbl_berita.* from tbl_berita join tbl_berita_kategori on tbl_berita.id_kategori = tbl_berita_kategori.id where tbl_berita.status = 'ACTIVE' and flag='BLOG' order by rand() limit 5");
+        return $q->getResult();
+    }
+
+    public function getListBerita($kategori){
+        $sql = "select tbl_berita_kategori.nama as kategori, tbl_berita.* 
+                from tbl_berita 
+                join tbl_berita_kategori on tbl_berita.id_kategori = tbl_berita_kategori.id 
+                where tbl_berita.status = 'ACTIVE' and flag='BLOG' ";
+        if($kategori != ''){
+            $sql .= "and tbl_berita_kategori.id = $kategori ";
+        }
+        $q = $this->db->query($sql)->getResult();
+        return $q;
+    }
+
+
+    public function getKategoriBerita(){
+        $q = $this->db->query("select * from tbl_berita_kategori where status = 'ACTIVE'");
         return $q->getResult();
     }
 

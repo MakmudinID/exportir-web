@@ -5,6 +5,13 @@ namespace App\Controllers;
 class Frontend extends BaseController
 {
 
+    public function __construct()
+    {
+        $this->db = \Config\Database::connect();
+        $this->db = db_connect();
+        helper(['url', 'form', 'array']);
+    }
+
     public function index()
     {
         //Home
@@ -41,7 +48,7 @@ class Frontend extends BaseController
             $html .= '<div class="col-lg-4 col-md-4 col-6 text-center">
             <div class="single-product-item">
                 <div class="product-image">
-                    <a href="'.base_url('/produk/1').'"><img src="'.$p->foto.'" alt="'.$p->nama.'"></a>
+                    <a href="'.base_url('/produk/'.$p->id).'"><img src="'.$p->foto.'" alt="'.$p->nama.'"></a>
                 </div>
                 <h3 >'. $p->nama.'</h3>
                 <p class="product-price"><span>Per '. $p->satuan.'</span> Rp. '. number_format($p->harga).' </p>
@@ -56,20 +63,58 @@ class Frontend extends BaseController
     public function produk($id=NULL)
     {
         //Berita
+        $data['produk'] = $this->server_side->getProdukById($id);
+        $data['produk_related'] = $this->server_side->getProdukRelated($data['produk']->id_kategori);
+        // var_dump($data);die;
         $data['js'] = array("produk.js?r=".uniqid());
 		$data['main_content']   = 'frontend/produk'; 
 		echo view('template/fruitkha', $data);
     }
 
-    public function berita()
+    public function berita($id)
     {
         //Berita
-        $data['kategori']   = $this->server_side->getKategoriUMKM(); 
-        $data['berita']   = $this->server_side->getBerita(); 
-        $data['js'] = array("home.js?r=".uniqid());
+        $data['berita']   = $this->server_side->getBeritaByid($id); 
+        $data['berita_random'] = $this->server_side->getBeritaRandom();
+        // var_dump($data); die;
+        // $data['js'] = array("home.js?r=".uniqid());
 		$data['main_content']   = 'frontend/berita'; 
 		echo view('template/fruitkha', $data);
     }
+
+    public function list_berita(){
+        $data['js'] = array("user-list-berita.js?r=".uniqid());
+		$data['main_content']   = 'frontend/list-berita'; 
+		// $data['produk']   = $this->server_side->getProdukRand();
+        $data['kategori_berita'] = $this->server_side->getKategoriBerita();
+		echo view('template/fruitkha', $data);
+    }
+
+    public function list_berita_(){
+        $kategori = $this->request->getPost('kategori');
+        $berita = $this->server_side->getListBerita($kategori);
+        $html = '';
+        foreach($berita as $b){
+            $html .= '<div class="col-lg-4 col-md-6">
+                        <div class="single-latest-news">
+                            <a href="'.base_url('/berita/'.$b->id).'"><img src="'.$b->foto.'" alt="'. $b->judul.'" style="float: left;width:100%;height:200px;object-fit: cover;"></a>
+                            <div class="news-text-box">
+                                <h3><a href="'.base_url('/berita/'.$b->id).'">'. $b->judul.'</a></h3>
+                                <p class="blog-meta">
+                                    <span class="author"><i class="fas fa-user"></i> '. $b->penulis.'</span>
+                                    <span class="date"><i class="fas fa-calendar"></i> '. $b->create_date.'</span>
+                                </p>
+                                <p class="excerpt">'. html_entity_decode($b->ringkasan).'</p>
+                                <a href="'.base_url('/berita/'.$b->id).'" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>';
+        }
+
+        echo $html;
+    }
+
+    
 
     public function tentang()
     {

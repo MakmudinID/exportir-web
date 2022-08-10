@@ -39,12 +39,14 @@ $routes->set404Override(function() {
 // route since we don't have to scan directories.
 $routes->get('/', 'Frontend::index');
 $routes->get('category', 'Frontend::kategori');
-$routes->get('news', 'Frontend::berita');
 $routes->get('about', 'Frontend::tentang');
 $routes->get('cart', 'Frontend::keranjang');
 $routes->get('produk/(:any)', 'Frontend::produk/$1');
 $routes->get('list-produk', 'Frontend::list_produk');
 $routes->post('list_produk_', 'Frontend::list_produk_');
+$routes->get('list-berita', 'Frontend::list_berita');
+$routes->post('list_berita_', 'Frontend::list_berita_');
+$routes->get('berita/(:any)', 'Frontend::berita/$1');
 
 //UMKM BackOffice
 $routes->get('umkm/index', 'Umkm::index');
