@@ -61,20 +61,19 @@
                         <!-- menu start -->
                         <nav class="main-menu">
                             <ul>
-                                <!-- <li><a href="<?=base_url('/')?>">Home</a></li>
-                                <li><a href="<?=base_url('/news')?>">Berita</a></li>
-                                <li><a href="<?=base_url('/about')?>">Tentang</a></li> -->
+                                <li class="align-self-center"><input type="text" class="form-control"></li>
                                 <li>
                                     <div class="header-icons">
+                                        <a href="<?=base_url('/about')?>">Tentang</a>
+                                        <a href="<?=base_url('/news')?>">Berita</a>
                                         <a class="shopping-cart" href="<?=base_url('/cart')?>"><i class="fas fa-shopping-cart"></i></a>
-                                        <a href="<?=base_url('/login')?>">LOGIN</a>
-                                        <!-- <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a> -->
+                                        <a class="btn btn-primary" href="<?=base_url('/login')?>">Login</a>
                                     </div>
                                 </li>
                             </ul>
                         </nav>
-                        <!-- <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-                        <div class="mobile-menu"></div> -->
+                        <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                        <div class="mobile-menu"></div>
                         <!-- menu end -->
                     </div>
                 </div>
@@ -84,7 +83,7 @@
     <!-- end header -->
 
     <!-- search area -->
-    <!-- <div class="search-area">
+    <div class="search-area">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -99,7 +98,7 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
     <!-- end search area -->
     <!-- hero area -->
 	

@@ -15,7 +15,7 @@ class Frontend extends BaseController
     public function index()
     {
         //Home
-        $data['js'] = array("home.js?r=".uniqid());
+        // $data['js'] = array("home.js?r=".uniqid());
 		$data['main_content']   = 'frontend/home'; 
 		$data['produk']   = $this->server_side->getProdukRand();
         $data['umkm'] = $this->server_side->getUMKM(); 
