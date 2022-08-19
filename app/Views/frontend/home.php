@@ -25,12 +25,14 @@
 
 			<div class="row justify-content-center">
 				<?php foreach ($produk as $p) : ?>
-					<div class="col-lg-4 col-md-4 col-6 text-center">
+					<div class="col-lg-3 col-md-3 col-6 text-center">
 						<div class="single-product-item">
 							<div class="product-image">
 								<a href="<?= base_url('/produk/' . $p->id) ?>"><img src="<?= $p->foto ?>" alt="<?= $p->nama ?>"></a>
 							</div>
-							<a href="<?= base_url('/produk/' . $p->id) ?>"><h3><?= $p->nama; ?></h3></a>
+							<a href="<?= base_url('/produk/' . $p->id) ?>">
+								<h3><?= $p->nama; ?></h3>
+							</a>
 							<p class="product-price"><span>Per <?= $p->satuan; ?></span> Rp. <?= number_format($p->harga); ?> </p>
 							<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 						</div>
