@@ -4,7 +4,7 @@
 				<div class="col-lg-9 offset-lg-2 text-center">
 					<div class="hero-text">
 						<div class="hero-text-tablecell">
-							<h1>Delicious Seasonal Fruits</h1>
+							<h1>Toko Rempah</h1>
 							<h4 class="orange-text">Website ini di buat untuk dapat memberikan kemudahan dan membantu UMKM dalam memperluas dan meningkatkan bisnis serta membangun kerjasama dengan beberapa reseller dan importin lokal secara terpercaya dan mudah.</h4>
 						</div>
 					</div>
@@ -41,7 +41,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<a href="<?= base_url('list-produk') ?>" class="boxed-btn">Lihat Lebih Lengkap <i class="fas fa-shopping-cart"></i></a>
+					<a href="<?= base_url('list-produk') ?>" class="boxed-btn">Lihat Lebih Lengkap</a>
 				</div>
 			</div>
 		</div>
@@ -65,7 +65,8 @@
 											</div>
 										</div>
 										<!--Content Column-->
-										<div class="content-column col-lg-6">
+										<div class="content-column col-lg-6 align-self-center">
+											<br>
 											<h4><?= $val->nama ?></h4>
 											<div class="text"><?= html_entity_decode($val->deskripsi) ?></div>
 											<!--Countdown Timer-->
@@ -86,7 +87,7 @@
 									</div>
 									<!--Content Column-->
 									<div class="content-column col-lg-6">
-										<h4><?= $val[0]->nama ?></h4>
+										<h4 class="mt-2"><?= $val[0]->nama ?></h4>
 										<div class="text"><?= html_entity_decode($val[0]->deskripsi) ?></div>
 										<!--Countdown Timer-->
 										<a href="cart.html" class="cart-btn mt-3">Lihat UMKM</a>
@@ -116,9 +117,9 @@
 				<?php foreach ($berita as $b) { ?>
 					<div class="col-lg-4 col-md-6">
 						<div class="single-latest-news">
-							<a href="<?= base_url('/berita/' . $b->id) ?>"><img src="<?= $b->foto ?>" alt="<?= $b->judul; ?>" style="float: left;width:100%;height:200px;object-fit: cover;"></a>
-							<div class="news-text-box">
-								<h3><a href="<?= base_url('/berita/' . $b->id) ?>"><?= $b->judul; ?></a></h3>
+							<a href="<?= base_url('/berita/' . $b->id) ?>"><img src="<?= $b->foto ?>" alt="<?= $b->judul; ?>" style="float: left;width:100%;height:200px;object-fit: cover; padding-bottom: 20px;"></a>
+							<div class="news-text-box mt-3">
+								<h4><a href="<?= base_url('/berita/' . $b->id) ?>" class="text-dark"><?= $b->judul; ?></a></h4>
 								<p class="blog-meta">
 									<span class="author"><i class="fas fa-user"></i> <?= $b->penulis; ?></span>
 									<span class="date"><i class="fas fa-calendar"></i> <?= $b->create_date; ?></span>

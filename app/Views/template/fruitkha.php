@@ -61,11 +61,10 @@
                         <!-- menu start -->
                         <nav class="main-menu">
                             <ul>
-                                <li class="align-self-center"><input type="text" class="form-control"></li>
                                 <li>
                                     <div class="header-icons">
                                         <a href="<?=base_url('/about')?>">Tentang</a>
-                                        <a href="<?=base_url('/news')?>">Berita</a>
+                                        <a href="<?=base_url('/list-berita')?>">Berita</a>
                                         <a class="shopping-cart" href="<?=base_url('/cart')?>"><i class="fas fa-shopping-cart"></i></a>
                                         <a class="btn btn-primary" href="<?=base_url('/login')?>">Login</a>
                                     </div>

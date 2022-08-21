@@ -4,7 +4,7 @@
 	        <div class="row">
 	            <div class="col-lg-8 offset-lg-2 text-center">
 	                <div class="breadcrumb-text">
-	                    <p>Information</p>
+	                    <p>Informasi</p>
 	                    <h1>Tentang Kami</h1>
 	                </div>
 	            </div>
