@@ -1,3 +1,5 @@
+<?php $session = \Config\Services::session(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,6 +33,12 @@
     <link rel="stylesheet" href="<?=base_url()?>/fruitkha/assets/css/main.css">
     <!-- responsive -->
     <link rel="stylesheet" href="<?=base_url()?>/fruitkha/assets/css/responsive.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 
 </head>
 
@@ -63,15 +71,27 @@
                             <ul>
                                 <li>
                                     <div class="header-icons">
-                                        <a href="<?=base_url('/about')?>">Tentang</a>
-                                        <a href="<?=base_url('/list-berita')?>">Berita</a>
-                                        <a class="shopping-cart" href="<?=base_url('/cart')?>"><i class="fas fa-shopping-cart"></i></a>
-                                        <a class="btn btn-primary" href="<?=base_url('/login')?>">Login</a>
+                                        <ul>
+                                        <li><a href="<?=base_url('/about')?>">Tentang</a></li>
+                                        <li><a href="<?=base_url('/news')?>">Berita</a></li>
+                                        <?php if($session->get("role") == "RESELLER"){ ?>
+                                            <li><a class="shopping-cart" href="<?=base_url('/cart')?>"><i class="fas fa-shopping-cart"></i></a><span class="badge badge-primary total-cart" style="margin-left:-10px;margin-right:20px">0</span></li>
+                                            <li><a href="#"><?=$session->get("nama")?></a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="<?=base_url()?>/logout">Logout</a></li>
+                                                </ul>
+                                            </li>
+                                        <?php }else{ ?>
+                                            <li><a class="shopping-cart" href="<?=base_url('/login')?>"><i class="fas fa-shopping-cart"></i></a><span class="badge badge-primary total-cart" style="margin-left:-10px;margin-right:20px">0</span></li>
+                                            <li><a class="btn btn-primary" href="<?=base_url('/login')?>">Login</a></li>
+                                        <?php } ?>
+
+                                        </ul>
                                     </div>
                                 </li>
                             </ul>
                         </nav>
-                        <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                        <!-- <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a> -->
                         <div class="mobile-menu"></div>
                         <!-- menu end -->
                     </div>
@@ -82,7 +102,7 @@
     <!-- end header -->
 
     <!-- search area -->
-    <div class="search-area">
+    <!-- <div class="search-area">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -97,7 +117,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- end search area -->
     <!-- hero area -->
 	
@@ -173,8 +193,26 @@
     <script src="<?=base_url()?>/fruitkha/assets/js/sticker.js"></script>
     <!-- main js -->
     <script src="<?=base_url()?>/fruitkha/assets/js/main.js"></script>
+
+    <script src="<?= base_url() ?>/assets/admin/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= base_url() ?>/assets/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="<?= base_url() ?>/assets/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="<?= base_url() ?>/assets/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="<?= base_url() ?>/assets/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="<?= base_url() ?>/assets/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="<?= base_url() ?>/assets/admin/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script>
         let base_url = "<?= base_url() ?>";
+        $(document).ready(function(){
+            $.ajax({
+                url: base_url + '/count_cart',
+                type: 'GET',
+                success: function(res){
+                    console.log(res);
+                    $('.total-cart').html(res);
+                }
+            })
+        })
     </script>
     <?php if (isset($js)) {
         foreach ($js as $j) {

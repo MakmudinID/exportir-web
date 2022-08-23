@@ -30,6 +30,7 @@ class Umkm extends BaseController
         $data['title'] = 'UMKM | Profile';
         $data['js'] = array("umkm-profil.js?r=" . uniqid());
         $data['get_profil'] = $this->server_side->get_profil();
+        $data['propinsi'] = $this->db->query('select * from tbl_propinsi')->getResult();
         // var_dump($data);
         $data['main_content']   = 'umkm/profil';
         echo view('template/adminlte', $data);
@@ -78,6 +79,8 @@ class Umkm extends BaseController
         $foto = $this->request->getFile('foto_umkm');
         $data['nama'] = $this->request->getPost('nama_umkm');
         $data['deskripsi'] = $this->request->getPost('deskripsi_umkm');
+        $data['alamat'] = $this->request->getPost('alamat');
+        $data['city_id'] = $this->request->getPost('kota');
 
         if ($foto->getName() != '') {
             $foto->move('../public/assets/photo-umkm/', $foto->getName());

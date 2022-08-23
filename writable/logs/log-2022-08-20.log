@@ -1,0 +1,123 @@
+CRITICAL - 2022-08-20 04:01:42 --> Call to a member function insert() on null
+in APPPATH\Controllers\Frontend.php on line 154.
+ 1 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->add_cart()
+ 2 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 3 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 04:04:20 --> Call to a member function insert() on null
+in APPPATH\Controllers\Frontend.php on line 154.
+ 1 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->add_cart()
+ 2 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 3 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-08-20 04:12:36 --> The cart array must contain a product ID, quantity, price, and name.
+ERROR - 2022-08-20 04:16:00 --> The cart array must contain a product ID, quantity, price, and name.
+CRITICAL - 2022-08-20 04:21:52 --> Call to undefined method CodeIgniterCart\Cart::Total_items()
+in APPPATH\Controllers\Frontend.php on line 161.
+ 1 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->cart_()
+ 2 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 3 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 12:41:04 --> Attempt to read property "img" on array
+in APPPATH\Views\frontend\keranjang.php on line 37.
+ 1 APPPATH\Views\frontend\keranjang.php(37): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "img" on array', 'APPPATH\\Views\\frontend\\keranjang.php', 37)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\frontend\\keranjang.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('frontend/keranjang', [], true)
+ 5 APPPATH\Views\template\fruitkha.php(106): view('frontend/keranjang')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\fruitkha.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/fruitkha', [], true)
+ 9 APPPATH\Controllers\Frontend.php(134): view('template/fruitkha', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->keranjang()
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 12:41:50 --> Attempt to read property "img" on array
+in APPPATH\Views\frontend\keranjang.php on line 37.
+ 1 APPPATH\Views\frontend\keranjang.php(37): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "img" on array', 'APPPATH\\Views\\frontend\\keranjang.php', 37)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\frontend\\keranjang.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('frontend/keranjang', [], true)
+ 5 APPPATH\Views\template\fruitkha.php(106): view('frontend/keranjang')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\fruitkha.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/fruitkha', [], true)
+ 9 APPPATH\Controllers\Frontend.php(134): view('template/fruitkha', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->keranjang()
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 12:42:00 --> Attempt to read property "img" on array
+in APPPATH\Views\frontend\keranjang.php on line 37.
+ 1 APPPATH\Views\frontend\keranjang.php(37): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "img" on array', 'APPPATH\\Views\\frontend\\keranjang.php', 37)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\frontend\\keranjang.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('frontend/keranjang', [], true)
+ 5 APPPATH\Views\template\fruitkha.php(106): view('frontend/keranjang')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\fruitkha.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/fruitkha', [], true)
+ 9 APPPATH\Controllers\Frontend.php(134): view('template/fruitkha', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->keranjang()
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 12:49:34 --> Attempt to read property "img" on array
+in APPPATH\Controllers\Frontend.php on line 168.
+ 1 APPPATH\Controllers\Frontend.php(168): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "img" on array', 'APPPATH\\Controllers\\Frontend.php', 168)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->cart_()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 12:49:49 --> Attempt to read property "img" on array
+in APPPATH\Controllers\Frontend.php on line 168.
+ 1 APPPATH\Controllers\Frontend.php(168): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "img" on array', 'APPPATH\\Controllers\\Frontend.php', 168)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->cart_()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 13:45:49 --> Array to string conversion
+in APPPATH\Controllers\Frontend.php on line 158.
+ 1 APPPATH\Controllers\Frontend.php(158): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Array to string conversion', 'APPPATH\\Controllers\\Frontend.php', 158)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->add_cart()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 13:48:37 --> Call to undefined method CodeIgniterCart\Cart::TotalRows()
+in APPPATH\Controllers\Frontend.php on line 163.
+ 1 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->cart_()
+ 2 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 3 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 13:49:56 --> Undefined variable $total
+in APPPATH\Controllers\Frontend.php on line 165.
+ 1 APPPATH\Controllers\Frontend.php(165): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $total', 'APPPATH\\Controllers\\Frontend.php', 165)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->cart_()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-20 13:50:25 --> Undefined property: App\Controllers\Frontend::$cart
+in APPPATH\Controllers\Frontend.php on line 178.
+ 1 APPPATH\Controllers\Frontend.php(178): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: App\\Controllers\\Frontend::$cart', 'APPPATH\\Controllers\\Frontend.php', 178)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->cart_()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-08-20 14:24:15 --> The cart array must contain a product ID, quantity, price, and name.
+ERROR - 2022-08-20 14:25:55 --> The cart array must contain a product ID, quantity, price, and name.
+ERROR - 2022-08-20 14:25:58 --> The cart array must contain a product ID, quantity, price, and name.
+ERROR - 2022-08-20 14:26:00 --> The cart array must contain a product ID, quantity, price, and name.
+ERROR - 2022-08-20 14:26:21 --> The cart array must contain a product ID, quantity, price, and name.

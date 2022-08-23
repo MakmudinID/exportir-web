@@ -47,6 +47,14 @@ $routes->post('list_produk_', 'Frontend::list_produk_');
 $routes->get('list-berita', 'Frontend::list_berita');
 $routes->post('list_berita_', 'Frontend::list_berita_');
 $routes->get('berita/(:any)', 'Frontend::berita/$1');
+$routes->post('add-cart', 'Frontend::add_cart');
+$routes->post('cart_', 'Frontend::cart_');
+$routes->post('remove_cart', 'Frontend::remove_cart');
+$routes->post('update_qty', 'Frontend::update_qty');
+$routes->get('count_cart', 'Frontend::count_cart');
+$routes->get('checkout', 'Frontend::checkout');
+$routes->get('wilayah/(:any)/(:any)', 'Frontend::wilayah/$1/$2');
+$routes->post('kurir', 'Frontend::kurir');
 
 //UMKM BackOffice
 $routes->get('umkm/index', 'Umkm::index');

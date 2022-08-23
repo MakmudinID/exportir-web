@@ -39,7 +39,7 @@ class Login extends BaseController
                 }else if($result['role'] == 'UMKM'){
                     return redirect()->to('/umkm/index');
                 }else{
-                    return redirect()->to('/reseller/index');
+                    return redirect()->to('/');
                 }
             } else {
                 $data['error'] = 'Could not enter, please contact your administrator';

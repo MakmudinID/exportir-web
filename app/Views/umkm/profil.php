@@ -98,8 +98,32 @@
                                     <img id="output_image" src="<?= $get_profil->foto_umkm ?>" class="img-thumbnail mt-2" width="200" />
                                 </div>
                             </div>
-                
-                            
+                            <div class="row form-group">
+                                <label for="foto" class="col-sm-2 col-form-label">Alamat</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="alamat" id="alamat" class="form-control" value="<?= $get_profil->alamat_umkm ?>">
+                                    <input type="hidden" name="hidden_kota" id="hidden_kota" class="form-control" value="<?= $get_profil->city_id ?>">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="foto" class="col-sm-2 col-form-label">Propinsi</label>
+                                <div class="col-sm-10">
+                                    <select name="propinsi" id="propinsi" class="form-control">
+                                        <option value="">- Pilih Propinsi -</option>
+                                        <?php foreach($propinsi as $val){ ?>
+                                            <option value="<?=$val->province_id?>" <?= ($get_profil->province_id == $val->province_id) ? "selected" : ""; ?>><?=$val->province?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="foto" class="col-sm-2 col-form-label">Kota</label>
+                                <div class="col-sm-10">
+                                    <select name="kota" id="kota" class="form-control">
+                                        <option value="">- Pilih Kota -</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <div class="offset-sm-2 col-sm-10">
                                     <button type="submit" class="btn btn-primary">Update UMKM</button>

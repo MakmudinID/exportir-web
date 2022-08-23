@@ -16,7 +16,7 @@ class ServerSideModel extends Model
     }
 
     public function get_profil(){
-        $q = $this->db->query("select tbl_pengguna.*, tbl_umkm.id as id_umkm, tbl_umkm.nama as nama_umkm, tbl_umkm.deskripsi, tbl_umkm.foto as foto_umkm from tbl_pengguna left join tbl_umkm on tbl_umkm.id_pengguna = tbl_pengguna.id where tbl_pengguna.id = ?", array(session()->get('id')))->getRow();
+        $q = $this->db->query("select tbl_pengguna.*, tbl_umkm.id as id_umkm, tbl_umkm.nama as nama_umkm, tbl_umkm.deskripsi, tbl_umkm.foto as foto_umkm, tbl_umkm.alamat as alamat_umkm, tbl_umkm.city_id, tbl_city.province_id from tbl_pengguna left join tbl_umkm on tbl_umkm.id_pengguna = tbl_pengguna.id left join tbl_city on tbl_umkm.city_id = tbl_city.city_id where tbl_pengguna.id = ?", array(session()->get('id')))->getRow();
         return $q;
     }
 

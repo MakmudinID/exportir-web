@@ -1,0 +1,28 @@
+ERROR - 2022-08-23 12:58:33 --> Table 'exportir-web.propinsi' doesn't exist
+CRITICAL - 2022-08-23 12:58:33 --> Table 'exportir-web.propinsi' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('select * from propinsi', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('select * from propinsi')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('select * from propinsi')
+ 4 APPPATH\Controllers\Umkm.php(33): CodeIgniter\Database\BaseConnection->query('select * from propinsi')
+ 5 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->profil()
+ 6 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 7 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-08-23 12:58:52 --> Undefined property: stdClass::$alamat
+in APPPATH\Views\umkm\profil.php on line 102.
+ 1 APPPATH\Views\umkm\profil.php(102): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$alamat', 'APPPATH\\Views\\umkm\\profil.php', 102)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\umkm\\profil.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('umkm/profil', [], true)
+ 5 APPPATH\Views\template\adminlte.php(132): view('umkm/profil')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Umkm.php(36): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->profil()
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

@@ -1,4 +1,5 @@
 jQuery(document).ready(function() {
+    
     $("#edit-profil").validate({
         errorClass: "is-invalid",
         // validClass: "is-valid",
@@ -60,6 +61,15 @@ jQuery(document).ready(function() {
             },
             deskripsi_umkm: {
                 required: true
+            },
+            alamat: {
+                required: true
+            },
+            propinsi: {
+                required: true
+            },
+            kota: {
+                required: true
             }
         },
         submitHandler: function(form) {
@@ -99,6 +109,13 @@ jQuery(document).ready(function() {
             });
         }
     });
+
+    get_kota($('#hidden_kota').val());
+
+    $(document).on('click','#propinsi', function(){
+        get_kota();
+    })
+
 });
 
 function preview_image_profil(event) {
@@ -117,4 +134,22 @@ function preview_image(event) {
         output.src = reader.result;
     }
     reader.readAsDataURL(event.target.files[0]);
+}
+
+function get_kota(id=''){
+    var id_propinsi = $('#propinsi').val();
+        $.ajax({
+            url: base_url+"/wilayah/city/"+id_propinsi,
+            type: "GET",
+            success:function(res){
+                var kot = JSON.parse(res);
+                var data = kot.rajaongkir.results;
+                var isi = '<option value="">- Pilih Kota -</option>';
+                for(var i = 0; i < data.length; i++){
+                    isi += '<option value="'+data[i].city_id+'">'+data[i].city_name+'</option>';
+                }
+                $('#kota').html(isi);
+                $('#kota').val(id);
+            }
+        })
 }

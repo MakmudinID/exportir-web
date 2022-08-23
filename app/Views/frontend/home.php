@@ -34,7 +34,7 @@
 								<h3><?= $p->nama; ?></h3>
 							</a>
 							<p class="product-price"><span>Per <?= $p->satuan; ?></span> Rp. <?= number_format($p->harga); ?> </p>
-							<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<a data-id='<?=$p->id?>' data-img='<?=$p->foto?>' data-produk='<?=$p->nama?>' data-qty='1' data-harga='<?=$p->harga?>' data-umkm='<?=$p->id_umkm?>' class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 						</div>
 					</div>
 				<?php endforeach; ?>
