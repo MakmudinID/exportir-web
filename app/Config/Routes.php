@@ -55,6 +55,7 @@ $routes->get('count_cart', 'Frontend::count_cart');
 $routes->get('checkout', 'Frontend::checkout');
 $routes->get('wilayah/(:any)/(:any)', 'Frontend::wilayah/$1/$2');
 $routes->post('kurir', 'Frontend::kurir');
+$routes->post('transaksi', 'Frontend::transaksi');
 
 //UMKM BackOffice
 $routes->get('umkm/index', 'Umkm::index');

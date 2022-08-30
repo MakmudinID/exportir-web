@@ -1,5 +1,5 @@
 "use strict";
-
+let total;
 jQuery(document).ready(function() {
     $(document).on('change', '#propinsi', function(){
         $.ajax({
@@ -48,7 +48,80 @@ jQuery(document).ready(function() {
         var subtotal = $('#subtotal').html();
         subtotal = Number(subtotal.replace(/[^0-9\.-]+/g,""));
         
-        var total = subtotal + harga;
+        total = subtotal + harga;
         $('#total').html(total.toLocaleString());
     })
+
+    $("#form-order").validate({
+        errorClass: "is-invalid",
+        // validClass: "is-valid",
+        rules: {
+            nama: {
+                required: true
+            },
+            nohp: {
+                required: true
+            },
+            email: {
+                required: true
+            },
+            alamat: {
+                required: true
+            },
+            propinsi: {
+                required: true
+            },
+            kota: {
+                required: true
+            },
+            kurir: {
+                required: true
+            },
+            service: {
+                required: true
+            }
+        },
+        submitHandler: function(form) {
+            var form_data = new FormData(document.getElementById("form-order"));
+            form_data.append("jumlah", total);
+            $.ajax({
+                url: base_url + "/transaksi",
+                type: "POST",
+                data: form_data,
+                dataType: "JSON",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (data.result != true) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            html: "Gagal Order Barang",
+                            icon: 'error',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            buttons: false,
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: "Berhasil Order Barang",
+                            icon: 'success',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false
+                        });
+                        $('.total-cart').html(data.total);
+                        $('#form-order').trigger("reset");
+
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        }
+    });
+
 })

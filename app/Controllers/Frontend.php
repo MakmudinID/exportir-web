@@ -299,4 +299,41 @@ class Frontend extends BaseController
 		$data['main_content']   = 'frontend/checkout'; 
 		echo view('template/fruitkha', $data);
     }
+
+    public function transaksi(){
+        $cart = \Config\Services::cart();
+        $transaksi['id_pengguna'] = session()->get('id');
+        $transaksi['nama'] = $this->request->getPost('nama');
+        $transaksi['email'] = $this->request->getPost('email');
+        $transaksi['alamat'] = $this->request->getPost('alamat');
+        $transaksi['nohp'] = $this->request->getPost('nohp');
+        $transaksi['keterangan'] = $this->request->getPost('keterangan');
+        $transaksi['kurir'] = $this->request->getPost('kurir');
+        $transaksi['service'] = $this->request->getPost('service');
+        $transaksi['jumlah'] = $this->request->getPost('jumlah');
+        
+        $this->server_side->db->transBegin();
+        try {
+            $id_transaksi = $this->server_side->createRowsReturnID($transaksi, 'tbl_transaksi');
+            // var_dump($id_transaksi);die;
+            $data_cart = $cart->contents();
+            foreach($data_cart as $val){
+                $detail['id_transaksi'] = $id_transaksi;
+                $detail['id_barang'] = $val['id'];
+
+                $this->server_side->createRows($detail, 'tbl_detail_transaksi');
+                $cart->remove($val['rowid']);
+            }
+            $this->server_side->db->transCommit();
+            $r['result'] = true;
+            $r['total'] =  count($cart->contents());
+        } catch (\Exception $e) {
+            $this->server_side->db->transRollback();
+            $r['result'] = false;
+            $r['total'] =  count($cart->contents());
+        }
+
+        echo json_encode($r);
+        return;
+    }
 }

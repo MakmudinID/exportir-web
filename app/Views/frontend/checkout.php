@@ -16,9 +16,11 @@
 <!-- check out section -->
 <div class="checkout-section mt-150 mb-150">
     <div class="container">
+    <form id="form-order">
         <div class="row">
             <div class="col-lg-8">
                 <div class="checkout-accordion-wrap">
+                    
                     <div class="accordion" id="accordionExample">
                         <div class="card single-accordion">
                         <div class="card-header" id="headingOne">
@@ -32,7 +34,7 @@
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                             <div class="card-body">
                             <div class="billing-address-form">
-                                <form>
+                                
                                     <div class="row form-group">
                                         <input type="text" name="nama" id="nama" placeholder="Nama Penerima" class="form-control" required>
                                     </div>
@@ -46,9 +48,8 @@
                                         <input type="text" name="nohp" id="nohp" class="form-control" placeholder="No.HP Penerima">
                                     </div>
                                     <div class="row form-group">
-                                        <textarea name="ket" id="ket" cols="30" rows="5" class="form-control" placeholder="Keterangan"></textarea>
+                                        <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="Keterangan"></textarea>
                                     </div>
-                                </form>
                             </div>
                             </div>
                         </div>
@@ -64,7 +65,7 @@
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                             <div class="card-body">
                             <div class="shipping-address-form">
-                                <form>
+                                
                                     <div class="col-md-12">
 
                                         <div class="row form-group">
@@ -97,13 +98,13 @@
                                             </select>
                                         </div>
                                     </div>
-                                </form>
+                                
                             </div>
                             </div>
                         </div>
                         </div>
                     </div>
-
+                    
                 </div>
             </div>
 
@@ -144,10 +145,11 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a href="#" class="boxed-btn">Place Order</a>
+                    <button type="submit" id="order" style="width:75%" class="btn btn-primary btn-rounded mt-4">Place Order</button>
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </div>
 <!-- end check out section -->

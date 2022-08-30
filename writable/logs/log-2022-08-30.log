@@ -1,0 +1,42 @@
+CRITICAL - 2022-08-30 02:52:01 --> Undefined property: App\Controllers\Frontend::$input
+in APPPATH\Controllers\Frontend.php on line 305.
+ 1 APPPATH\Controllers\Frontend.php(305): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: App\\Controllers\\Frontend::$input', 'APPPATH\\Controllers\\Frontend.php', 305)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->transaksi()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-08-30 02:52:50 --> Unknown column 'alamat' in 'field list'
+ERROR - 2022-08-30 02:53:27 --> Unknown column 'alamat' in 'field list'
+ERROR - 2022-08-30 02:57:34 --> Unknown column 'alamat' in 'field list'
+ERROR - 2022-08-30 02:57:52 --> Unknown column 'alamat' in 'field list'
+ERROR - 2022-08-30 03:00:34 --> Unknown column 'alamat' in 'field list'
+ERROR - 2022-08-30 03:01:23 --> Unknown column 'alamat' in 'field list'
+CRITICAL - 2022-08-30 03:01:23 --> Unknown column 'alamat' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('INSERT INTO `tbl_transaksi` (`id_pengguna`, `nama`, `email`, `alamat`, `nohp`, `keterangan`, `kurir`, `service`, `jumlah`) VALUES (\'11\', \'fajar\', \'far@gmail.com\', \'sad\', \'\', \'\', \'jne\', \'OKE\', \'2262000\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tbl_transaksi` (`id_pengguna`, `nama`, `email`, `alamat`, `nohp`, `keterangan`, `kurir`, `service`, `jumlah`) VALUES (\'11\', \'fajar\', \'far@gmail.com\', \'sad\', \'\', \'\', \'jne\', \'OKE\', \'2262000\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tbl_transaksi` (`id_pengguna`, `nama`, `email`, `alamat`, `nohp`, `keterangan`, `kurir`, `service`, `jumlah`) VALUES (\'11\', \'fajar\', \'far@gmail.com\', \'sad\', \'\', \'\', \'jne\', \'OKE\', \'2262000\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1904): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tbl_transaksi` (`id_pengguna`, `nama`, `email`, `alamat`, `nohp`, `keterangan`, `kurir`, `service`, `jumlah`) VALUES (:id_pengguna:, :nama:, :email:, :alamat:, :nohp:, :keterangan:, :kurir:, :service:, :jumlah:)', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(241): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\Frontend.php(315): App\Models\ServerSideModel->createRowsReturnID([...], 'tbl_transaksi')
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->transaksi()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-08-30 03:02:08 --> Unknown column 'jumlah' in 'field list'
+ERROR - 2022-08-30 03:02:15 --> Unknown column 'jumlah' in 'field list'
+CRITICAL - 2022-08-30 03:02:15 --> Unknown column 'jumlah' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('INSERT INTO `tbl_transaksi` (`id_pengguna`, `nama`, `email`, `alamat`, `nohp`, `keterangan`, `kurir`, `service`, `jumlah`) VALUES (\'11\', \'fajar\', \'far@gmail.com\', \'sad\', \'\', \'\', \'jne\', \'OKE\', \'2262000\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `tbl_transaksi` (`id_pengguna`, `nama`, `email`, `alamat`, `nohp`, `keterangan`, `kurir`, `service`, `jumlah`) VALUES (\'11\', \'fajar\', \'far@gmail.com\', \'sad\', \'\', \'\', \'jne\', \'OKE\', \'2262000\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `tbl_transaksi` (`id_pengguna`, `nama`, `email`, `alamat`, `nohp`, `keterangan`, `kurir`, `service`, `jumlah`) VALUES (\'11\', \'fajar\', \'far@gmail.com\', \'sad\', \'\', \'\', \'jne\', \'OKE\', \'2262000\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1904): CodeIgniter\Database\BaseConnection->query('INSERT INTO `tbl_transaksi` (`id_pengguna`, `nama`, `email`, `alamat`, `nohp`, `keterangan`, `kurir`, `service`, `jumlah`) VALUES (:id_pengguna:, :nama:, :email:, :alamat:, :nohp:, :keterangan:, :kurir:, :service:, :jumlah:)', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(241): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\Frontend.php(315): App\Models\ServerSideModel->createRowsReturnID([...], 'tbl_transaksi')
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->transaksi()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
