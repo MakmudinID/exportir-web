@@ -4,8 +4,11 @@
 				<div class="col-lg-9 offset-lg-2 text-center">
 					<div class="hero-text">
 						<div class="hero-text-tablecell">
-							<h1>Toko Rempah</h1>
-							<h4 class="orange-text">Website ini di buat untuk dapat memberikan kemudahan dan membantu UMKM dalam memperluas dan meningkatkan bisnis serta membangun kerjasama dengan beberapa reseller dan importin lokal secara terpercaya dan mudah.</h4>
+							<p class="subtitle">Toko Rempah</p>
+							<h4 class="text-white">Website ini di buat untuk dapat memberikan kemudahan dan membantu UMKM dalam memperluas dan meningkatkan bisnis serta membangun kerjasama dengan beberapa reseller dan importin lokal secara terpercaya dan mudah.</h4>
+							<div class="hero-btns">
+								<a href="contact.html" class="boxed-btn">Ke Halaman Login <i class="fa fa-arrow-right"></i></a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -13,7 +16,7 @@
 		</div>
 	</div>
 	<!-- product section -->
-	<div class="product-section mt-100 mb-100">
+	<div class="product-section mt-5 mb-5">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
@@ -34,7 +37,7 @@
 								<h3><?= $p->nama; ?></h3>
 							</a>
 							<p class="product-price"><span>Per <?= $p->satuan; ?></span> Rp. <?= number_format($p->harga); ?> </p>
-							<a data-id='<?=$p->id?>' data-img='<?=$p->foto?>' data-produk='<?=$p->nama?>' data-qty='1' data-harga='<?=$p->harga?>' data-umkm='<?=$p->id_umkm?>' class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<a data-id="<?=$p->id?>" data-img="<?=$p->foto?>" data-produk="<?=$p->nama?>" data-qty="1" data-harga="<?=$p->harga?>" data-umkm="<?=$p->id_umkm?>" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 						</div>
 					</div>
 				<?php endforeach; ?>
@@ -49,8 +52,15 @@
 	<!-- end product section -->
 
 	<!-- testimonail-section -->
-	<div class="testimonail-section  mb-100">
+	<div class="testimonail-section mt-5 mb-5">
 		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">
+						<h3>UMKM <span class="orange-text">NASIONAL</span></h3>
+					</div>
+				</div>
+			</div>
 			<div class="row">
 				<div class="col-lg-10 offset-lg-1 text-center">
 					<div class="testimonial-sliders">
@@ -68,9 +78,9 @@
 										<div class="content-column col-lg-6 align-self-center">
 											<br>
 											<h4><?= $val->nama ?></h4>
-											<div class="text"><?= html_entity_decode($val->deskripsi) ?></div>
+											<p><?= html_entity_decode($val->deskripsi) ?></p>
 											<!--Countdown Timer-->
-											<a href="cart.html" class="cart-btn mt-3">Lihat UMKM</a>
+											<a href="<?=base_url('umkm/'.$val->slug)?>" class="cart-btn mt-3">Lihat Profil <?= $val->nama ?></a>
 										</div>
 									</div>
 								</div>
@@ -103,7 +113,7 @@
 	<!-- end testimonail-section -->
 
 	<!-- latest news -->
-	<div class="latest-news">
+	<div class="latest-news mt-5 mb-5">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">

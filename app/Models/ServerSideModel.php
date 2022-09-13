@@ -24,6 +24,16 @@ class ServerSideModel extends Model
         $q = $this->db->query("select tbl_kategori_produk.nama as kategori, tbl_produk_umkm.* from tbl_produk_umkm join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori where tbl_produk_umkm.status = 'ACTIVE' LIMIT 9");
         return $q->getResult();
     }
+    
+    public function getProdukByUMKM($slug){
+        $q = $this->db->query("SELECT * FROM `tbl_produk_umkm` JOIN tbl_umkm ON tbl_umkm.id=tbl_produk_umkm.id_umkm WHERE tbl_umkm.slug=?", array($slug));
+        return $q->getResult();
+    }
+    
+    public function getKategoriByUMKM($slug){
+        $q = $this->db->query("select tbl_kategori_produk.nama as kategori, tbl_kategori_produk.id from tbl_kategori_produk JOIN tbl_umkm ON tbl_umkm.id = tbl_kategori_produk.id_umkm where tbl_kategori_produk.status = 'ACTIVE' and tbl_umkm.slug=?", array($slug));
+        return $q->getResult();
+    }
 
     public function getProduk($umkm, $kategori){
         $sql = "select 
@@ -106,6 +116,11 @@ class ServerSideModel extends Model
     public function getUMKM(){
         $q = $this->db->query("select * from tbl_umkm");
         return $q->getResult();
+    }
+
+    public function getUMKMbySlug($slug){
+        $q = $this->db->query("select * from tbl_umkm where slug=?", array($slug));
+        return $q->getRow();
     }
     
     public function getKategoriProduk(){

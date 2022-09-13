@@ -10,7 +10,7 @@
 	    </div>
 	</div>
     <!-- products -->
-	<div class="product-section mt-40 mb-40">
+	<div class="product-section mt-40 mb-5">
 		<div class="container">
 			<div class="row">
                 <div class="col-md-12">

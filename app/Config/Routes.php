@@ -42,6 +42,7 @@ $routes->get('category', 'Frontend::kategori');
 $routes->get('about', 'Frontend::tentang');
 $routes->get('cart', 'Frontend::keranjang');
 $routes->get('produk/(:any)', 'Frontend::produk/$1');
+$routes->get('umkm/(:any)', 'Frontend::umkm/$1');
 $routes->get('list-produk', 'Frontend::list_produk');
 $routes->post('list_produk_', 'Frontend::list_produk_');
 $routes->get('list-berita', 'Frontend::list_berita');

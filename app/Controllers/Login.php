@@ -19,7 +19,7 @@ class Login extends BaseController
                 'email' => 'required|valid_email',
                 'password' => 'required',
             ],
-            [   // Errors
+            [  
                 'email' => [
                     'required' => 'You must have username',
                     'valid_email' => 'You must have valid email'

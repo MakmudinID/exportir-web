@@ -120,6 +120,7 @@ class Admin extends BaseController
         $data['id_pengguna']  = htmlspecialchars($this->request->getPost('id_pengguna'), ENT_QUOTES);
         $data['id_kategori']  = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
+        $data['slug']   =  strtolower(url_title($this->request->getPost('nama')));
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
         $data['create_user'] = session()->get('nama');
@@ -168,6 +169,7 @@ class Admin extends BaseController
         $data['id_pengguna']  = htmlspecialchars($this->request->getPost('id_pengguna'), ENT_QUOTES);
         $data['id_kategori']  = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
+        $data['slug']   =  strtolower(url_title($this->request->getPost('nama')));
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
         $data['edit_user'] = session()->get('nama');

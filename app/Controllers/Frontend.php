@@ -124,6 +124,15 @@ class Frontend extends BaseController
         </div>';
         }
 
+        if(empty($produk)){
+            $html.='<div class="col-lg-3 col-md-3 abt-textcol-6 text-center">
+                        <div class="card">
+                            <div class="card-body">
+                            <p class="text-danger">Produk tidak ditemukan</p>
+                            </div>
+                        </div>
+                    </div>';
+        }
         echo $html;
     }
 
@@ -135,6 +144,19 @@ class Frontend extends BaseController
         // var_dump($data);die;
         $data['js'] = array("produk.js?r=".uniqid());
 		$data['main_content']   = 'frontend/produk'; 
+		echo view('template/fruitkha', $data);
+    }
+
+    public function umkm($slug=NULL)
+    {
+        if($slug == null){
+            redirect('/');
+        }
+        $data['umkm'] = $this->server_side->getUMKMbySlug($slug);
+        $data['produk'] = $this->server_side->getProdukByUMKM($slug);
+        $data['produk_kategori'] = $this->server_side->getKategoriByUMKM($slug);
+        $data['js'] = array("umkm.js?r=".uniqid());
+		$data['main_content']   = 'frontend/umkm'; 
 		echo view('template/fruitkha', $data);
     }
 
