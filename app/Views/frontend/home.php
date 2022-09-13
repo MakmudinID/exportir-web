@@ -80,7 +80,7 @@
 											<h4><?= $val->nama ?></h4>
 											<p><?= html_entity_decode($val->deskripsi) ?></p>
 											<!--Countdown Timer-->
-											<a href="<?=base_url('umkm/'.$val->slug)?>" class="cart-btn mt-3">Lihat Profil <?= $val->nama ?></a>
+											<a href="<?=base_url('profil-umkm/'.$val->slug)?>" class="cart-btn mt-3">Lihat Profil <?= $val->nama ?></a>
 										</div>
 									</div>
 								</div>

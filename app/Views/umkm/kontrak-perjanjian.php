@@ -22,7 +22,7 @@
                         <h3 class="card-title">KERJASAMA KONTRAK PERJANJIAN</h3>
                     </div>
                     <div class="card-body table-responsive">
-                        <table id="table" class="table table-bordered table-hover">
+                        <table id="table" class="table table-bordered table-hover table-sm">
                             <thead>
                                 <tr>
                                     <th>No</th>

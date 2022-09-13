@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Produk</h1>
+                <h1>TRANSAKSI</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Data</a></li>
-                    <li class="breadcrumb-item active">Produk</li>
+                    <li class="breadcrumb-item"><a href="#">DATA</a></li>
+                    <li class="breadcrumb-item active">TRANSAKSI</li>
                 </ol>
             </div>
         </div>
@@ -19,18 +19,21 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Data Produk</h3>
+                        <h3 class="card-title">DATA TRANSAKSI</h3>
                     </div>
+                    
                     <div class="card-body table-responsive">
                         <table id="table" class="table table-bordered table-hover table-sm">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>UMKM</th>
-                                    <th>Foto</th>
-                                    <th>Nama Barang</th>
+                                    <th>Nama Pemesan</th>
+                                    <th>Keterangan</th>
+                                    <th>Tagihan</th>
+                                    <th></th>
                                     <th>Kategori</th>
                                     <th>Stok</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>

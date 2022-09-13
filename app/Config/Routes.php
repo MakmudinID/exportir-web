@@ -42,7 +42,7 @@ $routes->get('category', 'Frontend::kategori');
 $routes->get('about', 'Frontend::tentang');
 $routes->get('cart', 'Frontend::keranjang');
 $routes->get('produk/(:any)', 'Frontend::produk/$1');
-$routes->get('umkm/(:any)', 'Frontend::umkm/$1');
+$routes->get('profil-umkm/(:any)', 'Frontend::umkm/$1');
 $routes->get('list-produk', 'Frontend::list_produk');
 $routes->post('list_produk_', 'Frontend::list_produk_');
 $routes->get('list-berita', 'Frontend::list_berita');
@@ -59,7 +59,7 @@ $routes->post('kurir', 'Frontend::kurir');
 $routes->post('transaksi', 'Frontend::transaksi');
 
 //UMKM BackOffice
-$routes->get('umkm/index', 'Umkm::index');
+$routes->get('umkm/dashboard', 'Umkm::dashboard');
 $routes->get('umkm/produk', 'Umkm::produk');
 $routes->get('umkm/profil', 'Umkm::profil');
 $routes->post('umkm/edit_profil', 'Umkm::edit_profil');
@@ -72,6 +72,8 @@ $routes->post('umkm/create_produk', 'Umkm::create_produk');
 $routes->post('umkm/update_produk', 'Umkm::update_produk');
 $routes->post('umkm/delete_produk', 'Umkm::delete_produk');
 $routes->get('umkm/kategori-produk', 'Umkm::kategori_produk');
+$routes->get('umkm/laporan-transaksi', 'Umkm::transaksi');
+$routes->post('umkm/transaksi_', 'Umkm::transaksi_');
 $routes->post('umkm/kategori_produk_', 'Umkm::kategori_produk_');
 $routes->post('umkm/create_kategori', 'Umkm::create_kategori');
 $routes->post('umkm/update_kategori', 'Umkm::update_kategori');

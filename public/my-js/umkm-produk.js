@@ -130,6 +130,12 @@ jQuery(document).ready(function() {
             satuan: {
                 required: true
             },
+            weight: {
+                required: true
+            },
+            harga: {
+                required: true
+            },
             status: {
                 required: true
             },

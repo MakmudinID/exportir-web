@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Toko Rempah | Log in</title>
+    <title>Toko Rempah | Sign Up</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -37,7 +37,7 @@
                         <?= $error ?>
                     </div>
                 <?php endif ?>
-                <p class="login-box-msg">Selamat Datang! Silahkan login.</p>
+                <p class="login-box-msg">Buat Akun Sekarang!.</p>
                 <form action="<?= base_url() ?>/login/proses" method="post">
                     <div class="input-group mb-3">
                         <input type="email" name="email" class="form-control" placeholder="Email">

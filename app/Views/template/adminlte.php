@@ -8,7 +8,7 @@ $this->server_side = new ServerSideModel();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EXP Admin</title>
+    <title>Toko Rempah</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -96,9 +96,9 @@ $this->server_side = new ServerSideModel();
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="<?= base_url() ?>/assets/admin/index3.html" class="brand-link">
+            <a href="<?= base_url('/') ?>" class="brand-link">
                 <img src="<?= base_url() ?>/assets/admin/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">EXP Admin</span>
+                <span class="brand-text font-weight-light">Toko Rempah</span>
             </a>
 
             <!-- Sidebar -->

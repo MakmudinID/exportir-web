@@ -28,7 +28,7 @@
                     </div>
                     
                     <div class="card-body table-responsive">
-                        <table id="table" class="table table-bordered table-hover">
+                        <table id="table" class="table table-bordered table-hover table-sm">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -110,13 +110,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="satuan">Satuan</label>
                                 <input type="text" name="satuan" id="satuan" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="satuan">Berat Produk (Gram)</label>
+                                <input type="number" name="weight" id="weight" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="status">status</label>
                                 <select class="form-control" name="status" id="status">

@@ -11,14 +11,14 @@ class Umkm extends BaseController
 		helper(['url', 'form', 'array']);
 	}
 
-    public function index()
+    public function dashboard()
     {
         //Profil
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }
         $data['title'] = 'UMKM | Dashboard';
-        $data['js'] = array("umkm-dashboard.js?r=" . uniqid());
+        // $data['js'] = array("umkm-dashboard.js?r=" . uniqid());
         $data['main_content']   = 'umkm/dashboard';
         echo view('template/adminlte', $data);
     }
@@ -27,7 +27,7 @@ class Umkm extends BaseController
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }
-        $data['title'] = 'UMKM | Profile';
+        $data['title'] = 'Profil';
         $data['js'] = array("umkm-profil.js?r=" . uniqid());
         $data['get_profil'] = $this->server_side->get_profil();
         $data['propinsi'] = $this->db->query('select * from tbl_propinsi')->getResult();
@@ -113,12 +113,29 @@ class Umkm extends BaseController
         
     }
 
+    public function transaksi()
+    {
+        $data['title'] = 'Transaksi';
+        $data['js'] = array("umkm-transaksi.js?r=".uniqid());
+		$data['main_content']   = 'umkm/transaksi'; 
+		echo view('template/adminlte', $data);
+    }
+
+    public function transaksi_()
+    {
+        $data['title'] = 'Produk';
+        $data['js'] = array("umkm-transaksi.js?r=".uniqid());
+        $data['kategori'] = $this->server_side->getKategoriProdukById(session()->get('id_umkm'));
+		$data['main_content']   = 'umkm/transaksi'; 
+		echo view('template/adminlte', $data);
+    }
+
     public function produk()
     {
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }
-        $data['title'] = 'UMKM | Produk';
+        $data['title'] = 'Produk';
         $data['js'] = array("umkm-produk.js?r=".uniqid());
         $data['kategori'] = $this->server_side->getKategoriProdukById(session()->get('id_umkm'));
 		$data['main_content']   = 'umkm/produk'; 
@@ -188,6 +205,7 @@ class Umkm extends BaseController
         $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
         $data['harga']  = htmlspecialchars($this->request->getPost('harga'), ENT_QUOTES);
         $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
+        $data['weight']  = htmlspecialchars($this->request->getPost('weight'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
 
         if ($foto->getName() != '') {
@@ -239,6 +257,7 @@ class Umkm extends BaseController
         $data['harga']  = htmlspecialchars($this->request->getPost('harga'), ENT_QUOTES);
         $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
         $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
+        $data['weight']  = htmlspecialchars($this->request->getPost('weight'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
 
         if ($foto->getName() != '') {
@@ -297,7 +316,7 @@ class Umkm extends BaseController
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }
-        $data['title'] = 'UMKM | Kategori Produk';
+        $data['title'] = 'Kategori Produk';
         $data['js'] = array("umkm-kategori-produk.js?r=".uniqid());
 		$data['main_content']   = 'umkm/kategori-produk'; 
 		echo view('template/adminlte', $data);
@@ -424,7 +443,7 @@ class Umkm extends BaseController
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }
-        $data['title'] = 'UMKM | Kontrak Perjanjian';
+        $data['title'] = 'Kontrak Perjanjian';
         $data['js'] = array("umkm-kontrak-perjanjian.js?r=".uniqid());
 		$data['main_content']  = 'umkm/kontrak-perjanjian'; 
 		echo view('template/adminlte', $data);

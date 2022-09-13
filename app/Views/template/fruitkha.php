@@ -75,7 +75,7 @@
 										<li><a href="index_2.html">Slider Home</a></li>
 									</ul>
 								</li>
-                                <li><a href="<?=base_url('/news')?>">Berita</a></li>
+                                <li><a href="<?=base_url('/list-berita')?>">Berita</a></li>
                                 <li><a href="<?=base_url('/about')?>">Tentang</a></li>
 								<li>
 									<div class="header-icons">

@@ -37,7 +37,7 @@ class Login extends BaseController
                 if($result['role'] == 'SUPERADMIN'){
                     return redirect()->to('/admin/dashboard');
                 }else if($result['role'] == 'UMKM'){
-                    return redirect()->to('/umkm/index');
+                    return redirect()->to('/umkm/dashboard');
                 }else{
                     return redirect()->to('/');
                 }
