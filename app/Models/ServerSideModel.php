@@ -21,7 +21,13 @@ class ServerSideModel extends Model
     }
 
     public function getProdukRand(){
-        $q = $this->db->query("select tbl_kategori_produk.nama as kategori, tbl_produk_umkm.* from tbl_produk_umkm join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori where tbl_produk_umkm.status = 'ACTIVE' LIMIT 9");
+        $q = $this->db->query("select tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
+        from tbl_produk_umkm 
+        join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
+        join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
+        join tbl_city on tbl_city.city_id = tbl_umkm.city_id
+        where tbl_produk_umkm.status = 'ACTIVE' 
+        LIMIT 9");
         return $q->getResult();
     }
     
@@ -36,12 +42,11 @@ class ServerSideModel extends Model
     }
 
     public function getProduk($umkm, $kategori){
-        $sql = "select 
-                    tbl_kategori_produk.nama as kategori, 
-                    tbl_produk_umkm.* 
+        $sql = "select tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
                 from tbl_produk_umkm 
-                left join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
-                left join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
+                join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
+                join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
+                join tbl_city on tbl_city.city_id = tbl_umkm.city_id
                 where tbl_produk_umkm.status = 'ACTIVE' ";
         if($umkm != ''){
             $sql .= " and tbl_umkm.id = $umkm ";
@@ -184,6 +189,18 @@ class ServerSideModel extends Model
             return $data;
         } else {
             return 0;
+        }
+    }
+
+    public function verify_daftar($email)
+    {
+        $builder =  $this->db->table('tbl_pengguna');
+        $builder->where('tbl_pengguna.email', $email);
+        $num = $builder->countAllResults(false);
+        if ($num > 0) {
+            return false;
+        } else {
+            return true;
         }
     }
 

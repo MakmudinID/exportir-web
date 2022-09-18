@@ -28,15 +28,17 @@
                 <?php if ($validation->getErrors()) : ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <?= $validation->listErrors() ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif ?>
                 <?php if (isset($error)) : ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-info"></i> ERROR!</h5>
                         <?= $error ?>
                     </div>
                 <?php endif ?>
+                <?= session()->getFlashdata('message');?>
                 <p class="login-box-msg">Selamat Datang! Silahkan login.</p>
                 <form action="<?= base_url() ?>/login/proses" method="post">
                     <div class="input-group mb-3">
@@ -56,19 +58,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-8">
-                            <a href="<?=base_url('signup')?>" class="btn btn-secondary btn-block">Sign Up</a>
-                        </div>
                         <!-- /.col -->
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
                         </div>
                         <!-- /.col -->
                     </div>
                 </form>
                 <hr>
                 <p class="mt-2 mb-1">
-                    <a href="forgot-password.html">Lupa Password</a>
+                    <a href="forgot-password.html">Lupa Password</a> | <a href="<?=base_url('/daftar-akun')?>">Daftar Akun</a>
                 </p>
             </div>
             <!-- /.card-body -->

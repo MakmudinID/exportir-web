@@ -43,6 +43,7 @@ $routes->get('about', 'Frontend::tentang');
 $routes->get('cart', 'Frontend::keranjang');
 $routes->get('produk/(:any)', 'Frontend::produk/$1');
 $routes->get('profil-umkm/(:any)', 'Frontend::umkm/$1');
+$routes->get('kerjasama/(:any)', 'Frontend::kerjasama/$1');
 $routes->get('list-produk', 'Frontend::list_produk');
 $routes->post('list_produk_', 'Frontend::list_produk_');
 $routes->get('list-berita', 'Frontend::list_berita');
@@ -81,8 +82,10 @@ $routes->post('umkm/delete_kategori', 'Umkm::delete_kategori');
 
 //ADMIN BackOffice
 $routes->get('login', 'Login::index');
+$routes->get('daftar-akun', 'Login::daftar');
 $routes->get('logout', 'Login::logout');
 $routes->post('login/proses', 'Login::proses');
+$routes->post('daftar/proses', 'Login::daftar_');
 $routes->get('admin/reseller', 'Admin::reseller');
 $routes->get('admin/modul', 'Admin::modul');
 $routes->get('admin/dashboard', 'Admin::dashboard');

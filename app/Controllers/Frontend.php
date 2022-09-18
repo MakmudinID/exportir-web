@@ -111,6 +111,7 @@ class Frontend extends BaseController
         $kategori = $this->request->getPost('kategori');
         $produk = $this->server_side->getProduk($umkm, $kategori);
         $html = '';
+
         foreach($produk as $p){
             $html .= '<div class="col-lg-3 col-md-3 abt-textcol-6 text-center">
             <div class="single-product-item">
@@ -118,9 +119,12 @@ class Frontend extends BaseController
                     <a href="'.base_url('/produk/'.$p->id).'"><img src="'.$p->foto.'" alt="'.$p->nama.'"></a>
                 </div>
                 <h3 >'. $p->nama.'</h3>
-                <p class="product-price"><span>Per '. $p->satuan.'</span> Rp. '. number_format($p->harga).' </p>
+                <p class="product-price">Rp. '. number_format($p->harga).' </p>
                 <a href="#" data-id="'.$p->id.'" data-img="'.$p->foto.'" data-produk="'.$p->nama.'" data-qty="1" data-harga="'.$p->harga.'" data-umkm="'.$p->id_umkm.'" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-            </div>
+                <hr>
+                <span><b><a href="'.base_url('profil-umkm/'.$p->slug).'">'.$p->nama_toko.'</a></b></span><br>
+                <span><i class="fas fa-city mr-1"></i>'.$p->city_name.'</span>
+        </div>
         </div>';
         }
 
@@ -144,6 +148,19 @@ class Frontend extends BaseController
         // var_dump($data);die;
         $data['js'] = array("produk.js?r=".uniqid());
 		$data['main_content']   = 'frontend/produk'; 
+		echo view('template/fruitkha', $data);
+    }
+
+    public function kerjasama($slug=NULL)
+    {
+        if($slug == null){
+            redirect('/');
+        }
+        $data['umkm'] = $this->server_side->getUMKMbySlug($slug);
+        $data['produk'] = $this->server_side->getProdukByUMKM($slug);
+        $data['produk_kategori'] = $this->server_side->getKategoriByUMKM($slug);
+        $data['js'] = array("umkm.js?r=".uniqid());
+		$data['main_content']   = 'frontend/umkm'; 
 		echo view('template/fruitkha', $data);
     }
 
@@ -199,7 +216,7 @@ class Frontend extends BaseController
                         </div>
                     </div>';
         }
-
+        
         echo $html;
     }
 

@@ -28,19 +28,29 @@
                 <?php if ($validation->getErrors()) : ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <?= $validation->listErrors() ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif ?>
                 <?php if (isset($error)) : ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-info"></i> ERROR!</h5>
                         <?= $error ?>
                     </div>
                 <?php endif ?>
+                <?= session()->getFlashdata('message');?>
                 <p class="login-box-msg">Buat Akun Sekarang!.</p>
-                <form action="<?= base_url() ?>/login/proses" method="post">
+                <form action="<?= base_url() ?>/daftar/proses" method="post">
                     <div class="input-group mb-3">
-                        <input type="email" name="email" class="form-control" placeholder="Email">
+                        <input type="text" name="nama" class="form-control" placeholder="Nama" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="email" name="email" class="form-control" placeholder="Email" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -48,27 +58,42 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" name="password" class="form-control" placeholder="Password">
+                        <input type="password" name="password" class="form-control" placeholder="Password" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
                     </div>
+                    <div class="input-group mb-3">
+                        <input type="text" name="no_hp" class="form-control" placeholder="Nomor Handphone" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-address-book"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select name="role" class="form-control" placeholder="Daftar Sebagai" required>
+                            <option value="">-Daftar Sebagai-</option>
+                            <option value="RESELLER">RESELLER</option>
+                            <option value="UMKM">UMKM</option>
+                        </select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-address-book"></span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="col-8">
-                            <a href="<?=base_url('signup')?>" class="btn btn-secondary btn-block">Sign Up</a>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block">Buat Akun</button>
                         </div>
-                        <!-- /.col -->
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                        </div>
-                        <!-- /.col -->
                     </div>
                 </form>
                 <hr>
                 <p class="mt-2 mb-1">
-                    <a href="forgot-password.html">Lupa Password</a>
+                    Sudah punya akun? <a href="<?=base_url('/login')?>">Masuk Sekarang</a>
                 </p>
             </div>
             <!-- /.card-body -->

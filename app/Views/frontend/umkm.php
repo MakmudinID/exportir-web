@@ -23,8 +23,8 @@
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="<?= base_url() ?>" class="boxed-btn btn-sm"><i class="fas fa-plus-circle"></i> Pengajuan Kerjasama</a>
-                        <a href="<?= base_url() ?>" class="boxed-btn btn-sm">Chat</a>
+                        <a href="<?= base_url() ?>" class="boxed-btn btn-sm"><i class="fas fa-plus-circle"></i> Kerjasama</a>
+                        <a href="<?= base_url() ?>" class="boxed-btn btn-sm"><i class="fas fa-rocketchat"></i> Chat</a>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                                         <div class="list-box d-flex align-items-center">
                                             <div class="list-icon">
-                                                <i class="fas fa-shipping-fast"></i>
+                                                <i class="fas fa-layer-group"></i>
                                             </div>
                                             <div class="content">
                                                 <h3>Produk</h3>
@@ -50,7 +50,7 @@
                                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                                         <div class="list-box d-flex align-items-center">
                                             <div class="list-icon">
-                                                <i class="fas fa-phone-volume"></i>
+                                            <i class="fas fa-home"></i>
                                             </div>
                                             <div class="content">
                                                 <h3>Bergabung</h3>
