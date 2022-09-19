@@ -165,7 +165,7 @@
 	<div class="copyright">
 		<div class="container">
 			<div class="row justify-content-center">
-				<div class="col-lg-6 col-md-12">
+				<div class="col-lg-6 col-md-12 text-center">
 					<p>Copyrights &copy; <?= date('Y');?> - <a href="https://toko-rempah.com/">Yasmin</a>,  All Rights Reserved.</p>
 				</div>
 			</div>

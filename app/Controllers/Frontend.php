@@ -153,14 +153,14 @@ class Frontend extends BaseController
 
     public function kerjasama($slug=NULL)
     {
+        $this->auth->is_login();
         if($slug == null){
             redirect('/');
         }
         $data['umkm'] = $this->server_side->getUMKMbySlug($slug);
         $data['produk'] = $this->server_side->getProdukByUMKM($slug);
-        $data['produk_kategori'] = $this->server_side->getKategoriByUMKM($slug);
-        $data['js'] = array("umkm.js?r=".uniqid());
-		$data['main_content']   = 'frontend/umkm'; 
+        $data['js'] = array("form-kerjasama.js?r=".uniqid());
+		$data['main_content']   = 'frontend/form-kerjasama'; 
 		echo view('template/fruitkha', $data);
     }
 

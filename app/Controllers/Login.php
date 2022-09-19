@@ -18,6 +18,9 @@ class Login extends BaseController
     {
         $data['nama']  = $this->request->getPost('nama');
         $data['email'] = $this->request->getPost('email');
+        $options = [
+            'cost' => 10,
+        ];
         $password_hash =  password_hash(htmlspecialchars($this->request->getPost('password'), ENT_QUOTES), PASSWORD_BCRYPT, $options);
         $data['password'] = $password_hash;
         $data['no_hp'] = $this->request->getPost('no_hp');

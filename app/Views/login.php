@@ -20,25 +20,25 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <!-- /.login-logo -->
+        <?= session()->getFlashdata('message'); ?>
+        <?php if ($validation->getErrors()) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $validation->listErrors() ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
+        <?php if (isset($error)) : ?>
+            <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h5><i class="icon fas fa-info"></i> ERROR!</h5>
+                <?= $error ?>
+            </div>
+        <?php endif ?>
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
                 <a href="<?= base_url('/') ?>" class="h1"><b>TOKO</b>REMPAH</a>
             </div>
             <div class="card-body">
-                <?php if ($validation->getErrors()) : ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?= $validation->listErrors() ?>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php endif ?>
-                <?php if (isset($error)) : ?>
-                    <div class="alert alert-warning alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h5><i class="icon fas fa-info"></i> ERROR!</h5>
-                        <?= $error ?>
-                    </div>
-                <?php endif ?>
-                <?= session()->getFlashdata('message');?>
                 <p class="login-box-msg">Selamat Datang! Silahkan login.</p>
                 <form action="<?= base_url() ?>/login/proses" method="post">
                     <div class="input-group mb-3">

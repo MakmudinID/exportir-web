@@ -32,7 +32,13 @@ class ServerSideModel extends Model
     }
     
     public function getProdukByUMKM($slug){
-        $q = $this->db->query("SELECT * FROM `tbl_produk_umkm` JOIN tbl_umkm ON tbl_umkm.id=tbl_produk_umkm.id_umkm WHERE tbl_umkm.slug=?", array($slug));
+        $q = $this->db->query("select tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
+        from tbl_produk_umkm 
+        join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
+        join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
+        join tbl_city on tbl_city.city_id = tbl_umkm.city_id
+        where tbl_produk_umkm.status = 'ACTIVE'
+        and tbl_umkm.slug=?", array($slug));
         return $q->getResult();
     }
     

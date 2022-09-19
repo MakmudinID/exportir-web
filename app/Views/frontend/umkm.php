@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="<?= base_url() ?>" class="boxed-btn btn-sm"><i class="fas fa-plus-circle"></i> Kerjasama</a>
+                        <a href="<?= base_url('/kerjasama/'.$umkm->slug) ?>" class="boxed-btn btn-sm"><i class="fas fa-plus-circle"></i> Kerjasama</a>
                         <a href="<?= base_url() ?>" class="boxed-btn btn-sm"><i class="fas fa-rocketchat"></i> Chat</a>
                     </div>
                 </div>
