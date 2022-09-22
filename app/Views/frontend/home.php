@@ -37,7 +37,7 @@
 								<h3><?= $p->nama; ?></h3>
 							</a>
 							<p class="product-price"> Rp. <?= number_format($p->harga); ?> </p>
-							<a data-id="<?= $p->id ?>" data-img="<?= $p->foto ?>" data-produk="<?= $p->nama ?>" data-qty="1" data-harga="<?= $p->harga ?>" data-umkm="<?= $p->id_umkm ?>" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<a data-id="<?= $p->id ?>" data-img="<?= $p->foto ?>" data-produk="<?= $p->nama ?>" data-qty="1" data-harga="<?= $p->harga ?>" data-weight="<?=$p->weight?>" data-umkm="<?= $p->id_umkm ?>" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 							<hr>
 							<span><b><a href="<?=base_url('profil-umkm/'.$p->slug)?>"><?= $p->nama_toko; ?></a></b></span><br>
 							<span><i class="fas fa-city mr-1"></i> <?= $p->city_name; ?></span>

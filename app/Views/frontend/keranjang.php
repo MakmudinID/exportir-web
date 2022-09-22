@@ -22,12 +22,12 @@
 	                    <table class="cart-table" id="table">
 	                        <thead class="cart-table-head">
 	                            <tr class="table-head-row">
-	                                <th class="product-remove"></th>
 	                                <th class="product-image">Foto Produk</th>
 	                                <th class="product-name">Produk</th>
 	                                <th class="product-price">Harga</th>
 	                                <th class="product-quantity">Qty</th>
 	                                <th class="product-total">Total</th>
+									<th class="product-remove"></th>
 	                            </tr>
 	                        </thead>
 	                    </table>
@@ -51,7 +51,11 @@
 	                        </tbody>
 	                    </table>
 	                    <div class="cart-buttons">
+							<?php 
+								if(!empty($carts)){
+							?>
 	                        <a href="<?=base_url()?>/checkout" class="boxed-btn black">Check Out</a>
+							<?php  } ?>
 	                    </div>
 	                </div>
 

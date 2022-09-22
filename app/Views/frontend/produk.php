@@ -35,6 +35,7 @@
 							<input type="hidden" name="produk" value="<?=$produk->nama?>" id="produk" >
 							<input type="hidden" name="harga" value="<?=$produk->harga?>" id="harga" >
 							<input type="hidden" name="img" value="<?=$produk->foto?>" id="img" >
+							<input type="hidden" name="weight" value="<?=$produk->weight?>" id="weight" >
 	                    </div>
 						<a href="#" class="cart-btn tambah-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 	                </div>
@@ -59,7 +60,7 @@
 							</div>
 							<h3 ><?= $p->nama;?></h3>
 							<p class="product-price"><span>Per <?= $p->satuan;?></span> Rp. <?= number_format($p->harga);?> </p>
-							<a href="#" data-id='<?=$p->id?>' data-img='<?=$p->foto?>' data-produk='<?=$p->nama?>' data-qty='1' data-harga='<?=$p->harga?>' data-umkm='<?=$p->id_umkm?>' class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<a href="#" data-id='<?=$p->id?>' data-img='<?=$p->foto?>' data-produk='<?=$p->nama?>' data-qty='1' data-harga='<?=$p->harga?>' data-weight="<?=$p->weight?>" data-umkm='<?=$p->id_umkm?>' class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 
 						</div>
 					</div>

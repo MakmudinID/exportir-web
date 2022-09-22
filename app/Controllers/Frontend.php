@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use Hashids\Hashids;
+
 class Frontend extends BaseController
 {
     private $url = "https://api.rajaongkir.com/starter/";
@@ -128,7 +130,7 @@ class Frontend extends BaseController
                 </div>
                 <h3 >'. $p->nama.'</h3>
                 <p class="product-price">Rp. '. number_format($p->harga).' </p>
-                <a href="#" data-id="'.$p->id.'" data-img="'.$p->foto.'" data-produk="'.$p->nama.'" data-qty="1" data-harga="'.$p->harga.'" data-umkm="'.$p->id_umkm.'" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                <a href="#" data-id="'.$p->id.'" data-img="'.$p->foto.'" data-produk="'.$p->nama.'" data-qty="1" data-harga="'.$p->harga.'" data-weight="'.$p->weight.'" data-umkm="'.$p->id_umkm.'" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
                 <hr>
                 <span><b><a href="'.base_url('profil-umkm/'.$p->slug).'">'.$p->nama_toko.'</a></b></span><br>
                 <span><i class="fas fa-city mr-1"></i>'.$p->city_name.'</span>
@@ -242,7 +244,7 @@ class Frontend extends BaseController
     public function keranjang()
     {
         $cart = \Config\Services::cart();
-        $data['cart'] = $cart->contents();
+        $data['carts'] = $cart->contents();
         $data['js'] = array("cart.js?r=".uniqid());
 		$data['main_content']   = 'frontend/keranjang'; 
 		echo view('template/fruitkha', $data);
@@ -261,6 +263,7 @@ class Frontend extends BaseController
         $produk = $this->request->getPost('produk');
         $harga = $this->request->getPost('harga');
         $qty = $this->request->getPost('qty');
+        $weight = $this->request->getPost('weight');
 
         $data = array(
             'id' => ($id != '') ? $id : null,
@@ -269,6 +272,7 @@ class Frontend extends BaseController
             'name' => ($produk != '') ? $produk : null,
             'price' => ($harga != '') ? $harga : null,
             'qty' => ($qty != '') ? $qty : null,
+            'weight' => ($weight != '') ? $weight : null,
         );
 
         // var_dump($cart);
@@ -336,37 +340,62 @@ class Frontend extends BaseController
         $cart = \Config\Services::cart();
         $propins = json_decode($this->wilayah('province'));
         $carts = $cart->contents();
+        // var_dump($carts);die;
         $id_umkm = $carts[array_key_first($carts)]['id_umkm'];
-        $kota = $this->db->query("select * from tbl_umkm where id = $id_umkm")->getRow();
 
+        $kota = $this->db->query("select * from tbl_umkm where id = $id_umkm")->getRow();
+        $data['total_weight'] = array_sum(array_column($carts, 'weight'));
+        $data['id_umkm'] = $id_umkm;
         $data['kota_asal'] = $kota->city_id;
         $data['cart'] = $carts;
         $data['propinsi'] = $propins->rajaongkir->results;
         $data['js'] = array("checkout.js?r=".uniqid());
 		$data['main_content']   = 'frontend/checkout'; 
+        // var_dump($data);die;
 		echo view('template/fruitkha', $data);
     }
 
     public function transaksi(){
         $cart = \Config\Services::cart();
-        $transaksi['id_pengguna'] = session()->get('id');
-        $transaksi['nama'] = $this->request->getPost('nama');
-        $transaksi['email'] = $this->request->getPost('email');
-        $transaksi['alamat'] = $this->request->getPost('alamat');
-        $transaksi['nohp'] = $this->request->getPost('nohp');
-        $transaksi['keterangan'] = $this->request->getPost('keterangan');
-        $transaksi['kurir'] = $this->request->getPost('kurir');
-        $transaksi['service'] = $this->request->getPost('service');
-        $transaksi['jumlah'] = $this->request->getPost('jumlah');
+
+        $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+		$milis = time() + (60 * 60 * 4);
+		$convert = $hashids->encode($milis);
+		$kode = substr($convert, 0, 8);
+
+        $pembayaran['total_tagihan'] = $this->request->getPost('jumlah');
+        $pembayaran['status'] = 'BELUM';
+        $pembayaran['create_user'] = session()->get('nama');
         
         $this->server_side->db->transBegin();
         try {
+            $id_pembayaran = $this->server_side->createRowsReturnID($pembayaran, 'tbl_pembayaran');
+
+            $transaksi['id_pembayaran'] = $id_pembayaran;
+            $transaksi['kode_transaksi'] = 'TR'.date('ymd').'-'.$kode;
+            $transaksi['id_pengguna'] = session()->get('id');
+            $transaksi['id_umkm'] = $this->request->getPost('id_umkm');
+            $transaksi['nama'] = $this->request->getPost('nama');
+            $transaksi['email'] = $this->request->getPost('email');
+            $transaksi['alamat'] = $this->request->getPost('alamat');
+            $transaksi['nohp'] = $this->request->getPost('nohp');
+            $transaksi['keterangan'] = $this->request->getPost('keterangan');
+            $transaksi['kurir'] = $this->request->getPost('kurir');
+            $transaksi['service'] = $this->request->getPost('service');
+            $transaksi['ongkir'] = $this->request->getPost('ongkir');
+            $transaksi['status'] = "BELUM";
+            $transaksi['jumlah'] = $this->request->getPost('jumlah');
+
             $id_transaksi = $this->server_side->createRowsReturnID($transaksi, 'tbl_transaksi');
             // var_dump($id_transaksi);die;
             $data_cart = $cart->contents();
             foreach($data_cart as $val){
                 $detail['id_transaksi'] = $id_transaksi;
                 $detail['id_barang'] = $val['id'];
+                $detail['qty'] = $val['qty'];
+                $detail['harga'] = $val['price'];
+                $detail['subtotal'] = $val['subtotal'];
+                $detail['weight'] = $val['weight'];
 
                 $this->server_side->createRows($detail, 'tbl_detail_transaksi');
                 $cart->remove($val['rowid']);

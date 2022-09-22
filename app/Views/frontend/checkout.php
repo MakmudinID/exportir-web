@@ -36,6 +36,8 @@
                                         <div class="billing-address-form">
 
                                             <div class="row form-group">
+                                                <input type="hidden" name="weight" id="weight" value="<?= $total_weight ?>">
+                                                <input type="hidden" name="id_umkm" id="id_umkm" value="<?= $id_umkm ?>">
                                                 <input type="text" name="nama" id="nama" placeholder="Nama Penerima" class="form-control" required>
                                             </div>
                                             <div class="row form-group">
@@ -43,6 +45,20 @@
                                             </div>
                                             <div class="row form-group">
                                                 <input type="text" name="alamat" id="alamat" class="form-control" placeholder="Alamat Penerima">
+                                            </div>
+                                            <div class="row form-group">
+                                                <input type="hidden" name="kota_asal" id="kota_asal" value="<?= $kota_asal ?>">
+                                                <select name="propinsi" id="propinsi" class="form-control">
+                                                    <option value="">- Pilih Propinsi -</option>
+                                                    <?php foreach ($propinsi as $val) { ?>
+                                                        <option value="<?= $val->province_id ?>"><?= $val->province ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                            <div class="row form-group">
+                                                <select name="kota" id="kota" class="form-control">
+                                                    <option value="">- Pilih Kota -</option>
+                                                </select>
                                             </div>
                                             <div class="row form-group">
                                                 <input type="text" name="nohp" id="nohp" class="form-control" placeholder="No.HP Penerima">
@@ -66,20 +82,7 @@
                                     <div class="card-body">
                                         <div class="shipping-address-form">
                                             <div class="col-md-12">
-                                                <div class="row form-group">
-                                                    <input type="hidden" name="kota_asal" id="kota_asal" value="<?= $kota_asal ?>">
-                                                    <select name="propinsi" id="propinsi" class="form-control">
-                                                        <option value="">- Pilih Propinsi -</option>
-                                                        <?php foreach ($propinsi as $val) { ?>
-                                                            <option value="<?= $val->province_id ?>"><?= $val->province ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <select name="kota" id="kota" class="form-control">
-                                                        <option value="">- Pilih Kota -</option>
-                                                    </select>
-                                                </div>
+                                                
                                                 <div class="row form-group">
                                                     <select name="kurir" id="kurir" class="form-control">
                                                         <option value="">- Pilih Kurir -</option>

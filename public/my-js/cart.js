@@ -16,33 +16,34 @@ jQuery(document).ready(function() {
         filter:false,
         info:false,
         ordering:false,
-        columns: [{
-                "data": 'close',
-                "sortable": false,
-            },
+        columns: [
             { "data": "photo" },
             { "data": "produk" },
             { "data": "harga", render: $.fn.dataTable.render.number('.', ',', '')},
             { "data": "qty" },
             { "data": "total", render: $.fn.dataTable.render.number('.', ',', '')},
+            {
+                "data": 'close',
+                "sortable": false,
+            },
         ],
         columnDefs: [{
-            targets: [0],
+            targets: [5],
             className: "product-remove"
         },{
-            targets: [1],
+            targets: [0],
             className: "product-image"
         },{
-            targets: [2],
+            targets: [1],
             className: "product-name"
         },{
-            targets: [3],
+            targets: [2],
             className: "product-price"
         },{
-            targets: [4],
+            targets: [3],
             className: "product-quantity"
         },{
-            targets: [5],
+            targets: [4],
             className: "product-total"
         }],
         footerCallback: function(row, data, start, end, display) {
@@ -51,7 +52,7 @@ jQuery(document).ready(function() {
                 return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
             };
             var total = api
-                    .column(5)  
+                    .column(4)  
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);

@@ -1,6 +1,9 @@
 "use strict";
-let total;
+let total, ongkir;
 jQuery(document).ready(function() {
+    // var id_umkm = $("input[name='id_umkm[]']")
+    //           .map(function(){return $(this).val();}).get();
+    // console.log(values);
     $(document).on('change', '#propinsi', function(){
         $.ajax({
             url: base_url+"/wilayah/city/"+$(this).val(),
@@ -25,7 +28,7 @@ jQuery(document).ready(function() {
                 data:{
                     origin: $('#kota_asal').val(),
                     destination: $('#kota').val(),
-                    weight: 1000,
+                    weight: $('#weight').val(),
                     courier: $(this).val(),
                 },
                 success:function(res){
@@ -43,12 +46,12 @@ jQuery(document).ready(function() {
     })
 
     $(document).on('change', '#service', function(){
-        var harga = $(this).find(':selected').data('cost');
-        $('#shipping').html(harga.toLocaleString())
+        ongkir = $(this).find(':selected').data('cost');
+        $('#shipping').html(ongkir.toLocaleString())
         var subtotal = $('#subtotal').html();
         subtotal = Number(subtotal.replace(/[^0-9\.-]+/g,""));
         
-        total = subtotal + harga;
+        total = subtotal + ongkir;
         $('#total').html(total.toLocaleString());
     })
 
@@ -84,6 +87,7 @@ jQuery(document).ready(function() {
         submitHandler: function(form) {
             var form_data = new FormData(document.getElementById("form-order"));
             form_data.append("jumlah", total);
+            form_data.append("ongkir", ongkir);
             $.ajax({
                 url: base_url + "/transaksi",
                 type: "POST",
@@ -114,6 +118,7 @@ jQuery(document).ready(function() {
                         });
                         $('.total-cart').html(data.total);
                         $('#form-order').trigger("reset");
+                        window.location.href = base_url + "/cart"
 
                     }
                 },

@@ -13,7 +13,7 @@ function filter(){
     })
 }
 
-function add_cart(id,id_umkm,img,produk,qty,harga){
+function add_cart(id,id_umkm,img,produk,qty,harga, weight){
     $.ajax({
         url: base_url+'/add-cart',
         type: 'POST',
@@ -24,6 +24,7 @@ function add_cart(id,id_umkm,img,produk,qty,harga){
             produk: produk,
             qty: qty,
             harga: harga,
+            weight: weight,
         },
         dataType: 'JSON',
         success:function(res){
@@ -33,6 +34,16 @@ function add_cart(id,id_umkm,img,produk,qty,harga){
                     title: 'Gagal',
                     html: "Maaf Anda Belum Login !",
                     icon: 'error',
+                    timer: 3000,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    buttons: false,
+                });
+            }else{
+                Swal.fire({
+                    title: 'Berhasil',
+                    html: "Produk Berhasil Masuk Keranjang",
+                    icon: 'success',
                     timer: 3000,
                     showCancelButton: false,
                     showConfirmButton: false,
@@ -63,6 +74,7 @@ jQuery(document).ready(function() {
         var produk = $(this).data('produk');
         var qty = $(this).data('qty');
         var harga = $(this).data('harga');
-        add_cart(id,umkm,img,produk,qty,harga)
+        var weight = $(this).data('weight');
+        add_cart(id,umkm,img,produk,qty,harga,weight)
     })
 })
