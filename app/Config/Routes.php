@@ -121,6 +121,8 @@ $routes->post('admin/berita_', 'Admin::berita_');
 $routes->post('admin/create_berita', 'Admin::create_berita');
 $routes->post('admin/update_berita', 'Admin::update_berita');
 $routes->post('admin/delete_berita', 'Admin::delete_berita');
+$routes->get('admin/transaksi', 'admin::transaksi');
+$routes->post('admin/transaksi_', 'admin::transaksi_');
 $routes->get('admin/produk', 'Admin::produk');
 $routes->post('admin/produk_', 'Admin::produk_');
 

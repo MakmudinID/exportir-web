@@ -123,11 +123,93 @@ class Umkm extends BaseController
 
     public function transaksi_()
     {
-        $data['title'] = 'Produk';
-        $data['js'] = array("umkm-transaksi.js?r=".uniqid());
-        $data['kategori'] = $this->server_side->getKategoriProdukById(session()->get('id_umkm'));
-		$data['main_content']   = 'umkm/transaksi'; 
-		echo view('template/adminlte', $data);
+        $list = $this->laporan->laporan_transaksi();
+        $data = array();
+        $no = $this->request->getPost('start');
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row['tanggal_pemesanan'] = $field->create_date;
+            $row['nama_pemesan'] = $field->nama;
+           
+            if($field->status == 'SELESAI'){
+				$bg = 'bg-success ';
+			}else if($field->status == 'SUDAH'){
+				$bg = 'bg-primary ';
+			}else if($field->status == 'SEDANG'){
+				$bg = 'bg-warning ';
+			}else if($field->status == 'BELUM'){
+				$bg = 'bg-danger ';
+			}
+
+            $row['kode_transaksi'] = $field->kode_transaksi;
+			$row['status'] = '<span class="badge '.$bg.'">'.$field->status.' DIPROSES</span>';
+            $row['status_pembayaran'] = $field->status_bayar." BAYAR";
+            if($field->bukti_url != null){
+                $link = "<a href='".$field->bukti_url."' target='_blank'>Bukti transaksi</a>";
+            }else{
+                $link = "Tidak ada";
+            }
+            $row['bukti'] = $link;
+            $row['kurir'] = $field->kurir;
+            $row['service'] = $field->service;
+            $row['tagihan'] = $field->total_tagihan;
+            $row['nama_penerima'] = $field->nama_penerima;
+            $row['email_penerima'] = $field->email_penerima;
+            $row['alamat_penerima'] = $field->alamat_penerima;
+            $row['nohp_penerima'] = $field->nohp_penerima;
+            $row['ket_penerima'] = $field->ket_penerima;
+            $row['ongkir'] = $field->ongkir;
+
+            if(count($this->laporan->detail_transaksi($field->id_transaksi)) > 0){
+                $det = "<tr><td colspan='2'><h5>Detail Tagihan :</h5>
+                <table class='table table-bordered table-striped' style='width:100%'>
+                <thead>
+                  <th><b>Barang</b></th>
+                  <th><b>qty</b></th>
+                  <th><b>Berat</b></th>
+                  <th><b>Harga</b></th>
+                  <th><b>Sub Total</b></th>
+               </thead><tbody>";
+                $total = 0;
+                
+                foreach($this->laporan->detail_transaksi($field->id_transaksi) as $d){
+
+                    $det.="<tr>
+                        <td>".$d->nama."</td>
+                        <td>".$d->qty." </td>
+                        <td>".$d->weight." /Gram </td>
+                        <td>".number_format($d->harga,0,',','.')." </td>
+                        <td>".number_format($d->subtotal,0,',','.')." </td>
+                    </tr>";
+                    $total += $d->subtotal;
+                }
+                $det .= "<tr>
+                    <td colspan='4' align='right'><b>Total</b></td>
+                    <td><b>".number_format($total,0,',','.')."</b></td>
+                </tr>";
+                $det .= "</tbody></table></td></tr>";
+            }else{
+                $det = "";
+            }
+
+
+            $row['act'] = "";
+            $row['det'] = $det;
+            $data[] = $row; 
+        }
+
+        $recordsTotal = $this->laporan->count_all_transaksi();
+        $recordsFiltered = $this->laporan->count_filtered_transaksi();
+
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $recordsTotal,
+            "recordsFiltered" => $recordsFiltered,
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
     }
 
     public function produk()

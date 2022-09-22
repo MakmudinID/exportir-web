@@ -27,12 +27,12 @@
                             <thead>
                                 <tr>
                                     <th></th>
+                                    <th>UMKM</th>
                                     <th>Tanggal Pemesanan</th>
                                     <th>Nama Pemesan</th>
                                     <th>status</th>
                                     <th>Tagihan</th>
                                     <th>Kode Transaksi</th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
