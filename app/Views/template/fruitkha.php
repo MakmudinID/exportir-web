@@ -72,7 +72,7 @@ $this->server_side = new ServerSideModel(); ?>
                                 <li><a href="<?=base_url('/')?>">Home</a></li>
                                 <li class="current-list-item"><a href="#">Kategori</a>
 									<ul class="sub-menu">
-										<?php foreach($this->server_side->getKategoriUMKM() as $k):?>
+										<?php foreach($this->server_side->getKategoriUMKMreal() as $k):?>
 											<li><a href="<?= base_url('/kategori/'.$k->id)?>"><?= $k->nama;?></a></li>
 										<?php endforeach; ?>
 									</ul>

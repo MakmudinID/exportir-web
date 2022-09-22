@@ -97,7 +97,12 @@ class Frontend extends BaseController
 		$data['main_content']   = 'frontend/kategori-produk-umkm';
         $data['kategori'] = $this->db->query("select nama from tbl_kategori_umkm where id=?", array($id_kategori_umkm))->getRow();
         $data['produk_umkm'] = $this->server_side->getProdukByKategoriUMKM($id_kategori_umkm);
-		echo view('template/fruitkha', $data);
+        if(count($data['produk_umkm']) > 0){
+            echo view('template/fruitkha', $data);
+        }else{
+            return redirect()->to('/');
+        }
+		
     }
 
     public function list_produk(){

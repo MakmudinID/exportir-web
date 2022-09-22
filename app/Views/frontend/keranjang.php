@@ -4,7 +4,7 @@
 	        <div class="row">
 	            <div class="col-lg-8 offset-lg-2 text-center">
 	                <div class="breadcrumb-text">
-	                    <p>Fresh and Organic</p>
+	                    <p>DETAIL</p>
 	                    <h1>Keranjang Belanja</h1>
 	                </div>
 	            </div>
@@ -36,7 +36,7 @@
 
 	            <div class="col-lg-4">
 	                <div class="total-section">
-	                    <table class="total-table">
+	                    <table class="total-table table-sm">
 	                        <thead class="total-table-head">
 	                            <tr class="table-total-row">
 	                                <th>Total</th>

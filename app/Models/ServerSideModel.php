@@ -111,7 +111,18 @@ class ServerSideModel extends Model
 
     public function getKategoriUMKM()
     {
-        $q = $this->db->query("select tbl_kategori_umkm.id, tbl_kategori_umkm.nama from tbl_kategori_umkm join tbl_umkm on tbl_umkm.id_kategori = tbl_kategori_umkm.id where tbl_umkm.status = 'ACTIVE'");
+        $q = $this->db->query("select tbl_kategori_umkm.id, tbl_kategori_umkm.nama from tbl_kategori_umkm where tbl_kategori_umkm.status = 'ACTIVE'");
+        return $q->getResult();
+    }
+    
+    public function getKategoriUMKMreal()
+    {
+        $q = $this->db->query("SELECT tbl_kategori_umkm.id, tbl_kategori_umkm.nama 
+        FROM tbl_kategori_umkm 
+        WHERE tbl_kategori_umkm.status = 'ACTIVE'
+        AND tbl_kategori_umkm.id IN (SELECT tbl_umkm.id_kategori 
+                                  FROM tbl_umkm JOIN tbl_produk_umkm ON tbl_produk_umkm.id_umkm = tbl_umkm.id 
+                                 WHERE tbl_produk_umkm.status='ACTIVE' GROUP BY tbl_umkm.id)");
         return $q->getResult();
     }
 

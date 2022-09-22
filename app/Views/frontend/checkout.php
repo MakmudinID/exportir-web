@@ -4,8 +4,8 @@
         <div class="row">
             <div class="col-lg-8 offset-lg-2 text-center">
                 <div class="breadcrumb-text">
-                    <p>Fresh and Organic</p>
-                    <h1>Check Out Produk</h1>
+                    <p>Transaksi</p>
+                    <h1>Checkout Produk</h1>
                 </div>
             </div>
         </div>
@@ -14,7 +14,7 @@
 <!-- end breadcrumb section -->
 
 <!-- check out section -->
-<div class="checkout-section mt-150 mb-150">
+<div class="checkout-section mt-5 mb-5">
     <div class="container">
         <form id="form-order">
             <div class="row">
@@ -114,7 +114,6 @@
                                 </tr>
                             </thead>
                             <tbody class="order-details-body">
-
                                 <?php
                                 $sum = 0;
                                 foreach ($cart as $val) {
@@ -141,7 +140,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <button type="submit" id="order" style="width:75%" class="btn btn-primary btn-rounded mt-4">Place Order</button>
+                        <button type="submit" id="order" style="width:75%" class="btn btn-primary btn-rounded mt-4">Bayar Sekarang</button>
                     </div>
                 </div>
             </div>
