@@ -91,10 +91,13 @@ class Frontend extends BaseController
 		echo view('template/fruitkha', $data);
     }
     
-    public function kategori()
+    public function kategori($id_kategori_umkm)
     {
         //Kategori
-        return view('welcome_message');
+		$data['main_content']   = 'frontend/kategori-produk-umkm';
+        $data['kategori'] = $this->db->query("select nama from tbl_kategori_umkm where id=?", array($id_kategori_umkm))->getRow();
+        $data['produk_umkm'] = $this->server_side->getProdukByKategoriUMKM($id_kategori_umkm);
+		echo view('template/fruitkha', $data);
     }
 
     public function list_produk(){

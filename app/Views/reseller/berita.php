@@ -20,25 +20,15 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Berita</h3>
-                        <div class="card-tools">
-                            <button type="button" class="add btn btn-default" data-toggle="modal" data-target="#modal-default">
-                                Tambah Berita
-                            </button>
-                        </div>
                     </div>
                     <div class="card-body table-responsive">
                         <table id="table" class="table table-bordered table-hover table-sm">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Foto</th>
-                                    <th>Judul</th>
-                                    <th>Kategori</th>
-                                    <th>Slug</th>
-                                    <th>Flag</th>
-                                    <th>Penulis</th>
-                                    <th>Status</th>
-                                    <th></th>
+                                    <th width="5%">No</th>
+                                    <th>Informasi</th>
+                                    <th width="15%">Kategori</th>
+                                    <th width="7%"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -56,7 +46,7 @@
         <div class="modal-content ">
             <form id='form-user'>
                 <div class="modal-header">
-                    <h4 class="modal-title">Tambah Berita Kategori</h4>
+                    <h4 class="modal-title"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

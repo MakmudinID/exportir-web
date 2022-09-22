@@ -15,12 +15,30 @@ class ServerSideModel extends Model
         $this->db = db_connect();
     }
 
-    public function get_profil(){
+    public function getFoto()
+    {
+        $q = $this->db->query("select tbl_pengguna.foto from tbl_pengguna where tbl_pengguna.id = ?", array(session()->get('id')))->getRow();
+        if ($q->foto != NULL) {
+            return $q->foto;
+        } else {
+            return base_url('/assets/admin/img/avatar.png');
+        }
+    }
+
+    public function get_profil()
+    {
         $q = $this->db->query("select tbl_pengguna.*, tbl_umkm.id as id_umkm, tbl_umkm.nama as nama_umkm, tbl_umkm.deskripsi, tbl_umkm.foto as foto_umkm, tbl_umkm.alamat as alamat_umkm, tbl_umkm.city_id, tbl_city.province_id from tbl_pengguna left join tbl_umkm on tbl_umkm.id_pengguna = tbl_pengguna.id left join tbl_city on tbl_umkm.city_id = tbl_city.city_id where tbl_pengguna.id = ?", array(session()->get('id')))->getRow();
         return $q;
     }
 
-    public function getProdukRand(){
+    public function getPropinsi()
+    {
+        $q = $this->db->query("select tbl_propinsi.* from tbl_propinsi")->getResult();
+        return $q;
+    }
+
+    public function getProdukRand()
+    {
         $q = $this->db->query("select tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
         from tbl_produk_umkm 
         join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
@@ -30,8 +48,9 @@ class ServerSideModel extends Model
         LIMIT 9");
         return $q->getResult();
     }
-    
-    public function getProdukByUMKM($slug){
+
+    public function getProdukByUMKM($slug)
+    {
         $q = $this->db->query("select tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
         from tbl_produk_umkm 
         join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
@@ -41,31 +60,34 @@ class ServerSideModel extends Model
         and tbl_umkm.slug=?", array($slug));
         return $q->getResult();
     }
-    
-    public function getKategoriByUMKM($slug){
+
+    public function getKategoriByUMKM($slug)
+    {
         $q = $this->db->query("select tbl_kategori_produk.nama as kategori, tbl_kategori_produk.id from tbl_kategori_produk JOIN tbl_umkm ON tbl_umkm.id = tbl_kategori_produk.id_umkm where tbl_kategori_produk.status = 'ACTIVE' and tbl_umkm.slug=?", array($slug));
         return $q->getResult();
     }
 
-    public function getProduk($umkm, $kategori){
+    public function getProduk($umkm, $kategori)
+    {
         $sql = "select tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
                 from tbl_produk_umkm 
                 join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
                 join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
                 join tbl_city on tbl_city.city_id = tbl_umkm.city_id
                 where tbl_produk_umkm.status = 'ACTIVE' ";
-        if($umkm != ''){
+        if ($umkm != '') {
             $sql .= " and tbl_umkm.id = $umkm ";
         }
 
-        if($kategori != ''){
+        if ($kategori != '') {
             $sql .= " and tbl_kategori_produk.id = $kategori ";
         }
         $q = $this->db->query($sql);
         return $q->getResult();
     }
 
-    public function getProdukById($id){
+    public function getProdukById($id)
+    {
         $sql = "select tbl_produk_umkm.*, tbl_kategori_produk.nama as nama_kategori 
                 from tbl_produk_umkm 
                 left join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori
@@ -74,7 +96,8 @@ class ServerSideModel extends Model
         return $q;
     }
 
-    public function getProdukRelated($kategori){
+    public function getProdukRelated($kategori)
+    {
         $sql = "select 
                     tbl_kategori_produk.nama as kategori, 
                     tbl_produk_umkm.* 
@@ -86,32 +109,49 @@ class ServerSideModel extends Model
         return $q->getResult();
     }
 
-    public function getKategoriUMKM(){
+    public function getKategoriUMKM()
+    {
         $q = $this->db->query("select tbl_kategori_umkm.id, tbl_kategori_umkm.nama from tbl_kategori_umkm join tbl_umkm on tbl_umkm.id_kategori = tbl_kategori_umkm.id where tbl_umkm.status = 'ACTIVE'");
         return $q->getResult();
     }
 
-    public function getBerita(){
+    public function getProdukByKategoriUMKM($id_kategori_umkm)
+    {
+        $q = $this->db->query("SELECT tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
+                FROM tbl_produk_umkm 
+                JOIN tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
+                JOIN tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
+                JOIN tbl_city on tbl_city.city_id = tbl_umkm.city_id
+                JOIN tbl_kategori_umkm ON tbl_kategori_umkm.id = tbl_umkm.id_kategori
+                WHERE tbl_umkm.id_kategori=? AND tbl_produk_umkm.status='ACTIVE';", array($id_kategori_umkm));
+        return $q->getResult();
+    }
+
+    public function getBerita()
+    {
         $q = $this->db->query("select tbl_berita_kategori.nama as kategori, tbl_berita.* from tbl_berita join tbl_berita_kategori on tbl_berita.id_kategori = tbl_berita_kategori.id where tbl_berita.status = 'ACTIVE' and flag='BLOG' limit 3");
         return $q->getResult();
     }
 
-    public function getBeritaById($id){
+    public function getBeritaById($id)
+    {
         $q = $this->db->query("select * from tbl_berita where status = 'ACTIVE' and id = $id")->getRow();
         return $q;
     }
 
-    public function getBeritaRandom(){
+    public function getBeritaRandom()
+    {
         $q = $this->db->query("select tbl_berita_kategori.nama as kategori, tbl_berita.* from tbl_berita join tbl_berita_kategori on tbl_berita.id_kategori = tbl_berita_kategori.id where tbl_berita.status = 'ACTIVE' and flag='BLOG' order by rand() limit 5");
         return $q->getResult();
     }
 
-    public function getListBerita($kategori){
+    public function getListBerita($kategori)
+    {
         $sql = "select tbl_berita_kategori.nama as kategori, tbl_berita.* 
                 from tbl_berita 
                 join tbl_berita_kategori on tbl_berita.id_kategori = tbl_berita_kategori.id 
                 where tbl_berita.status = 'ACTIVE' and flag='BLOG' ";
-        if($kategori != ''){
+        if ($kategori != '') {
             $sql .= "and tbl_berita_kategori.id = $kategori ";
         }
         $q = $this->db->query($sql)->getResult();
@@ -119,27 +159,32 @@ class ServerSideModel extends Model
     }
 
 
-    public function getKategoriBerita(){
+    public function getKategoriBerita()
+    {
         $q = $this->db->query("select * from tbl_berita_kategori where status = 'ACTIVE'");
         return $q->getResult();
     }
 
-    public function getUMKM(){
+    public function getUMKM()
+    {
         $q = $this->db->query("select * from tbl_umkm");
         return $q->getResult();
     }
 
-    public function getUMKMbySlug($slug){
+    public function getUMKMbySlug($slug)
+    {
         $q = $this->db->query("select * from tbl_umkm where slug=?", array($slug));
         return $q->getRow();
     }
-    
-    public function getKategoriProduk(){
+
+    public function getKategoriProduk()
+    {
         $q = $this->db->query("select * from tbl_kategori_produk");
         return $q->getResult();
     }
 
-    public function getKategoriProdukById($id){
+    public function getKategoriProdukById($id)
+    {
         $q = $this->db->query("select * from tbl_kategori_produk where id_umkm = $id");
         return $q->getResult();
     }

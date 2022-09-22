@@ -1,5 +1,6 @@
-<?php $session = \Config\Services::session(); ?>
-
+<?php $session = \Config\Services::session(); 
+use App\Models\ServerSideModel;
+$this->server_side = new ServerSideModel(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +56,7 @@
 	<div class="top-header-area" id="sticker">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 col-sm-12 text-center">
+				<div class="col-lg-12 col-sm-12 align-self-center text-center">
 					<div class="main-menu-wrap">
 						<!-- logo -->
 						<div class="site-logo">
@@ -71,8 +72,9 @@
                                 <li><a href="<?=base_url('/')?>">Home</a></li>
                                 <li class="current-list-item"><a href="#">Kategori</a>
 									<ul class="sub-menu">
-										<li><a href="index.html">Static Home</a></li>
-										<li><a href="index_2.html">Slider Home</a></li>
+										<?php foreach($this->server_side->getKategoriUMKM() as $k):?>
+											<li><a href="<?= base_url('/kategori/'.$k->id)?>"><?= $k->nama;?></a></li>
+										<?php endforeach; ?>
 									</ul>
 								</li>
                                 <li><a href="<?=base_url('/list-berita')?>">Berita</a></li>
@@ -82,7 +84,7 @@
                                     <?php if($session->get("role") == "RESELLER"){ ?>
                                         <a class="mobile-hide search-bar-icon" href="javascript:void(0)"><i class="fas fa-search"></i></a>
 										<a class="shopping-cart" href="<?=base_url('/cart')?>"><i class="fas fa-shopping-cart"></i> <span class="badge badge-primary total-cart">0</span></a>
-										<a href="<?=base_url('/profil')?>"><i class="fas fa-user"></i> <?=$session->get("nama")?> </a>
+										<a href="<?=base_url('/reseller/profil')?>"><i class="fas fa-user"></i> Profil</a>
                                         <a href="<?=base_url('/logout')?>"><i class="fa fa-sign-out-alt"></i> Logout</a>
                                     <?php }else if($session->get("role") == "UMKM"){ ?>
                                         <a class="mobile-hide search-bar-icon" href="javascript:void(0)"><i class="fas fa-search"></i></a>
