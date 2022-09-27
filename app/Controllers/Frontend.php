@@ -295,11 +295,11 @@ class Frontend extends BaseController
         $data = [];
         foreach($data_cart as $val){
             $row = [];
-            $row['close'] = '<a href="#"><i class="far fa-window-close remove" data-id="'.$val['rowid'].'">';
+            $row['close'] = '<a href="#"><i class="fas fa-trash-alt text-danger remove" data-id="'.$val['rowid'].'">';
             $row['photo'] = '<img src="'.$val['img'].'" alt="">';
             $row['produk'] = $val['name'];
             $row['harga'] = $val['price'];
-            $row['qty'] = '<input type="number" value="'.$val['qty'].'" name="qty" id="qty" data-rowid="'.$val['rowid'].'">';
+            $row['qty'] = '<input type="number" value="'.$val['qty'].'" name="qty" min="1" id="qty" data-rowid="'.$val['rowid'].'">';
             $row['total'] = $val['subtotal'];
             $data[] = $row;
         }
@@ -344,6 +344,7 @@ class Frontend extends BaseController
         $id_umkm = $carts[array_key_first($carts)]['id_umkm'];
 
         $kota = $this->db->query("select * from tbl_umkm where id = $id_umkm")->getRow();
+        $data['reseller'] = $this->db->query("select * from tbl_pengguna where id =?", session()->get('id'))->getRow();
         $data['total_weight'] = array_sum(array_column($carts, 'weight'));
         $data['id_umkm'] = $id_umkm;
         $data['kota_asal'] = $kota->city_id;
@@ -369,7 +370,7 @@ class Frontend extends BaseController
         
         $this->server_side->db->transBegin();
         try {
-            $id_pembayaran = $this->server_side->createRowsReturnID($pembayaran, 'tbl_pembayaran');
+            $id_pembayaran = $this->server_side->createRowsReturnID($pembayaran, 'tbl_transaksi_pembayaran');
 
             $transaksi['id_pembayaran'] = $id_pembayaran;
             $transaksi['kode_transaksi'] = 'TR'.date('ymd').'-'.$kode;
@@ -397,7 +398,7 @@ class Frontend extends BaseController
                 $detail['subtotal'] = $val['subtotal'];
                 $detail['weight'] = $val['weight'];
 
-                $this->server_side->createRows($detail, 'tbl_detail_transaksi');
+                $this->server_side->createRows($detail, 'tbl_transaksi_detail');
                 $cart->remove($val['rowid']);
             }
             $this->server_side->db->transCommit();
