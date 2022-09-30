@@ -29,7 +29,7 @@ function add_cart(id, id_umkm, img, produk, qty, harga, weight) {
             } else {
                 Swal.fire({
                     title: 'Berhasil',
-                    html: produk + " berhasil dimasukkan keranjang",
+                    html: produk + " dimasukkan ke keranjang",
                     icon: 'success',
                     timer: 2000,
                     showCancelButton: false,
