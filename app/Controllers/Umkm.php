@@ -217,10 +217,13 @@ class Umkm extends BaseController
         if(session()->get('role') != 'UMKM'){
             return redirect()->route('logout');
         }
+        
+        // echo session()->get('id_umkm'); die;
         $data['title'] = 'Produk';
         $data['js'] = array("umkm-produk.js?r=".uniqid());
         $data['kategori'] = $this->server_side->getKategoriProdukById(session()->get('id_umkm'));
-		$data['main_content']   = 'umkm/produk'; 
+		// var_dump($data['kategori']); die;
+        $data['main_content']   = 'umkm/produk'; 
 		echo view('template/adminlte', $data);
     }
 

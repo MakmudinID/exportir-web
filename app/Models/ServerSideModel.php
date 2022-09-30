@@ -15,6 +15,36 @@ class ServerSideModel extends Model
         $this->db = db_connect();
     }
 
+    public function transaksi(){
+        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko
+        FROM tbl_transaksi
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        WHERE tbl_transaksi.id_pengguna = ?
+        AND tbl_transaksi.status='CART'";
+
+        return $this->db->query($sql, array(session()->get('id')))->getResult();
+    }
+
+    public function transaksi_detail($id_transaksi){
+        $sql="SELECT tbl_transaksi_detail.*, tbl_produk_umkm.nama, tbl_produk_umkm.foto
+        FROM `tbl_transaksi_detail`
+        JOIN tbl_produk_umkm ON tbl_produk_umkm.id = tbl_transaksi_detail.id_barang
+        WHERE tbl_transaksi_detail.id_transaksi = ?";
+
+        return $this->db->query($sql, array($id_transaksi))->getResult();
+    }
+
+    public function count_cart(){
+        $sql="SELECT count(id_transaksi) as jumlah 
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+        WHERE tbl_transaksi.id_pengguna = ?
+        AND tbl_transaksi.status='CART'";
+
+        $jumlah = $this->db->query($sql, array(session()->get('id')))->getRow()->jumlah;
+        return $jumlah;
+    }
+
     public function getFoto()
     {
         $q = $this->db->query("select tbl_pengguna.foto from tbl_pengguna where tbl_pengguna.id = ?", array(session()->get('id')))->getRow();
@@ -230,25 +260,34 @@ class ServerSideModel extends Model
     public function verify($email, $password)
     {
         $builder =  $this->db->table('tbl_pengguna');
-        $builder->select('tbl_pengguna.*, tbl_umkm.id as id_umkm');
-        $builder->join('tbl_umkm', 'tbl_umkm.id_pengguna = tbl_pengguna.id', 'left');
+        $builder->select('*');
         $builder->where('tbl_pengguna.email', $email);
         $builder->where('tbl_pengguna.status', 'ACTIVE');
         $num = $builder->countAllResults(false);
         $row = $builder->get()->getRow();
 
         if ($num == 1 && password_verify($password, $row->password)) {
-            $myid = $row->id;
-
-            $data = [
-                'id'  => $row->id,
-                'id_umkm' => $row->id_umkm,
-                'nama' => $row->nama,
-                'email'  => $row->email,
-                'foto'  => $row->foto,
-                'role' => $row->role,
-            ];
-            return $data;
+            if($row->role == 'UMKM'){
+                $id_umkm = $this->db->table('tbl_umkm')->getWhere(['id_pengguna' => $row->id])->getRow()->id;
+                $data = [
+                    'id'  => $row->id,
+                    'id_umkm' => $id_umkm,
+                    'nama' => $row->nama,
+                    'email'  => $row->email,
+                    'foto'  => $row->foto,
+                    'role' => $row->role,
+                ];
+                return $data;
+            }else{
+                $data = [
+                    'id'  => $row->id,
+                    'nama' => $row->nama,
+                    'email'  => $row->email,
+                    'foto'  => $row->foto,
+                    'role' => $row->role,
+                ];
+                return $data;
+            }
         } else {
             return 0;
         }

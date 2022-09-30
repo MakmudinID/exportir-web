@@ -16,10 +16,10 @@ function add_cart(id, id_umkm, img, produk, qty, harga, weight) {
         dataType: 'JSON',
         success: function(res) {
             $('.total-cart').html(res.total);
-            if (res.result != true) {
+            if (res.result == false) {
                 Swal.fire({
                     title: 'Gagal',
-                    html: "Silahkan login atau daftar terlebih dahulu!",
+                    html: "Anda tidak memiliki akses untuk bertransaksi!",
                     icon: 'error',
                     timer: 2000,
                     showCancelButton: false,

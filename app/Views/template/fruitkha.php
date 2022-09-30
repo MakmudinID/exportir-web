@@ -88,8 +88,7 @@ $this->server_side = new ServerSideModel(); ?>
                                         <a href="<?=base_url('/logout')?>"><i class="fa fa-sign-out-alt"></i> Logout</a>
                                     <?php }else if($session->get("role") == "UMKM"){ ?>
                                         <a class="mobile-hide search-bar-icon" href="javascript:void(0)"><i class="fas fa-search"></i></a>
-                                        <a class="shopping-cart" href="<?=base_url('/login')?>"><i class="fas fa-shopping-cart"></i> <span class="badge badge-primary total-cart" style="margin-left:-10px;margin-right:20px">0</span></a>
-                                        <a href="<?=base_url('/profil')?>"><i class="fas fa-user"></i> <?=$session->get("nama")?> </a>
+                                        <a href="<?=base_url('/umkm/profil')?>"><i class="fas fa-user"></i> <?=$session->get("nama")?> </a>
                                         <a href="<?=base_url('/logout')?>"><i class="fa fa-sign-out-alt"></i> Logout</a>
 									<?php }else if($session->get("role") == "SUPERADMIN"){ ?>
                                         <a class="mobile-hide search-bar-icon" href="javascript:void(0)"><i class="fas fa-search"></i></a>
@@ -219,6 +218,7 @@ $this->server_side = new ServerSideModel(); ?>
             })
         })
     </script>
+	<script src="<?=base_url('/my-js/home.js')?>"></script>
     <?php if (isset($js)) {
         foreach ($js as $j) {
             echo '<script src="' . base_url() . '/my-js/' . $j . '"></script>';
