@@ -15,6 +15,17 @@ class ServerSideModel extends Model
         $this->db = db_connect();
     }
 
+    public function transaksi_in($list){
+        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko
+        FROM tbl_transaksi
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        WHERE tbl_transaksi.id_pengguna = ?
+        AND tbl_transaksi.status='CART'
+        AND tbl_transaksi.id IN ($list)";
+
+        return $this->db->query($sql, array(session()->get('id')))->getResult();
+    }
+
     public function transaksi(){
         $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko
         FROM tbl_transaksi
@@ -26,7 +37,7 @@ class ServerSideModel extends Model
     }
 
     public function transaksi_detail($id_transaksi){
-        $sql="SELECT tbl_transaksi_detail.*, tbl_produk_umkm.nama, tbl_produk_umkm.foto
+        $sql="SELECT tbl_transaksi_detail.*, tbl_produk_umkm.nama, tbl_produk_umkm.foto, tbl_produk_umkm.qty_min as max_qty
         FROM `tbl_transaksi_detail`
         JOIN tbl_produk_umkm ON tbl_produk_umkm.id = tbl_transaksi_detail.id_barang
         WHERE tbl_transaksi_detail.id_transaksi = ?";
@@ -43,6 +54,18 @@ class ServerSideModel extends Model
 
         $jumlah = $this->db->query($sql, array(session()->get('id')))->getRow()->jumlah;
         return $jumlah;
+    }
+
+    public function jumlah_transaksi($id_transaksi)
+    {
+        $q = $this->db->query("SELECT SUM(subtotal) as jumlah_transaksi FROM `tbl_transaksi_detail` WHERE id_transaksi=? GROUP BY id_transaksi", array($id_transaksi))->getRow();
+        return $q->jumlah_transaksi;
+    }
+    
+    public function jumlah_barang($id_transaksi)
+    {
+        $q = $this->db->query("SELECT * FROM `tbl_transaksi_detail` WHERE id_transaksi=? ", array($id_transaksi))->getNumRows();
+        return $q;
     }
 
     public function getFoto()
@@ -64,6 +87,18 @@ class ServerSideModel extends Model
     public function getPropinsi()
     {
         $q = $this->db->query("select tbl_propinsi.* from tbl_propinsi")->getResult();
+        return $q;
+    }
+
+    public function getKota($id_prov)
+    {
+        $q = $this->db->query("select tbl_city.* from tbl_city where province_id=?", array($id_prov))->getResult();
+        return $q;
+    }
+
+    public function getKotaAll()
+    {
+        $q = $this->db->query("select tbl_city.* from tbl_city")->getResult();
         return $q;
     }
 

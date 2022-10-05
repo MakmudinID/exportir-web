@@ -25,64 +25,30 @@ $this->server_side = new ServerSideModel();
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 col-md-12">
-				<?php foreach ($transaksi as $t) : ?>
-					<div class="card mb-3">
-						<div class="card-header">
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="<?= $t->id ?>">
-								<label class="form-check-label" for="<?= $t->id ?>">
-									<b><?= $t->nama_toko; ?></b>
-								</label>
-							</div>
-						</div>
-						<div class="card-body">
-							<table class="table table-sm">
-								<tbody>
-									<?php foreach ($this->server_side->transaksi_detail($t->id) as $td) : ?>
-										<tr>
-											<td class="product-image" width="60%">
-												<div class="d-flex">
-													<div class="p-2 align-self-center">
-														<img src="<?= $td->foto; ?>" alt="">
-													</div>
-													<div class="p-2 align-self-center">
-														<?= $td->nama; ?>
-													</div>
-												</div>
-											</td>
-											<td style="vertical-align:middle" class="text-center" width="6%"><input type="number" class="form-control" value="<?= $td->qty; ?>"></td>
-											<td style="vertical-align:middle" class="text-right">Rp <?= number_format($td->subtotal, 0, ',', '.') ?></td>
-											<td style="vertical-align:middle" width="5%"><a href="javascript:void(0)"><i class="fas fa-trash-alt text-danger remove" data-id="<?= $td->id ?>"></td>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				<?php endforeach; ?>
+				<div id="isi_keranjang"></div>
 			</div>
 
 			<div class="col-lg-4">
 				<div class="total-section">
-					<table class="total-table table-sm">
-						<thead class="total-table-head">
-							<tr class="table-total-row">
-								<th>Total</th>
-								<th>Harga</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="total-data">
-								<td><strong>Subtotal: </strong></td>
-								<td id="subtotal"></td>
-							</tr>
-						</tbody>
-					</table>
-					<div class="cart-buttons">
-						<?php if (!empty($transaksi)) { ?>
-							<a href="<?= base_url() ?>/checkout" class="boxed-btn black" style="width:100%">Check Out</a>
-						<?php } ?>
-					</div>
+					<form action="<?=base_url('/checkout')?>" method="POST">
+						<h5>Ringkasan Belanja</h5>
+						<table class="total-table table-sm">
+							<tbody>
+								<tr class="total-data">
+									<td><b>Total Harga (<span class="jumlah_checkout">0</span> barang)</b></td>
+									<td id="subtotal"><b><span class="jumlah_total">Rp 0</span></b></td>
+								</tr>
+							</tbody>
+						</table>
+						<input type="hidden" class="form-control" name="id_transaksi" value="" id="id_transaksi">
+						<div class="cart-buttons text-center">
+							<button type="submit" id="btn-checkout" disabled class="btn btn-primary btn-round" style="width:100%">
+								<b>
+									<h5 class="text-white">Beli (<span class="jumlah_checkout">0</span>)</h5>
+								</b>
+							</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

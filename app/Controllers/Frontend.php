@@ -16,6 +16,15 @@ class Frontend extends BaseController
         helper(['url', 'form', 'array']);
     }
 
+    public function get_kota($id_prov)
+    {
+        $kota = $this->server_side->getKota($id_prov);
+        echo "- Pilih Kota -";
+        foreach($kota as $k){
+            echo "<option value='$k->city_id'>$k->city_name</option>";
+        }
+    }
+
     public function wilayah($method, $id_province = null)
     {
         // var_dump($method, $id_province);
@@ -359,62 +368,124 @@ class Frontend extends BaseController
 
     function cart_()
     {
-        $cart = \Config\Services::cart();
-        $data_cart = $cart->contents();
-        $data = [];
-        foreach ($data_cart as $val) {
-            $row = [];
-            $row['close'] = '<a href="#"><i class="fas fa-trash-alt text-danger remove" data-id="' . $val['rowid'] . '">';
-            $row['photo'] = '<img src="' . $val['img'] . '" alt="">';
-            $row['produk'] = $val['name'];
-            $row['harga'] = $val['price'];
-            $row['qty'] = '<input type="number" value="' . $val['qty'] . '" name="qty" min="1" id="qty" data-rowid="' . $val['rowid'] . '">';
-            $row['total'] = $val['subtotal'];
-            $data[] = $row;
+        $cart_='';
+        foreach ($this->server_side->transaksi() as $t){
+            $cart_.='<div class="card mb-3">
+                <div class="card-header">
+                    <div class="d-flex">
+                        <div class="form-check">
+                            <input class="form-check-input" onchange="calculateAll()" type="checkbox" id="'.$t->id.'" data-id_transaksi="'.$t->id.'" data-jumlah_barang="'.$this->server_side->jumlah_barang($t->id).'" name="'.$t->id.'" value="'.$this->server_side->jumlah_transaksi($t->id).'">
+                            <label class="form-check-label" for="'.$t->id.'">
+                                <b>'.$t->nama_toko.'</b>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tbody>';
+                            foreach ($this->server_side->transaksi_detail($t->id) as $td){
+                                $cart_.='<tr>
+                                    <td class="product-image" width="60%">
+                                        <div class="d-flex">
+                                            <div class="p-2 align-self-center">
+                                                <img src="'. $td->foto.'" alt="">
+                                            </div>
+                                            <div class="p-2 align-self-center">
+                                                '.$td->nama.'
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:middle" class="text-center" width="6%"><input type="number" onchange="qty('.$td->id.')" id="qty_'.$td->id.'" min="1" max="'.$td->max_qty.'" class="form-control" value="'.$td->qty.'"></td>
+                                    <td style="vertical-align:middle" class="text-right"><b>Rp '.number_format($td->subtotal, 0, ',', '.').'</b></td>
+                                    <td style="vertical-align:middle" width="5%"><a href="javascript:void(0)" class="remove" data-id="'.$td->id.'" data-id_transaksi="'.$t->id.'"><i class="fas fa-trash-alt text-danger"></i></a></td>
+                                </tr>';
+                            }
+                        $cart_.='</tbody>
+                    </table>
+                    <div class="form-group">
+                        <label for="catatan">Catatan Pesanan</label>
+                        <textarea class="form-control" onchange="catatan('.$t->id.')" id="catatan_'.$t->id.'">'.$t->catatan_beli.'</textarea>
+                    </div>
+                </div>
+            </div>';
         }
 
-        $output = array(
-            "draw" => $this->request->getPost('draw'),
-            "recordsTotal" => count($cart->contents()),
-            "recordsFiltered" => count($cart->contents()),
-            "data" => $data,
-        );
-        //output dalam format JSON
-        echo json_encode($output);
+        if(!empty($this->server_side->transaksi())){
+            echo $cart_;
+        }else{
+            $cart_.='<div class="card mb-3">
+                        <div class="card-body text-center">
+                            <h3>Wah, keranjang belanjamu kosong</h3>
+                            <p>Yuk, isi dengan barang-barang kebutuhanmu!</p>
+                            <a href="'.base_url('/').'" class="btn btn-primary">Mulai Belanja</a>
+                        </div>
+                    </div>';
+            echo $cart_;
+        }
     }
 
     public function update_qty()
     {
-        $cart = \Config\Services::cart();
-        $row_id = $this->request->getPost('rowId');
-        $qty = $this->request->getPost('qty');
+        $row_id = $this->request->getPost('id');
+        $qty = $this->request->getPost('jumlah');
+        $harga = $this->db->table('tbl_transaksi_detail')->getWhere(['id' => $row_id])->getRow()->harga;
+        
+        $tbl_transaksi_detail['qty'] = $qty;
+        $tbl_transaksi_detail['subtotal'] = $qty*$harga;
 
-        $data = array(
-            'rowid' => $row_id,
-            'qty' => $qty
-        );
+        $this->server_side->updateRows($row_id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
+    }
 
-        $cart->update($data);
-        echo 'berhasil';
+    public function update_catatan()
+    {
+        $row_id = $this->request->getPost('id');
+        $catatan = $this->request->getPost('catatan');
+        
+        $tbl_transaksi['id'] = $row_id;
+        $tbl_transaksi['catatan_beli'] = $catatan;
+
+        $this->server_side->updateRows($row_id, $tbl_transaksi, 'tbl_transaksi');
     }
 
     public function remove_cart()
     {
-        $cart = \Config\Services::cart();
         $row_id = $this->request->getPost('id');
-        $cart->remove($row_id);
-        $datas['total'] =  count($cart->contents());
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        
+        $check = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi])->getNumRows();
+
+        if($check > 1){
+            $this->server_side->deleteRows($row_id, 'tbl_transaksi_detail');
+        }else{
+            $this->server_side->deleteRows($row_id, 'tbl_transaksi_detail');
+            $this->server_side->deleteRows($id_transaksi, 'tbl_transaksi');
+        }
+
+        $datas['total'] =  $this->server_side->count_cart();
         echo json_encode($datas);
     }
 
     public function checkout()
     {
+        $transaksi_list = rtrim($this->request->getPost('id_transaksi'), ',');
+        // if($transaksi_list != ''){
+        //     //get_transaksi
+        // echo $this->request->getPost('id_transaksi'); die;
+            $data['transaksi']  = $this->server_side->transaksi_in($transaksi_list);
+        //     foreach($data['transaksi'] as $t){
+        //         $total_berat = $this->server_side->jumlah_berat($t->id);
+        //         $kota_penerima = $this->server_side->jumlah_berat($t->id);
+        //     }
+        // }else{
+        //     return redirect()->to('/');
+        // }
+        
         $cart = \Config\Services::cart();
         $propins = json_decode($this->wilayah('province'));
         $carts = $cart->contents();
         // var_dump($carts);die;
         $id_umkm = $carts[array_key_first($carts)]['id_umkm'];
-
         $kota = $this->db->query("select * from tbl_umkm where id = $id_umkm")->getRow();
         $data['reseller'] = $this->db->query("select * from tbl_pengguna where id =?", session()->get('id'))->getRow();
         $data['total_weight'] = array_sum(array_column($carts, 'weight'));
@@ -424,7 +495,6 @@ class Frontend extends BaseController
         $data['propinsi'] = $propins->rajaongkir->results;
         $data['js'] = array("checkout.js?r=" . uniqid());
         $data['main_content']   = 'frontend/checkout';
-        // var_dump($data);die;
         echo view('template/fruitkha', $data);
     }
 

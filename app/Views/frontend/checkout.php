@@ -1,3 +1,10 @@
+<?php
+
+use App\Models\ServerSideModel;
+
+$this->server_side = new ServerSideModel();
+?>
+
 <!-- breadcrumb-section -->
 <div class="breadcrumb-section breadcrumb-bg">
     <div class="container">
@@ -36,21 +43,21 @@
                                                 <label for="nama"><b>Nama Penerima</b></label>
                                                 <input type="hidden" name="weight" id="weight" value="<?= $total_weight ?>">
                                                 <input type="hidden" name="id_umkm" id="id_umkm" value="<?= $id_umkm ?>">
-                                                <input type="text" name="nama" value="<?=$reseller->nama?>" id="nama" placeholder="Nama Penerima" class="form-control" required>
+                                                <input type="text" name="nama" value="<?= $reseller->nama ?>" id="nama" placeholder="Nama Penerima" class="form-control" required>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="nama"><b>Email Penerima</b></label>
-                                                <input type="email" name="email" value="<?=$reseller->email?>" id="email" placeholder="Email Penerima" class="form-control" required>
+                                                <input type="email" name="email" value="<?= $reseller->email ?>" id="email" placeholder="Email Penerima" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-6">
                                                 <label for="nama"><b>No. Handphone</b></label>
-                                                <input type="text" name="nohp" id="nohp" value="<?=$reseller->no_hp?>" placeholder="No.Handphone" class="form-control" required>
+                                                <input type="text" name="nohp" id="nohp" value="<?= $reseller->no_hp ?>" placeholder="No.Handphone" class="form-control" required>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="alamat"><b>Alamat Penerima</b></label>
-                                                <input type="text" name="alamat" id="alamat" value="<?=$reseller->alamat?>" class="form-control" placeholder="Alamat Penerima">
+                                                <input type="text" name="alamat" id="alamat" value="<?= $reseller->alamat ?>" class="form-control" placeholder="Alamat Penerima">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -108,6 +115,53 @@
                                 </div>
                                 <div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                                     <div class="card-body">
+                                        <?php
+                                        foreach ($transaksi as $t) {
+                                            $cart_ .= '<div class="card mb-3">
+                                            <div class="card-header">
+                                                <div class="d-flex">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" onchange="calculateAll()" type="checkbox" id="' . $t->id . '" data-id_transaksi="' . $t->id . '" data-jumlah_barang="' . $this->server_side->jumlah_barang($t->id) . '" name="' . $t->id . '" value="' . $this->server_side->jumlah_transaksi($t->id) . '">
+                                                        <label class="form-check-label" for="' . $t->id . '">
+                                                            <b>' . $t->nama_toko . '</b>
+                                                        </label>
+                                                    </div>
+                                                    <div class="ml-auto">
+                                                        <button class="btn btn-success">Ajukan Kerjasama</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table table-sm">
+                                                    <tbody>';
+                                            foreach ($this->server_side->transaksi_detail($t->id) as $td) {
+                                                $cart_ .= '<tr>
+                                                                <td class="product-image" width="60%">
+                                                                    <div class="d-flex">
+                                                                        <div class="p-2 align-self-center">
+                                                                            <img src="' . $td->foto . '" alt="">
+                                                                        </div>
+                                                                        <div class="p-2 align-self-center">
+                                                                            ' . $td->nama . '
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="vertical-align:middle" class="text-center" width="6%">' . $td->qty . '</td>
+                                                                <td style="vertical-align:middle" class="text-right"><b>Rp ' . number_format($td->subtotal, 0, ',', '.') . '</b></td>
+                                                                <td style="vertical-align:middle" width="5%"><a href="javascript:void(0)" class="remove" data-id="' . $td->id . '" data-id_transaksi="' . $t->id . '"><i class="fas fa-trash-alt text-danger"></i></a></td>
+                                                            </tr>';
+                                            }
+                                            $cart_ .= '</tbody>
+                                                </table>
+                                                <div class="form-group">
+                                                    <label for="catatan">Catatan Pesanan</label>
+                                                    <hr>
+                                                    '. $t->catatan_beli . '
+                                                </div>
+                                            </div>
+                                        </div>';
+                                        }
+                                        ?>
                                         <div class="cart-table-wrap">
                                             <table class="cart-table" id="table">
                                                 <thead>

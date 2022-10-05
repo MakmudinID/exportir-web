@@ -60,6 +60,7 @@ class Admin extends BaseController
         $data['js'] = array("admin-umkm.js?r=" . uniqid());
         $data['pengguna'] = $this->db->query('select * from tbl_pengguna')->getResult();
         $data['kategori_umkm'] = $this->db->query('select * from tbl_kategori_umkm')->getResult();
+        $data['propinsi'] = $this->db->query('select * from tbl_propinsi')->getResult();
         $data['main_content']   = 'admin/setting/umkm';
         echo view('template/adminlte', $data);
     }

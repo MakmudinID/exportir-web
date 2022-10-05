@@ -1,103 +1,105 @@
 "use strict";
 
 let table; // use a global for the submit and return data rendering in the examples
+function load_cart() {
+    $.ajax({
+        url: base_url + '/cart_',
+        type: 'POST',
+        success: function(res) {
+            $('#isi_keranjang').html(res);
+        }
+    })
+}
+
+function qty(id) {
+    var val = $("#qty_" + id).val();
+    $.ajax({
+        url: base_url + '/update_qty',
+        cache: false,
+        type: 'POST',
+        data: {
+            'id': id,
+            'jumlah': val
+        },
+        success: function(msg) {
+            load_cart();
+        }
+    });
+}
+
+function catatan(id) {
+    var val = $("#catatan_" + id).val();
+    $.ajax({
+        url: base_url + '/update_catatan',
+        cache: false,
+        type: 'POST',
+        data: {
+            'id': id,
+            'catatan': val
+        },
+        success: function(msg) {
+            load_cart();
+        }
+    });
+}
+
+function calculateAll() {
+    var count = 0;
+    var jumlah_barang = 0;
+    var id_transaksi = '';
+    $("input[type='checkbox']").each(function(index, checkbox) {
+        if (checkbox.checked) {
+            count += parseInt(checkbox.value);
+            jumlah_barang += parseInt($(this).data('jumlah_barang'));
+            id_transaksi += $(this).data('jumlah_barang') + ',';
+        }
+    });
+
+    if (count > 0) {
+        $('#btn-checkout').prop("disabled", false);
+    } else {
+        $('#btn-checkout').prop("disabled", true);
+    }
+
+    var rupiah = (count).toLocaleString('id', {
+        style: 'currency',
+        currency: 'IDR'
+    });
+    var rp = rupiah.replace(",00", "");
+
+    $('.jumlah_checkout').text(jumlah_barang);
+    $('.jumlah_total').text(rp);
+    $('#id_transaksi').val(id_transaksi);
+}
 
 jQuery(document).ready(function() {
-    table = $('#table').DataTable({
-        ajax: {
-            url: base_url + "/cart_",
-            type: "post",
-        },
-        lengthMenu: [10, 20, 30, 40, 50, 60, 80, 100],
-        responsive: true,
-        serverSide: true,
-        processing: true,
-        paginate: false,
-        filter: false,
-        info: false,
-        ordering: false,
-        columns: [
-            { "data": "photo" },
-            { "data": "produk" },
-            { "data": "harga", render: $.fn.dataTable.render.number('.', ',', '') },
-            { "data": "qty" },
-            { "data": "total", render: $.fn.dataTable.render.number('.', ',', '') },
-            {
-                "data": 'close',
-                "sortable": false,
-            },
-        ],
-        columnDefs: [{
-            targets: [5],
-            className: "product-remove"
-        }, {
-            targets: [0],
-            className: "product-image"
-        }, {
-            targets: [1],
-            className: "product-name"
-        }, {
-            targets: [2],
-            className: "product-price text-center"
-        }, {
-            targets: [3],
-            className: "product-quantity text-center"
-        }, {
-            targets: [4],
-            className: "product-total"
-        }],
-        footerCallback: function(row, data, start, end, display) {
-            let api = this.api();
-            var intVal = function(i) {
-                return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
-            };
-            var total = api
-                .column(4)
-                .data()
-                .reduce(function(a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
-            // console.log(total);
-            let rp = total.toLocaleString('id');
-            let rp1 = rp.replace(",00", "");
-            $('#subtotal').html(rp1);
-        },
-    });
+    load_cart();
 
     $(document).on('click', '.remove', function(e) {
         e.preventDefault();
         var id = $(this).data('id');
+        var id_transaksi = $(this).data('id_transaksi');
         $.ajax({
             url: base_url + '/remove_cart',
             type: 'POST',
             data: {
-                id: id
+                id: id,
+                id_transaksi: id_transaksi
             },
             success: function(res) {
-                // console.log(res);
                 var data = JSON.parse(res);
-                table.ajax.reload();
                 $('.total-cart').html(data.total);
+                Swal.fire({
+                    title: 'Berhasil',
+                    html: "1 barang telah dihapus",
+                    icon: 'success',
+                    timer: 2000,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    buttons: false,
+                });
+                load_cart();
             }
         })
     })
-
-    $(document).on('change', '#qty', function() {
-        var rowId = $(this).data('rowid');
-        var qty = $(this).val();
-        console.log(rowId, qty)
-        $.ajax({
-            url: base_url + '/update_qty',
-            type: 'POST',
-            data: {
-                rowId: rowId,
-                qty: qty
-            },
-            success: function(res) {
-                // console.log(res)
-                table.ajax.reload();
-            }
-        })
-    })
-
 })
