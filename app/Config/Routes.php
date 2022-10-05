@@ -54,9 +54,12 @@ $routes->post('add-cart', 'Frontend::add_cart');
 $routes->post('cart_', 'Frontend::cart_');
 $routes->post('remove_cart', 'Frontend::remove_cart');
 $routes->post('update_qty', 'Frontend::update_qty');
+$routes->post('this_checkout', 'Frontend::this_checkout');
+$routes->post('update_catatan', 'Frontend::update_catatan');
 $routes->get('count_cart', 'Frontend::count_cart');
-$routes->get('checkout', 'Frontend::checkout');
+$routes->post('checkout', 'Frontend::checkout');
 $routes->get('wilayah/(:any)/(:any)', 'Frontend::wilayah/$1/$2');
+$routes->get('get_kota/(:any)', 'Frontend::get_kota/$1');
 $routes->post('kurir', 'Frontend::kurir');
 $routes->post('transaksi', 'Frontend::transaksi');
 
@@ -83,6 +86,7 @@ $routes->post('umkm/delete_kategori', 'Umkm::delete_kategori');
 
 //reseller backoffice
 $routes->get('reseller/profil', 'Reseller::profil');
+$routes->post('reseller/update_profil', 'Reseller::update_profil');
 $routes->get('reseller/berita', 'Reseller::berita');
 $routes->post('reseller/berita_', 'Reseller::berita_');
 $routes->get('reseller/detail-berita/(:any)', 'Reseller::detail_berita/$1');
