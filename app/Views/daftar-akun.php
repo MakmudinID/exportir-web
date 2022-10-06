@@ -39,7 +39,7 @@
                 <a href="<?= base_url('/') ?>" class="h1"><b>TOKO</b>REMPAH</a>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Buat Akun Sekarang!.</p>
+                <p class="login-box-msg">Buat Akun Sekarang!</p>
                 <form action="<?= base_url() ?>/daftar/proses" method="post">
                     <div class="input-group mb-3">
                         <input type="text" name="nama" class="form-control" placeholder="Nama" required>
@@ -74,14 +74,14 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <select name="role" class="form-control" placeholder="Daftar Sebagai" required>
+                        <select name="role" id="role" class="form-control" placeholder="Daftar Sebagai" required>
                             <option value="">-Daftar Sebagai-</option>
                             <option value="RESELLER">RESELLER</option>
                             <option value="UMKM">UMKM</option>
                         </select>
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-address-book"></span>
+                                <span class="fas fa-universal-access"></span>
                             </div>
                         </div>
                     </div>
@@ -108,6 +108,7 @@
     <script src="<?= base_url() ?>/assets/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="<?= base_url() ?>/assets/admin/js/adminlte.min.js"></script>
+    <script src="<?=base_url('/my-js/daftar.js')?>"></script>
 </body>
 
 </html>

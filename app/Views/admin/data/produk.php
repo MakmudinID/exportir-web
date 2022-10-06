@@ -26,9 +26,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>UMKM</th>
                                     <th>Foto</th>
                                     <th>Nama Barang</th>
+                                    <th>UMKM</th>
                                     <th>Kategori</th>
                                     <th>Stok</th>
                                 </tr>

@@ -31,9 +31,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Pengguna</th>
+                                    <th>Nama Pemilik</th>
                                     <th>Nama UMKM</th>
-                                    <th>Foto</th>
+                                    <th>Email</th>
                                     <th>Kategori</th>
                                     <th>Status</th>
                                     <th></th>
@@ -60,32 +60,79 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="id_pengguna">Nama Pengguna</label>
-                        <select id = "id_pengguna" name="id_pengguna" class="form-control">
-                            <option value=''>- Pilih Pengguna -</option>
-                            <?php foreach($pengguna as $val) {?>
-                                <option value="<?= $val->id ?>"> <?= $val->nama ?></option>
-                            <?php } ?>
-                        </select>
-                        <input type="hidden" name="id" id="id">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_pengguna">Nama Pengguna</label>
+                                <select id="id_pengguna" name="id_pengguna" class="form-control">
+                                    <option value=''>- Pilih Pengguna -</option>
+                                    <?php foreach ($pengguna as $val) { ?>
+                                        <option value="<?= $val->id ?>"> <?= $val->nama ?></option>
+                                    <?php } ?>
+                                </select>
+                                <input type="hidden" name="id" id="id">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nama">Nama UMKM</label>
+                                <input type="text" name="nama" id="nama" class="form-control">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="nama">Nama UMKM</label>
-                        <input type="text" name="nama" id="nama" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="id_kategori">Kategori UMKM</label>
-                        <select id = "id_kategori" name="id_kategori" class="form-control">
-                            <option value=''>- Pilih Kategori -</option>
-                            <?php foreach($kategori_umkm as $val) {?>
-                                <option value="<?= $val->id ?>"> <?= $val->nama ?></option>
-                            <?php } ?>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_kategori">Kategori UMKM</label>
+                                <select id="id_kategori" name="id_kategori" class="form-control">
+                                    <option value=''>- Pilih Kategori -</option>
+                                    <?php foreach ($kategori_umkm as $val) { ?>
+                                        <option value="<?= $val->id ?>"> <?= $val->nama ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="status" name="status">
+                                    <option value="ACTIVE">ACTIVE</option>
+                                    <option value="INACTIVE">INACTIVE</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="deskripsi">Deskripsi</label>
                         <textarea name="deskripsi" id="deskripsi" class="form-control summernote"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <input type="text" name="alamat" class="form-control" id="alamat">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="propinsi">Provinsi</label>
+                                <select name="propinsi" class="form-control" id="propinsi">
+                                    <option value="">- Pilih Propinsi -</option>
+                                    <?php foreach ($propinsi as $p) : ?>
+                                        <option value="<?= $p->province_id ?>"><?= $p->province; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="kota">Kota</label>
+                                <select name="kota" class="form-control" id="kota">
+                                    <option value="">- Pilih Kota -</option>
+                                    <?php foreach ($kota as $p) : ?>
+                                        <option value="<?= $p->city_id ?>"><?= $p->city_name; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="foto">Foto</label><br>
@@ -98,13 +145,6 @@
                         <div class="mt-2">
                             <img id="output_image" class="img-thumbnail" width="200" />
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status">
-                            <option value="ACTIVE">ACTIVE</option>
-                            <option value="INACTIVE">INACTIVE</option>
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">

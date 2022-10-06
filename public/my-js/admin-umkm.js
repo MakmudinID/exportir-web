@@ -4,7 +4,7 @@ let editor, table, save_method; // use a global for the submit and return data r
 
 jQuery(document).ready(function() {
     $('.summernote').summernote({
-        height:300
+        height: 300
     });
     table = $('#table').DataTable({
         ajax: {
@@ -23,7 +23,7 @@ jQuery(document).ready(function() {
             },
             { "data": "nama_pengguna" },
             { "data": "nama_umkm" },
-            { "data": "foto" },
+            { "data": "email" },
             { "data": "kategori" },
             { "data": "status" },
             { "data": "aksi" },
@@ -36,10 +36,20 @@ jQuery(document).ready(function() {
         }],
     });
 
+    $(document).on('change', '#propinsi', function() {
+        $.ajax({
+            url: base_url + "/get_kota/" + $(this).val(),
+            type: "GET",
+            success: function(isi) {
+                $('#kota').html(isi);
+            }
+        });
+    });
+
     $(document).on('click', '.add', function() {
         save_method = 'add';
         document.getElementById("row-display").style.display = "none";
-        $('[name="deskripsi"]').summernote('code','');
+        $('[name="deskripsi"]').summernote('code', '');
         $('#form-user')[0].reset();
         $('#modal-default').modal('show');
         $('.modal-title').text('Tambah UMKM');
@@ -57,9 +67,12 @@ jQuery(document).ready(function() {
         $('[name="id_pengguna"]').val($(this).data('idpengguna'));
         $('[name="id_kategori"]').val($(this).data('idkategori'));
         $('[name="nama"]').val($(this).data('umkm'));
-        $('[name="deskripsi"]').summernote('code',$(this).data('deskripsi'));
+        $('[name="deskripsi"]').summernote('code', $(this).data('deskripsi'));
         $('[name="foto_"]').val($(this).data('foto'));
         $('[name="status"]').val($(this).data('status'));
+        $('[name="propinsi"]').val($(this).data('propinsi'));
+        $('[name="kota"]').val($(this).data('kota'));
+        $('[name="alamat"]').val($(this).data('alamat'));
     });
 
     $(document).on('click', '.delete', function() {
@@ -118,6 +131,18 @@ jQuery(document).ready(function() {
                 required: true
             },
             status: {
+                required: true
+            },
+            deskripsi: {
+                required: true
+            },
+            alamat: {
+                required: true
+            },
+            propinsi: {
+                required: true
+            },
+            kota: {
                 required: true
             },
         },

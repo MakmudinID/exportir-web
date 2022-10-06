@@ -55,7 +55,7 @@ $this->server_side = new ServerSideModel(); ?>
 	<!-- header -->
 	<div class="top-header-area" id="sticker">
 		<div class="container">
-			<div class="row">
+			<div class="row justify-content-center">
 				<div class="col-lg-12 col-sm-12 align-self-center text-center">
 					<div class="main-menu-wrap">
 						<!-- logo -->
@@ -69,8 +69,8 @@ $this->server_side = new ServerSideModel(); ?>
 						<!-- menu start -->
 						<nav class="main-menu">
 							<ul>
-                                <li><a href="<?=base_url('/')?>">Home</a></li>
-                                <li class="current-list-item"><a href="#">Kategori</a>
+                                <li class="current-list-item"><a href="<?=base_url('/')?>">Home</a></li>
+                                <li><a href="#">Kategori</a>
 									<ul class="sub-menu">
 										<?php foreach($this->server_side->getKategoriUMKMreal() as $k):?>
 											<li><a href="<?= base_url('/kategori/'.$k->id)?>"><?= $k->nama;?></a></li>
@@ -140,7 +140,7 @@ $this->server_side = new ServerSideModel(); ?>
 	<!-- footer -->
 	<div class="footer-area">
 		<div class="container">
-			<div class="row">
+			<div class="row justify-content-center">
 				<div class="col-lg-6 col-md-6">
 					<div class="footer-box about-widget">
 						<h2 class="widget-title">About us</h2>

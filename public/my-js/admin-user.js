@@ -35,6 +35,16 @@ jQuery(document).ready(function() {
         }],
     });
 
+    $(document).on('change', '#propinsi', function() {
+        $.ajax({
+            url: base_url + "/get_kota/" + $(this).val(),
+            type: "GET",
+            success: function(isi) {
+                $('#kota').html(isi);
+            }
+        });
+    });
+
     $(document).on('click', '.add', function() {
         save_method = 'add';
         document.getElementById("row-display").style.display = "none";
@@ -58,6 +68,9 @@ jQuery(document).ready(function() {
         $('[name="role"]').val($(this).data('role'));
         $('[name="photo_"]').val($(this).data('photo'));
         $('[name="status"]').val($(this).data('status'));
+        $('[name="propinsi"]').val($(this).data('propinsi'));
+        $('[name="kota"]').val($(this).data('kota'));
+        $('[name="alamat"]').val($(this).data('alamat'));
     });
 
     $(document).on('click', '.delete', function() {
@@ -116,10 +129,18 @@ jQuery(document).ready(function() {
                 required: true
             },
             password: {
-                required: true
+                required: {
+                    depends: function(element) {
+                        return save_method != 'update';
+                    },
+                }
             },
             repassword: {
-                required: true,
+                required: {
+                    depends: function(element) {
+                        return save_method != 'update';
+                    },
+                },
                 equalTo: "#password",
             },
             role: {
@@ -159,7 +180,7 @@ jQuery(document).ready(function() {
                     } else {
                         Swal.fire({
                             title: 'Berhasil',
-                            html: "User Berhasil Ditambahkan!",
+                            html: "User Berhasil Disimpan!",
                             icon: 'success',
                             timer: 3000,
                             showCancelButton: false,

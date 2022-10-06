@@ -60,7 +60,8 @@ class Admin extends BaseController
         $data['js'] = array("admin-umkm.js?r=" . uniqid());
         $data['pengguna'] = $this->db->query('select * from tbl_pengguna')->getResult();
         $data['kategori_umkm'] = $this->db->query('select * from tbl_kategori_umkm')->getResult();
-        $data['propinsi'] = $this->db->query('select * from tbl_propinsi')->getResult();
+        $data['propinsi'] = $this->server_side->getPropinsi();
+        $data['kota'] = $this->server_side->getKotaAll();
         $data['main_content']   = 'admin/setting/umkm';
         echo view('template/adminlte', $data);
     }
@@ -71,7 +72,7 @@ class Admin extends BaseController
             return redirect()->route('logout');
         }
         $table = 'tbl_umkm';
-        $select = 'tbl_umkm.*, tbl_pengguna.nama as nama_pengguna, tbl_kategori_umkm.nama as nama_kategori';
+        $select = 'tbl_umkm.*, tbl_pengguna.nama as nama_pengguna, tbl_pengguna.email as email, tbl_kategori_umkm.nama as nama_kategori';
         $join = array(
             array('tbl_pengguna', 'tbl_pengguna.id = tbl_umkm.id_pengguna'),
             array('tbl_kategori_umkm', 'tbl_kategori_umkm.id = tbl_umkm.id_kategori')
@@ -91,11 +92,12 @@ class Admin extends BaseController
             $row['no'] = $no;
             $row['nama_pengguna'] = $field->nama_pengguna;
             $row['nama_umkm'] = $field->nama;
-            $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';
+            // $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';
+            $row['email'] = $field->email;
             $row['kategori'] = $field->nama_kategori;
             $row['status'] = ($field->status == 'ACTIVE') ? $field->status : $field->status;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-idpengguna="' . $field->id_pengguna . '" data-idkategori="' . $field->id_kategori . '" data-umkm="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-alamat="' . $field->alamat . '" data-kota="' . $field->city_id . '" data-propinsi="' . $field->province_id . '" data-id="' . $field->id . '" data-idpengguna="' . $field->id_pengguna . '" data-idkategori="' . $field->id_kategori . '" data-umkm="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
       </div>';
             $data[] = $row;
@@ -124,6 +126,9 @@ class Admin extends BaseController
         $data['slug']   =  strtolower(url_title($this->request->getPost('nama')));
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+        $data['province_id']  = htmlspecialchars($this->request->getPost('propinsi'), ENT_QUOTES);
+        $data['city_id']  = htmlspecialchars($this->request->getPost('kota'), ENT_QUOTES);
+        $data['alamat']  = htmlspecialchars($this->request->getPost('alamat'), ENT_QUOTES);
         $data['create_user'] = session()->get('nama');
         $data['create_date'] = date('Y-m-d H:i:s');
 
@@ -173,6 +178,9 @@ class Admin extends BaseController
         $data['slug']   =  strtolower(url_title($this->request->getPost('nama')));
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+        $data['province_id']  = htmlspecialchars($this->request->getPost('propinsi'), ENT_QUOTES);
+        $data['city_id']  = htmlspecialchars($this->request->getPost('kota'), ENT_QUOTES);
+        $data['alamat']  = htmlspecialchars($this->request->getPost('alamat'), ENT_QUOTES);
         $data['edit_user'] = session()->get('nama');
         $data['edit_date'] = date('Y-m-d H:i:s');
 
@@ -262,9 +270,9 @@ class Admin extends BaseController
             $no++;
             $row = array();
             $row['no'] = $no;
-            $row['umkm'] = $field->nama_umkm;
             $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';
             $row['nama'] = $field->nama;
+            $row['umkm'] = $field->nama_umkm;
             $row['kategori'] = $field->nama_kategori;
             $row['qty'] = $field->qty . " " . $field->satuan;
             $data[] = $row;
@@ -297,6 +305,9 @@ class Admin extends BaseController
         $password_hash =  password_hash(htmlspecialchars($this->request->getPost('password'), ENT_QUOTES), PASSWORD_BCRYPT, $options);
         $data['password'] = $password_hash;
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+        $data['id_propinsi']  = htmlspecialchars($this->request->getPost('propinsi'), ENT_QUOTES);
+        $data['id_kota']  = htmlspecialchars($this->request->getPost('kota'), ENT_QUOTES);
+        $data['alamat']  = htmlspecialchars($this->request->getPost('alamat'), ENT_QUOTES);
         $data['create_user'] = session()->get('nama');
         $data['create_date'] = date('Y-m-d H:i:s');
 
@@ -345,12 +356,20 @@ class Admin extends BaseController
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['email']  = htmlspecialchars($this->request->getPost('email'), ENT_QUOTES);
         $data['no_hp']  = htmlspecialchars($this->request->getPost('no_hp'), ENT_QUOTES);
-        $options = [
-            'cost' => 10,
-        ];
-        $password_hash =  password_hash(htmlspecialchars($this->request->getPost('password'), ENT_QUOTES), PASSWORD_BCRYPT, $options);
-        $data['password'] = $password_hash;
+        
+        if($this->request->getPost('password') != ''){
+            $options = [
+                'cost' => 10,
+            ];
+            $password_hash =  password_hash(htmlspecialchars($this->request->getPost('password'), ENT_QUOTES), PASSWORD_BCRYPT, $options);
+            $data['password'] = $password_hash;
+        }
+
         $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+        $data['id_propinsi']  = htmlspecialchars($this->request->getPost('propinsi'), ENT_QUOTES);
+        $data['id_kota']  = htmlspecialchars($this->request->getPost('kota'), ENT_QUOTES);
+        $data['alamat']  = htmlspecialchars($this->request->getPost('alamat'), ENT_QUOTES);
+
         $data['create_user'] = session()->get('nama');
         $data['create_date'] = date('Y-m-d H:i:s');
 
@@ -410,7 +429,10 @@ class Admin extends BaseController
         if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
+
         $data['title'] = 'Admin | User';
+        $data['propinsi'] = $this->server_side->getPropinsi();
+        $data['kota'] = $this->server_side->getKotaAll();
         $data['js'] = array("admin-user.js?r=" . uniqid());
         $data['main_content']   = 'admin/setting/user';
         echo view('template/adminlte', $data);
@@ -442,7 +464,7 @@ class Admin extends BaseController
             $row['role'] = $field->role;
             $row['status'] = ($field->status == 'ACTIVE') ? $field->status : $field->status;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-nama="' . $field->nama . '" data-email="' . $field->email . '" data-no_hp="' . $field->no_hp . '" data-role="' . $field->role . '" data-status="' . $field->status . '" data-photo="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-propinsi="' . $field->id_propinsi . '" data-kota="' . $field->id_kota . '" data-nama="' . $field->nama . '" data-email="' . $field->email . '" data-no_hp="' . $field->no_hp . '" data-role="' . $field->role . '" data-status="' . $field->status . '" data-photo="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
       </div>';
             $data[] = $row;

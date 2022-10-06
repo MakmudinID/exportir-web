@@ -16,14 +16,14 @@ jQuery(document).ready(function() {
         order: [],
         columns: [
             { "data": "no" },
-            { "data": "umkm" },
             { "data": "foto" },
             { "data": "nama" },
+            { "data": "umkm" },
             { "data": "kategori" },
             { "data": "qty" },
         ],
         columnDefs: [{
-            targets: [0,2],
+            targets: [0, 1],
             orderable: false,
             searchable: false,
             className: 'text-center'

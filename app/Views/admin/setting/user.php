@@ -65,36 +65,82 @@
                         <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan nama">
                         <input type="hidden" name="id" id="id">
                     </div>
-                    <div class="form-group">
-                        <label for="hp">No. Handphone</label>
-                        <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="Masukkan nomor">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="hp">No. Handphone</label>
+                                <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="Masukkan nomor">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password">Retype Password</label>
+                                <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Masukkan kembali password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                <select class="form-control" id="role" name="role">
+                                    <option value="SUPERADMIN">Super Admin</option>
+                                    <option value="UMKM">UMKM</option>
+                                    <option value="RESELLER">Reseller</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="status" name="status">
+                                    <option value="ACTIVE">ACTIVE</option>
+                                    <option value="INACTIVE">INACTIVE</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email">
+                        <label for="alamat">Alamat</label>
+                        <input type="text" name="alamat" class="form-control" placeholder="Masukkan alamat" id="alamat">
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Retype Password</label>
-                        <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Masukkan kembali password">
-                    </div>
-                    <div class="form-group">
-                        <label for="role">Role</label>
-                        <select class="form-control" id="role" name="role">
-                            <option value="SUPERADMIN">Super Admin</option>
-                            <option value="UMKM">UMKM</option>
-                            <option value="RESELLER">Reseller</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status">
-                            <option value="ACTIVE">ACTIVE</option>
-                            <option value="INACTIVE">INACTIVE</option>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="propinsi">Provinsi</label>
+                                <select name="propinsi" class="form-control" id="propinsi">
+                                    <option value="">- Pilih Propinsi -</option>
+                                    <?php foreach ($propinsi as $p) : ?>
+                                        <option value="<?= $p->province_id ?>"><?= $p->province; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="kota">Kota</label>
+                                <select name="kota" class="form-control" id="kota">
+                                    <option value="">- Pilih Kota -</option>
+                                    <?php foreach ($kota as $p) : ?>
+                                        <option value="<?= $p->city_id ?>"><?= $p->city_name; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="photo">Photo</label><br>
