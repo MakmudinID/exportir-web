@@ -51,7 +51,7 @@ function calculateAll() {
         if (checkbox.checked) {
             count += parseInt(checkbox.value);
             jumlah_barang += parseInt($(this).data('jumlah_barang'));
-            id_transaksi += $(this).data('jumlah_barang') + ',';
+            id_transaksi += $(this).data('id_transaksi') + ',';
         }
     });
 

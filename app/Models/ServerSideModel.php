@@ -16,14 +16,30 @@ class ServerSideModel extends Model
     }
 
     public function transaksi_in($list){
-        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko
+        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
         WHERE tbl_transaksi.id_pengguna = ?
         AND tbl_transaksi.status='CART'
         AND tbl_transaksi.id IN ($list)";
 
         return $this->db->query($sql, array(session()->get('id')))->getResult();
+    }
+
+    public function transaksi_in_limit($list){
+        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+        FROM tbl_transaksi
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi.id_pengguna = ?
+        AND tbl_transaksi.status='CART'
+        AND tbl_transaksi.id IN ($list)
+        LIMIT 1";
+
+        return $this->db->query($sql, array(session()->get('id')))->getRow();
     }
 
     public function transaksi(){
@@ -37,7 +53,7 @@ class ServerSideModel extends Model
     }
 
     public function transaksi_detail($id_transaksi){
-        $sql="SELECT tbl_transaksi_detail.*, tbl_produk_umkm.nama, tbl_produk_umkm.foto, tbl_produk_umkm.qty_min as max_qty
+        $sql="SELECT tbl_transaksi_detail.*, tbl_produk_umkm.nama, tbl_produk_umkm.foto, tbl_produk_umkm.satuan, tbl_produk_umkm.qty_min as max_qty
         FROM `tbl_transaksi_detail`
         JOIN tbl_produk_umkm ON tbl_produk_umkm.id = tbl_transaksi_detail.id_barang
         WHERE tbl_transaksi_detail.id_transaksi = ?";
@@ -65,6 +81,12 @@ class ServerSideModel extends Model
     public function jumlah_barang($id_transaksi)
     {
         $q = $this->db->query("SELECT * FROM `tbl_transaksi_detail` WHERE id_transaksi=? ", array($id_transaksi))->getNumRows();
+        return $q;
+    }
+
+    public function jumlah_berat($id_transaksi)
+    {
+        $q = $this->db->query("SELECT SUM(weight) as total_berat FROM `tbl_transaksi_detail` WHERE id_transaksi=? GROUP BY id_transaksi", array($id_transaksi))->getRow()->total_berat;
         return $q;
     }
 
@@ -320,6 +342,10 @@ class ServerSideModel extends Model
                     'email'  => $row->email,
                     'foto'  => $row->foto,
                     'role' => $row->role,
+                    'nohp' => $row->no_hp,
+                    'alamat' => $row->alamat,
+                    'province_id' => $row->id_propinsi,
+                    'city_id' => $row->id_kota,
                 ];
                 return $data;
             }

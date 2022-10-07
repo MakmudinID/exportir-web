@@ -62,6 +62,7 @@ $routes->get('wilayah/(:any)/(:any)', 'Frontend::wilayah/$1/$2');
 $routes->get('get_kota/(:any)', 'Frontend::get_kota/$1');
 $routes->post('kurir', 'Frontend::kurir');
 $routes->post('transaksi', 'Frontend::transaksi');
+$routes->post('cek_ongkir', 'Frontend::cek_ongkir');
 
 //UMKM BackOffice
 $routes->get('umkm/dashboard', 'Umkm::dashboard');
