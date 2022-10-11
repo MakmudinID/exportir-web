@@ -21,7 +21,7 @@ $this->server_side = new ServerSideModel();
 <!-- end breadcrumb section -->
 <div class="single-product mt-40 mb-40">
     <div class="container">
-        <form id="form-kerjasama">
+        <form id="form-kerjasama" action="<?=base_url('kerjasama_pengajuan')?>" method="POST">
             <div class="row justify-content-center">
                 <div class="col-lg-9">
                     <div class="section-title text-center">
@@ -32,6 +32,7 @@ $this->server_side = new ServerSideModel();
                             <div class="form-group row">
                                 <label for="nama" class="col-sm-3 col-form-label">Nama</label>
                                 <div class="col-sm-9">
+                                    <input type="hidden" class="form-control" id="kode_transaksi" name="kode_transaksi" value="<?= $kode_transaksi ?>">
                                     <input type="text" class="form-control" id="nama" name="nama" value="<?= session()->get('nama') ?>" required>
                                 </div>
                             </div>
@@ -141,29 +142,43 @@ $this->server_side = new ServerSideModel();
                                 <table class="table table-sm">
                                     <tbody>
                                         <?php foreach ($this->server_side->transaksi_detail($t->id) as $td) : ?>
-                                            <tr>
-                                                <td class="product-image" width="60%">
-                                                    <div class="d-flex">
-                                                        <div class="p-2 align-self-center">
-                                                            <img src="<?= $td->foto ?>" alt="">
-                                                        </div>
-                                                        <div class="p-2 align-self-center">
-                                                            <?= $td->nama ?>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td style="vertical-align:middle" class="text-center" width="10%"><?= $td->qty . ' ' . $td->satuan ?></td>
-                                                <td style="vertical-align:middle" class="text-right">Rp <?= number_format($td->subtotal, 0, ',', '.') ?></td>
-                                            </tr>
-                                        <?php $total += $td->subtotal;
+                                            <?php 
+                                                if($td->qty >= $td->min_qty_kerjasama){
+                                                    $subtotal = $td->harga_min * $td->qty;
+                                                    $qty = $td->qty;
+                                                }else{
+                                                    $qty = 10;
+                                                    $subtotal = $td->harga_min * $qty;
+                                                }    
+
+                                                $cart_ = '<tr>
+                                                            <td class="product-image" width="60%">
+                                                                <div class="d-flex">
+                                                                    <div class="p-2 align-self-center">
+                                                                        <img src="' . $td->foto . '" alt="">
+                                                                    </div>
+                                                                    <div class="p-2 align-self-center">
+                                                                        <b>' . $td->nama . '</b>
+                                                                        <p class="text-warning">Minimal order pengajuan kerjasama <b>'.$td->min_qty_kerjasama.' '.$td->satuan.'</b></p>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td style="vertical-align:middle" class="text-center"><b>' . $qty . ' '.$td->satuan.'</b></td>
+                                                            <td style="vertical-align:middle" class="text-right">
+                                                                <b>Rp ' . number_format($subtotal, 0, ',', '.') . '</b>
+                                                            </td>
+                                                        </tr>';
+                                                echo $cart_;
+                                            ?>
+                                        <?php $total += $subtotal;
                                         endforeach; ?>
                                         <tr>
                                             <td colspan="2" class="text-right"><b>Ongkos Kirim</b></td>
-                                            <td class="text-right"><span id="shipping">Rp <?= number_format(0, 0, ',', '.') ?></span></td>
+                                            <td class="text-right"><span id="shipping"><b>Rp <?= number_format(0, 0, ',', '.') ?></b></span></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2" class="text-right"><b>Total Bayar</b></td>
-                                            <td class="text-right"><span id="total">Rp <?= number_format($total, 0, ',', '.') ?></span></td>
+                                            <td class="text-right"><span id="total"><b>Rp <?= number_format($total, 0, ',', '.') ?></b></span></td>
                                         </tr>
                                     </tbody>
                                 </table>

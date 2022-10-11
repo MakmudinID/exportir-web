@@ -98,7 +98,6 @@ jQuery(document).ready(function() {
 
     $("#form-kerjasama").validate({
         errorClass: "is-invalid",
-        // validClass: "is-valid",
         rules: {
             nama: {
                 required: true
@@ -107,10 +106,12 @@ jQuery(document).ready(function() {
                 required: true
             },
             email: {
-                required: true
+                required: true,
+                email: true
             },
             nik: {
-                required: true
+                required: true,
+                number: true
             },
             kontrak: {
                 required: true
@@ -121,49 +122,6 @@ jQuery(document).ready(function() {
             'layanan[]': {
                 required: true
             }
-        },
-        submitHandler: function(form) {
-            var form_data = new FormData(document.getElementById("form-kerjasama"));
-            form_data.append("jumlah", total);
-            form_data.append("ongkir", ongkir);
-            $.ajax({
-                url: base_url + "/kirim_kerjasama",
-                type: "POST",
-                data: form_data,
-                dataType: "JSON",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if (data.result != true) {
-                        Swal.fire({
-                            title: 'Gagal',
-                            html: "Gagal Kirim Pengajuan Kerja Sama",
-                            icon: 'error',
-                            timer: 3000,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            buttons: false,
-                        });
-                    } else {
-                        Swal.fire({
-                            title: 'Berhasil',
-                            html: "Berhasil Kirim Pengajuan Kerjasama",
-                            icon: 'success',
-                            timer: 3000,
-                            showCancelButton: false,
-                            showConfirmButton: false
-                        });
-                        $('.total-cart').html(data.total);
-                        $('#form-order').trigger("reset");
-                        window.location.href = base_url + "/cart"
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error adding / update data');
-                }
-            });
         }
     });
-
 })

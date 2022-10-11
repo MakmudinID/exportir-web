@@ -47,6 +47,7 @@ $routes->get('profil-umkm/(:any)', 'Frontend::umkm/$1');
 $routes->get('kerjasama/umkm/(:any)', 'Frontend::kerjasama_umkm/$1');
 $routes->get('kerjasama', 'Frontend::kerjasama');
 $routes->post('kerjasama_', 'Frontend::kerjasama_');
+$routes->post('kerjasama_pengajuan', 'Frontend::kerjasama_pengajuan');
 $routes->post('kirim_kerjasama', 'Frontend::kirim_kerjasama');
 $routes->get('list-produk', 'Frontend::list_produk');
 $routes->post('list_produk_', 'Frontend::list_produk_');
@@ -67,6 +68,7 @@ $routes->post('kurir', 'Frontend::kurir');
 $routes->post('set_kurir', 'Frontend::set_kurir');
 $routes->post('proses_checkout', 'Frontend::proses_checkout');
 $routes->get('notifikasi/(:any)', 'Frontend::notifikasi/$1');
+$routes->get('notifikasi-kerjasama/(:any)', 'Frontend::notifikasi_kerjasama/$1');
 $routes->post('transaksi', 'Frontend::transaksi');
 $routes->post('cek_ongkir', 'Frontend::cek_ongkir');
 

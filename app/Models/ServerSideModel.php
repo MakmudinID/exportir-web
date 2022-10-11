@@ -296,6 +296,12 @@ class ServerSideModel extends Model
 
     public function getUMKMbyIdTransaksi($slug)
     {
+        $q = $this->db->query("SELECT tbl_umkm.* FROM tbl_umkm JOIN tbl_transaksi ON tbl_transaksi.id_umkm = tbl_umkm.id WHERE tbl_transaksi.id=?", array($slug));
+        return $q->getRow();
+    }
+
+    public function getUMKMbyKodeTransaksi($slug)
+    {
         $q = $this->db->query("SELECT tbl_umkm.* FROM tbl_umkm JOIN tbl_transaksi ON tbl_transaksi.id_umkm = tbl_umkm.id WHERE tbl_transaksi.kode_transaksi=?", array($slug));
         return $q->getRow();
     }
@@ -470,6 +476,19 @@ class ServerSideModel extends Model
     {
         $q = $this->db->table($table);
         $q->where('id', $id);
+        $q->update($data);
+
+        if ($this->db->affectedRows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateRowsByField($field, $val, $data, $table)
+    {
+        $q = $this->db->table($table);
+        $q->where($field, $val);
         $q->update($data);
 
         if ($this->db->affectedRows() > 0) {

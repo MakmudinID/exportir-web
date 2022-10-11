@@ -154,12 +154,120 @@ class Frontend extends BaseController
         if ($slug == null) {
             redirect('/');
         }
-        $data['umkm'] = $this->server_side->getUMKMbyIdTransaksi($slug);
-        // var_dump($data['umkm']); die;
+        $data['kode_transaksi']=$slug;
+        $data['umkm'] = $this->server_side->getUMKMbyKodeTransaksi($slug);
         $data['transaksi'] = $this->server_side->transaksi_in_kode($slug);
         $data['js'] = array("user-kerjasama.js?r=" . uniqid());
         $data['main_content']   = 'frontend/form-kerjasama';
         echo view('template/fruitkha', $data);
+    }
+
+    public function kerjasama_pengajuan()
+    {
+        $total_tagihan = $this->request->getPost('total_tagihan');
+        $kode_transaksi = $this->request->getPost('kode_transaksi');
+
+        $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+        $milis = time() + (60 * 60 * 4);
+        $convert = $hashids->encode($milis);
+        $no_kerjasama = substr($convert, 0, 8);
+
+        $tbl_transaksi_kerjasama['no_kerjasama'] = 'KJS'.$no_kerjasama;
+        $tbl_transaksi_kerjasama['lama_kerjasama'] = $this->request->getPost('kontrak');
+        $tbl_transaksi_kerjasama['nama'] = $this->request->getPost('nama');
+        $tbl_transaksi_kerjasama['alamat'] = $this->request->getPost('alamat');
+        $tbl_transaksi_kerjasama['email'] = $this->request->getPost('email');
+        $tbl_transaksi_kerjasama['no_ktp'] = $this->request->getPost('nik');
+        $tbl_transaksi_kerjasama['status'] = 'Inactive';
+        
+        $this->server_side->db->transBegin();
+        try {
+            $id_kerjasama = $this->server_side->createRowsReturnID($tbl_transaksi_kerjasama, 'tbl_transaksi_kerjasama');
+
+            for($i=1; $i <= $this->request->getPost('kontrak'); $i++){
+                $tbl_transaksi_pembayaran['id_kerjasama'] = $id_kerjasama;
+                $tbl_transaksi_pembayaran['bayar_bulan_ke'] = $id_kerjasama;
+                $tbl_transaksi_pembayaran['kode_bayar'] = $id_kerjasama;
+                $tbl_transaksi_pembayaran['total_tagihan'] = $total_tagihan;
+                $tbl_transaksi_pembayaran['status'] = 'BELUM';
+                
+                $id_pembayaran = $this->server_side->createRowsReturnID($tbl_transaksi_pembayaran, 'tbl_transaksi_pembayaran');
+
+                if($i==1){
+                    $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
+                    $tbl_transaksi['status'] = 'SEDANG';
+                    $this->server_side->updateRowsByField('kode_transaksi', $kode_transaksi, $tbl_transaksi, 'tbl_transaksi');
+                    
+                    //update transaksi_detail
+                    $id_transaksi = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi])->getRow()->id_transaksi;
+                    $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi])->getResult();
+                    
+                    foreach($data_detail as $d){
+                        $produk = $this->db->table('tbl_produk_umkm')->getWhere(['id' => $d->id_barang])->getRow();
+                        if($d->qty <= 10){
+                            $tbl_transaksi_detail['qty'] = 10;
+                            $tbl_transaksi_detail['weight'] = $produk->weight*10;
+                            $tbl_transaksi_detail['harga'] = $produk->harga_min;
+                            $tbl_transaksi_detail['subtotal'] = $produk->harga_min*10;
+                            $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
+                        }else{
+                            $tbl_transaksi_detail['qty'] = $d->qty;
+                            $tbl_transaksi_detail['weight'] = $produk->weight*$d->qty;
+                            $tbl_transaksi_detail['harga'] = $produk->harga_min;
+                            $tbl_transaksi_detail['subtotal'] = $produk->harga_min*$d->qty;
+                            $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
+                        }
+                    }
+                }else{
+                    $data = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi])->getRow();
+                    
+                    $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+                    $milis = time() + (60 * 60 * 4);
+                    $convert = $hashids->encode($milis);
+                    $kode = substr($convert, 0, 8);
+
+                    $id_transaksi_ = $data->id_transaksi;
+
+                    $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
+                    $tbl_transaksi['kode_transaksi'] = $kode;
+                    $tbl_transaksi['id_pengguna'] = $data->id_pengguna;
+                    $tbl_transaksi['id_umkm'] = $data->id_umkm;
+                    $tbl_transaksi['jumlah'] = $data->jumlah;
+                    $tbl_transaksi['ongkir'] = $data->ongkir;
+                    $tbl_transaksi['nama'] = $data->nama;
+                    $tbl_transaksi['email'] = $data->email;
+                    $tbl_transaksi['nohp'] = $data->nohp;
+                    $tbl_transaksi['alamat'] = $data->alamat;
+                    $tbl_transaksi['province_id'] = $data->province_id;
+                    $tbl_transaksi['city_id'] = $data->city_id;
+                    $tbl_transaksi['kurir'] = $data->kurir;
+                    $tbl_transaksi['service'] = $data->service;
+                    $tbl_transaksi['catatan_beli'] = $id_pembayaran;
+
+                    $id_transaksi = $this->server_side->createRowsReturnID($tbl_transaksi, 'tbl_transaksi');
+                    
+                    $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi_])->getResult();
+                    foreach($data_detail as $d){
+                        $tbl_transaksi_detail['id_transaksi'] = $id_transaksi;
+                        $tbl_transaksi_detail['id_barang'] = $d->id_barang;
+                        $tbl_transaksi_detail['qty'] = $d->qty;
+                        $tbl_transaksi_detail['weight'] = $d->weight;
+                        $tbl_transaksi_detail['harga'] = $d->harga;
+                        $tbl_transaksi_detail['subtotal'] = $d->harga;
+                        
+                        $result = $this->server_side->createRows($tbl_transaksi_detail, 'tbl_transaksi_detail');
+                    }
+                }
+            }
+
+            return redirect()->to('/notifikasi-kerjasama/KJS'.$no_kerjasama);
+        }catch (\Exception $e) {
+                $this->server_side->db->transRollback();
+                $r['result'] = false;
+                $r['total'] =  $this->db->table('tbl_transaksi')->getWhere(['status' => 'CART', 'id_pengguna' => session()->get('id')])->getNumRows();
+        }
+
+        
     }
 
     public function umkm($slug = NULL)
@@ -570,6 +678,14 @@ class Frontend extends BaseController
         $data['kode'] = $inv;
         $data['total_bayar'] = $this->db->table('tbl_transaksi_pembayaran')->getWhere(['kode_bayar' => $inv])->getRow()->total_tagihan;
         $data['main_content']   = 'frontend/notifikasi';
+        echo view('template/fruitkha', $data);
+    }
+
+    public function notifikasi_kerjasama($kode)
+    {
+        $data['kode'] = $kode;
+        // $data['total_bayar'] = $this->db->table('tbl_transaksi_pembayaran')->getWhere(['kode_bayar' => $inv])->getRow()->total_tagihan;
+        $data['main_content']   = 'frontend/notifikasi_kerjasama';
         echo view('template/fruitkha', $data);
     }
 
