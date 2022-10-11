@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 text-center">
 				<div class="breadcrumb-text">
-					<p>Read the Details</p>
+					<p>Detail</p>
 					<h1>Berita</h1>
 				</div>
 			</div>
@@ -13,7 +13,7 @@
 <div class="mt-5 mb-5">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-8">
+			<div class="col-lg-9">
 				<div class="single-article-section">
 					<div class="single-article-text">
 						<div class="single-artcile-bg"></div>
@@ -26,10 +26,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-3">
 				<div class="sidebar-section">
 					<div class="recent-posts">
-						<h4>Recent Berita</h4>
+						<h4>Berita Lainnya</h4>
 						<ul>
 							<?php foreach($berita_random as $b){ ?>
 							<li><a href="<?= base_url('/berita/'.$b->id) ?>"><?= $b->judul ?></a></li>

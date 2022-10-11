@@ -81,7 +81,7 @@ jQuery(document).ready(function() {
 
                     $('#shipping').html('<b>' + rupiah.replace(",00", "") + '</b>');
 
-                    let subtotal = $('#subtotal').html();
+                    let subtotal = $('#total').html();
                     subtotal = Number(subtotal.replace(/[^0-9\-]+/g, ""));
 
                     let total = subtotal + sum_ongkir;
@@ -96,78 +96,74 @@ jQuery(document).ready(function() {
         });
     });
 
-    // $("#form-order").validate({
-    //     errorClass: "is-invalid",
-    //     // validClass: "is-valid",
-    //     rules: {
-    //         nama: {
-    //             required: true
-    //         },
-    //         nohp: {
-    //             required: true
-    //         },
-    //         email: {
-    //             required: true
-    //         },
-    //         alamat: {
-    //             required: true
-    //         },
-    //         propinsi: {
-    //             required: true
-    //         },
-    //         kota: {
-    //             required: true
-    //         },
-    //         kurir: {
-    //             required: true
-    //         },
-    //         service: {
-    //             required: true
-    //         }
-    //     },
-    //     submitHandler: function(form) {
-    //         var form_data = new FormData(document.getElementById("form-order"));
-    //         form_data.append("jumlah", total);
-    //         form_data.append("ongkir", ongkir);
-    //         $.ajax({
-    //             url: base_url + "/transaksi",
-    //             type: "POST",
-    //             data: form_data,
-    //             dataType: "JSON",
-    //             contentType: false,
-    //             cache: false,
-    //             processData: false,
-    //             success: function(data) {
-    //                 if (data.result != true) {
-    //                     Swal.fire({
-    //                         title: 'Gagal',
-    //                         html: "Gagal Order Barang",
-    //                         icon: 'error',
-    //                         timer: 3000,
-    //                         showCancelButton: false,
-    //                         showConfirmButton: false,
-    //                         buttons: false,
-    //                     });
-    //                 } else {
-    //                     Swal.fire({
-    //                         title: 'Berhasil',
-    //                         html: "Berhasil Order Barang",
-    //                         icon: 'success',
-    //                         timer: 3000,
-    //                         showCancelButton: false,
-    //                         showConfirmButton: false
-    //                     });
-    //                     $('.total-cart').html(data.total);
-    //                     $('#form-order').trigger("reset");
-    //                     window.location.href = base_url + "/cart"
-
-    //                 }
-    //             },
-    //             error: function(jqXHR, textStatus, errorThrown) {
-    //                 alert('Error adding / update data');
-    //             }
-    //         });
-    //     }
-    // });
+    $("#form-kerjasama").validate({
+        errorClass: "is-invalid",
+        // validClass: "is-valid",
+        rules: {
+            nama: {
+                required: true
+            },
+            alamat: {
+                required: true
+            },
+            email: {
+                required: true
+            },
+            nik: {
+                required: true
+            },
+            kontrak: {
+                required: true
+            },
+            'metode[]': {
+                required: true
+            },
+            'layanan[]': {
+                required: true
+            }
+        },
+        submitHandler: function(form) {
+            var form_data = new FormData(document.getElementById("form-kerjasama"));
+            form_data.append("jumlah", total);
+            form_data.append("ongkir", ongkir);
+            $.ajax({
+                url: base_url + "/kirim_kerjasama",
+                type: "POST",
+                data: form_data,
+                dataType: "JSON",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (data.result != true) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            html: "Gagal Kirim Pengajuan Kerja Sama",
+                            icon: 'error',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            buttons: false,
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: "Berhasil Kirim Pengajuan Kerjasama",
+                            icon: 'success',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false
+                        });
+                        $('.total-cart').html(data.total);
+                        $('#form-order').trigger("reset");
+                        window.location.href = base_url + "/cart"
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        }
+    });
 
 })

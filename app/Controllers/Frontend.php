@@ -139,15 +139,25 @@ class Frontend extends BaseController
         echo view('template/fruitkha', $data);
     }
 
-    public function kerjasama($slug = NULL)
+
+    public function kerjasama()
+    {
+        $this->auth->is_login();
+        $data['js'] = array("reseller-kerjasama.js?r=" . uniqid());
+        $data['main_content']   = 'frontend/kerjasama';
+        echo view('template/fruitkha', $data);
+    }
+
+    public function kerjasama_umkm($slug = NULL)
     {
         $this->auth->is_login();
         if ($slug == null) {
             redirect('/');
         }
-        $data['umkm'] = $this->server_side->getUMKMbySlug($slug);
-        $data['produk'] = $this->server_side->getProdukByUMKM($slug);
-        $data['js'] = array("form-kerjasama.js?r=" . uniqid());
+        $data['umkm'] = $this->server_side->getUMKMbyIdTransaksi($slug);
+        // var_dump($data['umkm']); die;
+        $data['transaksi'] = $this->server_side->transaksi_in_kode($slug);
+        $data['js'] = array("user-kerjasama.js?r=" . uniqid());
         $data['main_content']   = 'frontend/form-kerjasama';
         echo view('template/fruitkha', $data);
     }
@@ -368,11 +378,11 @@ class Frontend extends BaseController
                                                 <img src="' . $td->foto . '" alt="">
                                             </div>
                                             <div class="p-2 align-self-center">
-                                                ' . $td->nama . '
+                                                <b>' . $td->nama . '</b>
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="vertical-align:middle" class="text-center" width="6%"><input type="number" onchange="qty(' . $td->id . ')" id="qty_' . $td->id . '" min="1" max="' . $td->max_qty . '" class="form-control" value="' . $td->qty . '"></td>
+                                    <td style="vertical-align:middle" class="text-center"><div class="d-flex align-items-center"><input type="number" onchange="qty(' . $td->id . ')" id="qty_' . $td->id . '" min="1" max="' . $td->max_qty . '" class="form-control" value="' . $td->qty . '"><label class="p-2">'.$td->satuan.'</label></div></td>
                                     <td style="vertical-align:middle" class="text-right"><b>Rp ' . number_format($td->subtotal, 0, ',', '.') . '</b></td>
                                     <td style="vertical-align:middle" width="5%"><a href="javascript:void(0)" class="remove" data-id="' . $td->id . '" data-id_transaksi="' . $t->id . '"><i class="fas fa-trash-alt text-danger"></i></a></td>
                                 </tr>';
@@ -401,12 +411,89 @@ class Frontend extends BaseController
         }
     }
 
+    public function kerjasama_()
+    {
+        $cart_ = '';
+        foreach ($this->server_side->transaksi() as $t) {
+            $cart_ .= '
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <div class="d-flex align-self-center">
+                                <div class="mr-auto">
+                                    <label class="form-check-label" for="' . $t->id . '">
+                                        <a href="'.base_url('profil-umkm/'.$t->slug_url).'"><h5>' . $t->nama_toko . '</h5></a>
+                                    </label>
+                                </div>
+                                <div class="ml-auto">
+                                    <a href="'.base_url('kerjasama/umkm/'.$t->kode_transaksi).'" class="btn btn-success"><i class="fas fa-plus-circle"></i> <b>Pengajuan Kerja Sama</b></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm">
+                                <tbody>';
+                    foreach ($this->server_side->transaksi_detail($t->id) as $td) {
+                        if($td->qty >= $td->min_qty_kerjasama){
+                            $subtotal = $td->harga_min * $td->qty;
+                            $qty = $td->qty;
+                        }else{
+                            $qty = 10;
+                            $subtotal = $td->harga_min * $qty;
+                        }
+                        $cart_  .= '<tr>
+                                        <td class="product-image" width="60%">
+                                            <div class="d-flex">
+                                                <div class="p-2 align-self-center">
+                                                    <img src="' . $td->foto . '" alt="">
+                                                </div>
+                                                <div class="p-2 align-self-center">
+                                                    <b>' . $td->nama . '</b>
+                                                    <p class="text-warning">Minimal order pengajuan kerjasama <b>'.$td->min_qty_kerjasama.' '.$td->satuan.'</b></p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="vertical-align:middle" class="text-center"><div class="d-flex align-items-center"><input type="number" onchange="qty(' . $td->id . ')" id="qty_' . $td->id . '" min="'.$td->min_qty_kerjasama.'" max="' . $td->max_qty . '" class="form-control" value="' . $qty . '"><label class="p-2"><b>'.$td->satuan.'</b></label></div></td>
+                                        <td style="vertical-align:middle" class="text-right">
+                                            <div class="text-danger"><s>Rp '.number_format($td->harga_produk * $qty, 0, ',', '.').'</s></div>
+                                            <b>Rp ' . number_format($subtotal, 0, ',', '.') . '</b>
+                                        </td>
+                                        <td style="vertical-align:middle" width="5%"><a href="javascript:void(0)" class="remove p-2" data-id="' . $td->id . '" data-id_transaksi="' . $t->id . '"><i class="fas fa-trash-alt text-danger"></i></a></td>
+                                    </tr>';
+                    }
+                    $cart_ .= '</tbody>
+                            </table>
+                            <div class="form-group">
+                                <label for="catatan">Catatan Pesanan</label>
+                                <textarea class="form-control" onchange="catatan(' . $t->id . ')" id="catatan_' . $t->id . '">' . $t->catatan_beli . '</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+        }
+
+        if (!empty($this->server_side->transaksi())) {
+            echo $cart_;
+        } else {
+            $cart_ .= '<div class="card mb-3">
+                        <div class="card-body text-center">
+                            <h3>Wah, keranjang belanjamu kosong</h3>
+                            <p>Yuk, isi dengan barang-barang kebutuhanmu!</p>
+                            <a href="' . base_url('/') . '" class="btn btn-primary">Mulai Belanja</a>
+                        </div>
+                    </div>';
+            echo $cart_;
+        }
+    }
+
     public function update_qty()
     {
         $row_id = $this->request->getPost('id');
         $qty = $this->request->getPost('jumlah');
-        $harga = $this->db->table('tbl_transaksi_detail')->getWhere(['id' => $row_id])->getRow()->harga;
+        
+        $id_barang = $this->db->table('tbl_transaksi_detail')->getWhere(['id' => $row_id])->getRow()->id_barang;
+        $harga = $this->db->table('tbl_produk_umkm')->getWhere(['id' => $id_barang])->getRow()->harga;
 
+        $tbl_transaksi_detail['harga'] = $harga;
         $tbl_transaksi_detail['qty'] = $qty;
         $tbl_transaksi_detail['subtotal'] = $qty * $harga;
 
@@ -448,60 +535,70 @@ class Frontend extends BaseController
         $data['id_transaksi'] = $transaksi_list;
         $data['transaksi']  = $this->server_side->transaksi_in($transaksi_list);
         $data['pemesan']  = $this->server_side->transaksi_in_limit($transaksi_list);
-        
-        $no=1;
-        foreach ($data['transaksi'] as $t) {
-            $total_berat = $this->server_side->jumlah_berat($t->id);
-            
-            $kota_penerima = $t->city_id;
-            $kota_pengirim = $t->kota_pengirim;
-            
-            // $cek_ongkir = $this->kurir($id_ekspedisi="jne:pos:tiki", $kota_penerima, $kota_pengirim, $total_berat);
-            // $data['cekOngkir'. $no] = json_decode($cek_ongkir, true);
-            $no++;
-        }
-
         $data['js'] = array("checkout.js?r=" . uniqid());
         $data['main_content']   = 'frontend/checkout';
         echo view('template/fruitkha', $data);
     }
 
-    private function kurir($id_ekspedisi="", $kota_penerima="", $kota_pengirim="", $total_berat="")
+    public function proses_checkout()
     {
-        $url = base_url("cek_ongkir");
-        $data = array(
-            'id_ekspedisi'  => $id_ekspedisi,
-            'kota_penerima' => $kota_penerima,
-            'kota_pengirim' => $kota_pengirim,
-            'total_berat' => $total_berat,
-        );
-        
-        $content = json_encode($data);
-        $curl = curl_init($url);
+        $transaksi_list = $this->request->getPost('id_transaksi');
 
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt(
-            $curl,
-            CURLOPT_HTTPHEADER,
-            array("Content-type: application/json")
-        );
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+        $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+        $milis = time() + (60 * 60 * 4);
+        $convert = $hashids->encode($milis);
+        $kode = substr($convert, 0, 8);
 
-        $json_response = curl_exec($curl);
-        curl_close($curl);
-        return $json_response;
+        $tbl_transaksi_pembayaran['kode_bayar'] = 'INV' . $kode;
+        $tbl_transaksi_pembayaran['total_tagihan'] = $this->server_side->jumlah_total_bayar($transaksi_list);
+        $tbl_transaksi_pembayaran['status'] = 'BELUM';
+        $tbl_transaksi_pembayaran['create_user'] = session()->get('nama');
+
+        $id_pembayaran = $this->server_side->createRowsReturnID($tbl_transaksi_pembayaran, 'tbl_transaksi_pembayaran');
+        foreach (explode(',', $transaksi_list) as $val) {
+            $id_transaksi = $val;
+            $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
+            $tbl_transaksi['status'] = 'BELUM';
+            $this->server_side->updateRows($id_transaksi, $tbl_transaksi, 'tbl_transaksi');
+        }
+
+        return redirect()->to('/notifikasi/INV' . $kode);
     }
 
-    public function cek_ongkir(){
-		$data = json_decode(file_get_contents('php://input'), true);
-		$hasil = $this->kurir_post($data['id_ekspedisi'], $data['kota_pengirim'], $data['kota_penerima'], $data['total_berat']);
-		echo ($hasil);
-	}
-
-    private function kurir_post($id_ekspedisi="", $kota_penerima="", $kota_pengirim="", $total_berat="")
+    public function notifikasi($inv)
     {
+        $data['kode'] = $inv;
+        $data['total_bayar'] = $this->db->table('tbl_transaksi_pembayaran')->getWhere(['kode_bayar' => $inv])->getRow()->total_tagihan;
+        $data['main_content']   = 'frontend/notifikasi';
+        echo view('template/fruitkha', $data);
+    }
+
+    public function set_kurir()
+    {
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        $tbl_transaksi['service'] = $this->request->getPost('service');
+        $tbl_transaksi['ongkir'] = $this->request->getPost('ongkir');
+        $tbl_transaksi['jumlah'] = $this->server_side->jumlah_transaksi($id_transaksi);
+
+        $result = $this->server_side->updateRows($id_transaksi, $tbl_transaksi, 'tbl_transaksi');
+        if ($result) {
+            echo $result;
+        } else {
+            echo false;
+        }
+    }
+
+    public function kurir()
+    {
+        $origin = $this->request->getPost('origin');
+        $destination = $this->request->getPost('destination');
+        $weight = $this->request->getPost('weight');
+        $courier = $this->request->getPost('courier');
+        $id_transaksi = $this->request->getPost('id_transaksi');
+
+        $tbl_transaksi['kurir'] = $courier;
+        $this->server_side->updateRows($id_transaksi, $tbl_transaksi, 'tbl_transaksi');
+
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
@@ -511,7 +608,7 @@ class Frontend extends BaseController
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "origin=" . $kota_pengirim . "&destination=" . $kota_penerima . "&weight=" . $total_berat . "&courier=" . $id_ekspedisi,
+            CURLOPT_POSTFIELDS => "origin=" . $origin . "&destination=" . $destination . "&weight=" . $weight . "&courier=" . $courier,
             CURLOPT_HTTPHEADER => array(
                 "content-type: application/x-www-form-urlencoded",
                 "key: " . $this->apiKey,

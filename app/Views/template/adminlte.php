@@ -1,6 +1,8 @@
-<?php 
+<?php
+
 use App\Models\ServerSideModel;
-$this->server_side = new ServerSideModel(); 
+
+$this->server_side = new ServerSideModel();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,16 +15,17 @@ $this->server_side = new ServerSideModel();
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-
-    <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/fontawesome-free/css/all.min.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/daterangepicker/daterangepicker.css">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/css/adminlte.min.css">
     <style>
         tr.group,
@@ -79,7 +82,7 @@ $this->server_side = new ServerSideModel();
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?=base_url()?>/logout" role="button">
+                    <a class="nav-link" href="<?= base_url() ?>/logout" role="button">
                         <i class="fas fa-sign-out"></i> Keluar
                     </a>
                 </li>
@@ -112,7 +115,7 @@ $this->server_side = new ServerSideModel();
                             <li class="nav-header"><?= strtoupper($h->title) ?></li>
                             <?php foreach ($this->server_side->getMenu($h->id_menu_title) as $m) : ?>
                                 <li class="nav-item">
-                                    <a class="nav-link <?= ($m->title == $title) ? 'active' : '' ?>" href="<?= base_url($m->url) ?>"><i class="<?= $m->icon?>"></i> <?= $m->title ?></a>
+                                    <a class="nav-link <?= ($m->title == $title) ? 'active' : '' ?>" href="<?= base_url($m->url) ?>"><i class="<?= $m->icon ?>"></i> <?= $m->title ?></a>
                                 </li>
                             <?php endforeach; ?>
                         <?php endforeach; ?>
@@ -123,7 +126,9 @@ $this->server_side = new ServerSideModel();
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <?= view($main_content); ?>
+            <section class="content">
+                <?= view($main_content); ?>
+            </section>
         </div>
         <!-- /.content-wrapper -->
 
@@ -161,10 +166,15 @@ $this->server_side = new ServerSideModel();
     <script src="<?= base_url() ?>/assets/admin/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="<?= base_url() ?>/assets/admin/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="<?= base_url() ?>/assets/admin/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script src="<?= base_url() ?>/assets/admin/plugins/moment/moment.min.js"></script>
+    <script src="<?= base_url() ?>/assets/admin/plugins/inputmask/jquery.inputmask.min.js"></script>
+    <!-- date-range-picker -->
+    <script src="<?= base_url() ?>/assets/admin/plugins/daterangepicker/daterangepicker.js"></script>
     <!-- jquery-validation -->
     <script src="<?= base_url() ?>/assets/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="<?= base_url() ?>/assets/admin/plugins/jquery-validation/additional-methods.min.js"></script>
-    <!-- SweetAlert2 -->    
+    <!-- SweetAlert2 -->
     <script src="<?= base_url() ?>/assets/admin/plugins/summernote/summernote-bs4.min.js"></script>
     <script src="<?= base_url() ?>/assets/admin/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script>
@@ -176,4 +186,5 @@ $this->server_side = new ServerSideModel();
         }
     } ?>
 </body>
+
 </html>

@@ -44,7 +44,10 @@ $routes->get('cart', 'Frontend::keranjang');
 $routes->get('produk/(:any)', 'Frontend::produk/$1');
 $routes->get('kategori/(:any)', 'Frontend::kategori/$1');
 $routes->get('profil-umkm/(:any)', 'Frontend::umkm/$1');
-$routes->get('kerjasama/(:any)', 'Frontend::kerjasama/$1');
+$routes->get('kerjasama/umkm/(:any)', 'Frontend::kerjasama_umkm/$1');
+$routes->get('kerjasama', 'Frontend::kerjasama');
+$routes->post('kerjasama_', 'Frontend::kerjasama_');
+$routes->post('kirim_kerjasama', 'Frontend::kirim_kerjasama');
 $routes->get('list-produk', 'Frontend::list_produk');
 $routes->post('list_produk_', 'Frontend::list_produk_');
 $routes->get('list-berita', 'Frontend::list_berita');
@@ -61,6 +64,9 @@ $routes->post('checkout', 'Frontend::checkout');
 $routes->get('wilayah/(:any)/(:any)', 'Frontend::wilayah/$1/$2');
 $routes->get('get_kota/(:any)', 'Frontend::get_kota/$1');
 $routes->post('kurir', 'Frontend::kurir');
+$routes->post('set_kurir', 'Frontend::set_kurir');
+$routes->post('proses_checkout', 'Frontend::proses_checkout');
+$routes->get('notifikasi/(:any)', 'Frontend::notifikasi/$1');
 $routes->post('transaksi', 'Frontend::transaksi');
 $routes->post('cek_ongkir', 'Frontend::cek_ongkir');
 
@@ -87,9 +93,13 @@ $routes->post('umkm/delete_kategori', 'Umkm::delete_kategori');
 
 //reseller backoffice
 $routes->get('reseller/profil', 'Reseller::profil');
+$routes->get('reseller/transaksi', 'Reseller::transaksi');
+$routes->post('reseller/transaksi_', 'Reseller::transaksi_');
 $routes->post('reseller/update_profil', 'Reseller::update_profil');
 $routes->get('reseller/berita', 'Reseller::berita');
 $routes->post('reseller/berita_', 'Reseller::berita_');
+$routes->get('reseller/kerjasama', 'Reseller::kerjasama');
+$routes->post('reseller/kerjasama_', 'Reseller::kerjasama_');
 $routes->get('reseller/detail-berita/(:any)', 'Reseller::detail_berita/$1');
 
 //ADMIN BackOffice

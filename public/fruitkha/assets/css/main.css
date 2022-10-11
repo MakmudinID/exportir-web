@@ -566,6 +566,7 @@ nav.main-menu ul li {
 nav.main-menu ul li a {
   color: #fff;
   font-weight: 700;
+  font-size: 16px;
   display: block;
   padding: 10px;
 }

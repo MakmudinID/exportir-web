@@ -21,7 +21,7 @@ $this->server_side = new ServerSideModel();
 
 <div class="checkout-section mt-5 mb-5">
     <div class="container">
-        <form id="form-order">
+        <form method="POST" action="<?=base_url('proses_checkout')?>">
             <div class="row">
                 <div class="col-lg-8">
                     <div class="card">
@@ -39,8 +39,11 @@ $this->server_side = new ServerSideModel();
                             <h5>Daftar Pesanan</h5>
                         </div>
                         <div class="card-body">
-                            <?php $no=1;
-                                foreach ($transaksi as $t) : ?>
+                            <?php 
+                            $total=0;    
+                            foreach ($transaksi as $t) : 
+                                $jumlah_berat = $this->server_side->jumlah_berat($t->id);
+                            ?>
                                 <b>Barang dari <?= $t->nama_toko ?></b>
                                 <table class="table table-sm">
                                     <tbody>
@@ -59,11 +62,11 @@ $this->server_side = new ServerSideModel();
                                                 <td style="vertical-align:middle" class="text-center" width="10%"><?= $td->qty . ' ' . $td->satuan ?></td>
                                                 <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($td->subtotal, 0, ',', '.') ?></b></td>
                                             </tr>
-                                        <?php endforeach; ?>
+                                        <?php $total+= $td->subtotal; endforeach; ?>
                                     </tbody>
                                 </table>
                                 <div class="row">
-                                    <div class="col-md-6 align-self-center">
+                                    <div class="col-md-12 align-self-center">
                                         <div class="form-group">
                                             <p><b>Catatan Pesanan:</b></p>
                                             <?= ($t->catatan_beli != '') ? $t->catatan_beli : '-' ?>
@@ -72,26 +75,27 @@ $this->server_side = new ServerSideModel();
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label><b>Metode Pengiriman:</b></label>
-                                            <select class="form-control form-control-sm pilih-kurir" id="kurir<?=$no?>" name="kurir">
-                                                <?php '<option value="">- Pilih Metode Pengiriman -</option>';
-                                                // for ($c = 0; $c < count(${"cekOngkir$no"}['rajaongkir']['results']); $c++) {
-                                                //     echo "<optgroup label='" . ${"cekOngkir$no"}['rajaongkir']['results'][$c]['name'] . "'>";
-                                                //     $layanan = ${"cekOngkir$no"}['rajaongkir']['results'][$c]['costs'];
-                                                //     for ($i = 0; $i < count($layanan); $i++) {
-                                                //         $tarif = $layanan[$i]['cost'];
-                                                //         for ($j = 0; $j < count($tarif); $j++) {
-                                                //             $nilai = ${"cekOngkir$no"}['rajaongkir']['results'][$c]['code'] . ":" . $layanan[$i]['service'] . ":" . $tarif[$j]['etd'] . ":" . $tarif[$j]['value'];
-                                                //             echo "<option ketentuan='' data-keranjang='" . $t->id . "' data-ongkir='" . $tarif[$j]['value'] . "' data-service='$nilai' value='$j' data-info_kurir='" . ${"cekOngkir$no"}['rajaongkir']['results'][$c]['name'] . " - " . $layanan[$i]['service'] . " (" . $tarif[$j]['etd'] . " hari)'>" . $layanan[$i]['service'] . " (" . $tarif[$j]['etd'] . " hari) Rp " . number_format($tarif[$j]['value'], 0, ',', '.');
-                                                //         }
-                                                //     }
-                                                // }
-                                                ?>
+                                            <select class="form-control form-control-sm pilih-kurir" data-id="<?=$t->id?>" data-kota_asal="<?=$t->city_id?>" data-kota_penerima="<?=$t->kota_pengirim?>" data-total_berat="<?=$jumlah_berat?>" id="metode_<?=$t->id?>" name="metode_<?=$t->id?>">
+                                                <option value="">- Pilih Pengiriman -</option>
+                                                <option value="jne">JNE</option>
+                                                <option value="tiki">TIKI</option>
+                                                <option value="pos">POS</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label><b>Layanan:</b></label>
+                                            <div class="selecter">
+                                                <select class="form-control form-control-sm pilih-layanan" data-id="<?=$t->id?>" id="layanan_<?=$t->id?>" name="layanan_<?=$t->id?>">
+                                                    <option value="">- Pilih Layanan -</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <hr style="border-top: 4px solid #F3F4F5;">
-                            <?php $no++; endforeach; ?>
+                            <?php $t->id++; endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -105,23 +109,23 @@ $this->server_side = new ServerSideModel();
                             <table class="table table-bordered table-sm" style="width: 100%;">
                                 <tbody>
                                     <tr>
-                                        <td>Pembelian</td>
-                                        <td id="subtotal" class="text-right"><b><?= number_format(0, 0) ?></b></td>
+                                        <td><b>Pembelian</b></td>
+                                        <td id="subtotal" class="text-right"><b>Rp <?= number_format($total, 0,',','.') ?></b></td>
                                     </tr>
                                     <tr>
-                                        <td>Kurir</td>
-                                        <td id="shipping" class="text-right"><b>0</b></td>
+                                        <td><b>Kurir</b></td>
+                                        <td id="shipping" class="text-right"><b>Rp -</b></td>
                                     </tr>
                                     <tr>
-                                        <td>Total Pembayaran</td>
-                                        <td id="total" class="text-right"><b><?= number_format(0, 0) ?></b></td>
+                                        <td><b>Total Pembayaran</b></td>
+                                        <td id="total" class="text-right"><b>Rp <?= number_format($total, 0,',','.') ?></b></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-footer">
-                            <input type="hidden" value="<?= $id_transaksi ?>">
-                            <button type="submit" id="order" style="width:100%" class="btn btn-primary btn-rounded">Bayar Sekarang</button>
+                            <input type="hidden" value="<?= $id_transaksi ?>" name="id_transaksi">
+                            <button type="submit" id="btn-order" style="width:100%" class="btn btn-primary btn-rounded" disabled><b>Bayar Sekarang</b></button>
                         </div>
                     </div>
                 </div>

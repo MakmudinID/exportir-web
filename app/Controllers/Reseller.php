@@ -23,6 +23,28 @@ class Reseller extends BaseController
         echo view('template/adminlte', $data);
     }
 
+    public function transaksi()
+    {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Pesanan Saya';
+        $data['js'] = array("reseller-transaksi.js?r=" . uniqid());
+        $data['main_content']   = 'reseller/transaksi';
+        echo view('template/adminlte', $data);
+    }
+
+    public function kerjasama()
+    {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Kejasama Saya';
+        $data['js'] = array("reseller-kerjasama.js?r=" . uniqid());
+        $data['main_content']   = 'reseller/kerjasama';
+        echo view('template/adminlte', $data);
+    }
+
     public function berita()
     {
         if (session()->get('role') != 'RESELLER') {
