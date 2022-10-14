@@ -173,7 +173,7 @@ class ServerSideModel extends Model
         return $q->getResult();
     }
 
-    public function getProduk($umkm, $kategori)
+    public function getProduk($kategori)
     {
         $sql = "SELECT tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
                 FROM tbl_produk_umkm 
@@ -181,10 +181,6 @@ class ServerSideModel extends Model
                 join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
                 join tbl_city on tbl_city.city_id = tbl_umkm.city_id
                 where tbl_produk_umkm.status = 'ACTIVE' ";
-        if ($umkm != '') {
-            $sql .= " and tbl_umkm.id = $umkm ";
-        }
-
         if ($kategori != '') {
             $sql .= " and tbl_kategori_produk.id = $kategori ";
         }

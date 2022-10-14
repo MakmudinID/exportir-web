@@ -95,9 +95,8 @@ class Frontend extends BaseController
 
     public function list_produk_()
     {
-        $umkm = $this->request->getPost('umkm');
         $kategori = $this->request->getPost('kategori');
-        $produk = $this->server_side->getProduk($umkm, $kategori);
+        $produk = $this->server_side->getProduk($kategori);
         $html = '';
 
         foreach ($produk as $p) {
@@ -154,7 +153,7 @@ class Frontend extends BaseController
         if ($slug == null) {
             redirect('/');
         }
-        $data['kode_transaksi']=$slug;
+        $data['kode_transaksi'] = $slug;
         $data['umkm'] = $this->server_side->getUMKMbyKodeTransaksi($slug);
         $data['transaksi'] = $this->server_side->transaksi_in_kode($slug);
         $data['js'] = array("user-kerjasama.js?r=" . uniqid());
@@ -172,102 +171,101 @@ class Frontend extends BaseController
         $convert = $hashids->encode($milis);
         $no_kerjasama = substr($convert, 0, 8);
 
-        $tbl_transaksi_kerjasama['no_kerjasama'] = 'KJS'.$no_kerjasama;
+        $this->server_side->db->transBegin();
+
+        $tbl_transaksi_kerjasama['no_kerjasama'] = 'KJS' . $no_kerjasama;
         $tbl_transaksi_kerjasama['lama_kerjasama'] = $this->request->getPost('kontrak');
         $tbl_transaksi_kerjasama['nama'] = $this->request->getPost('nama');
         $tbl_transaksi_kerjasama['alamat'] = $this->request->getPost('alamat');
         $tbl_transaksi_kerjasama['email'] = $this->request->getPost('email');
         $tbl_transaksi_kerjasama['no_ktp'] = $this->request->getPost('nik');
         $tbl_transaksi_kerjasama['status'] = 'Inactive';
-        
-        $this->server_side->db->transBegin();
-        try {
-            $id_kerjasama = $this->server_side->createRowsReturnID($tbl_transaksi_kerjasama, 'tbl_transaksi_kerjasama');
 
-            for($i=1; $i <= $this->request->getPost('kontrak'); $i++){
-                $tbl_transaksi_pembayaran['id_kerjasama'] = $id_kerjasama;
-                $tbl_transaksi_pembayaran['bayar_bulan_ke'] = $id_kerjasama;
-                $tbl_transaksi_pembayaran['kode_bayar'] = $id_kerjasama;
-                $tbl_transaksi_pembayaran['total_tagihan'] = $total_tagihan;
-                $tbl_transaksi_pembayaran['status'] = 'BELUM';
-                
-                $id_pembayaran = $this->server_side->createRowsReturnID($tbl_transaksi_pembayaran, 'tbl_transaksi_pembayaran');
+        $id_kerjasama = $this->server_side->createRowsReturnID($tbl_transaksi_kerjasama, 'tbl_transaksi_kerjasama');
 
-                if($i==1){
-                    $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
-                    $tbl_transaksi['status'] = 'SEDANG';
-                    $this->server_side->updateRowsByField('kode_transaksi', $kode_transaksi, $tbl_transaksi, 'tbl_transaksi');
-                    
-                    //update transaksi_detail
-                    $id_transaksi = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi])->getRow()->id_transaksi;
-                    $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi])->getResult();
-                    
-                    foreach($data_detail as $d){
-                        $produk = $this->db->table('tbl_produk_umkm')->getWhere(['id' => $d->id_barang])->getRow();
-                        if($d->qty <= 10){
-                            $tbl_transaksi_detail['qty'] = 10;
-                            $tbl_transaksi_detail['weight'] = $produk->weight*10;
-                            $tbl_transaksi_detail['harga'] = $produk->harga_min;
-                            $tbl_transaksi_detail['subtotal'] = $produk->harga_min*10;
-                            $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
-                        }else{
-                            $tbl_transaksi_detail['qty'] = $d->qty;
-                            $tbl_transaksi_detail['weight'] = $produk->weight*$d->qty;
-                            $tbl_transaksi_detail['harga'] = $produk->harga_min;
-                            $tbl_transaksi_detail['subtotal'] = $produk->harga_min*$d->qty;
-                            $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
-                        }
-                    }
-                }else{
-                    $data = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi])->getRow();
-                    
-                    $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-                    $milis = time() + (60 * 60 * 4);
-                    $convert = $hashids->encode($milis);
-                    $kode = substr($convert, 0, 8);
+        for ($i = 1; $i <= $this->request->getPost('kontrak'); $i++) {
+            $tbl_transaksi_pembayaran['id_kerjasama'] = $id_kerjasama;
+            $tbl_transaksi_pembayaran['bayar_bulan_ke'] = $i;
+            $tbl_transaksi_pembayaran['kode_bayar'] = $id_kerjasama;
+            $tbl_transaksi_pembayaran['total_tagihan'] = $total_tagihan;
+            $tbl_transaksi_pembayaran['status'] = 'BELUM';
 
-                    $id_transaksi_ = $data->id_transaksi;
+            $id_pembayaran = $this->server_side->createRowsReturnID($tbl_transaksi_pembayaran, 'tbl_transaksi_pembayaran');
 
-                    $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
-                    $tbl_transaksi['kode_transaksi'] = $kode;
-                    $tbl_transaksi['id_pengguna'] = $data->id_pengguna;
-                    $tbl_transaksi['id_umkm'] = $data->id_umkm;
-                    $tbl_transaksi['jumlah'] = $data->jumlah;
-                    $tbl_transaksi['ongkir'] = $data->ongkir;
-                    $tbl_transaksi['nama'] = $data->nama;
-                    $tbl_transaksi['email'] = $data->email;
-                    $tbl_transaksi['nohp'] = $data->nohp;
-                    $tbl_transaksi['alamat'] = $data->alamat;
-                    $tbl_transaksi['province_id'] = $data->province_id;
-                    $tbl_transaksi['city_id'] = $data->city_id;
-                    $tbl_transaksi['kurir'] = $data->kurir;
-                    $tbl_transaksi['service'] = $data->service;
-                    $tbl_transaksi['catatan_beli'] = $id_pembayaran;
+            if ($i == 1) {
+                $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
+                $tbl_transaksi['status'] = 'SEDANG';
+                $this->server_side->updateRowsByField('kode_transaksi', $kode_transaksi, $tbl_transaksi, 'tbl_transaksi');
 
-                    $id_transaksi = $this->server_side->createRowsReturnID($tbl_transaksi, 'tbl_transaksi');
-                    
-                    $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi_])->getResult();
-                    foreach($data_detail as $d){
-                        $tbl_transaksi_detail['id_transaksi'] = $id_transaksi;
-                        $tbl_transaksi_detail['id_barang'] = $d->id_barang;
+                //update transaksi_detail
+                $id_transaksi = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi])->getRow()->id;
+                $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi])->getResult();
+
+                foreach ($data_detail as $d) {
+                    $produk = $this->db->table('tbl_produk_umkm')->getWhere(['id' => $d->id_barang])->getRow();
+                    if ($d->qty <= 10) {
+                        $tbl_transaksi_detail['qty'] = 10;
+                        $tbl_transaksi_detail['weight'] = $produk->weight * 10;
+                        $tbl_transaksi_detail['harga'] = $produk->harga_min;
+                        $tbl_transaksi_detail['subtotal'] = $produk->harga_min * 10;
+                        $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
+                    } else {
                         $tbl_transaksi_detail['qty'] = $d->qty;
-                        $tbl_transaksi_detail['weight'] = $d->weight;
-                        $tbl_transaksi_detail['harga'] = $d->harga;
-                        $tbl_transaksi_detail['subtotal'] = $d->harga;
-                        
-                        $result = $this->server_side->createRows($tbl_transaksi_detail, 'tbl_transaksi_detail');
+                        $tbl_transaksi_detail['weight'] = $produk->weight * $d->qty;
+                        $tbl_transaksi_detail['harga'] = $produk->harga_min;
+                        $tbl_transaksi_detail['subtotal'] = $produk->harga_min * $d->qty;
+                        $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
                     }
                 }
-            }
+            } else {
+                $data = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi])->getRow();
 
-            return redirect()->to('/notifikasi-kerjasama/KJS'.$no_kerjasama);
-        }catch (\Exception $e) {
-                $this->server_side->db->transRollback();
-                $r['result'] = false;
-                $r['total'] =  $this->db->table('tbl_transaksi')->getWhere(['status' => 'CART', 'id_pengguna' => session()->get('id')])->getNumRows();
+                $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+                $milis = time() + (60 * 60 * 4);
+                $convert = $hashids->encode($milis);
+                $kode = substr($convert, 0, 8);
+
+                $id_transaksi_ = $data->id;
+
+                $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
+                $tbl_transaksi['kode_transaksi'] = $kode;
+                $tbl_transaksi['id_pengguna'] = $data->id_pengguna;
+                $tbl_transaksi['id_umkm'] = $data->id_umkm;
+                $tbl_transaksi['jumlah'] = $data->jumlah;
+                $tbl_transaksi['ongkir'] = $data->ongkir;
+                $tbl_transaksi['nama'] = $data->nama;
+                $tbl_transaksi['email'] = $data->email;
+                $tbl_transaksi['nohp'] = $data->nohp;
+                $tbl_transaksi['alamat'] = $data->alamat;
+                $tbl_transaksi['province_id'] = $data->province_id;
+                $tbl_transaksi['city_id'] = $data->city_id;
+                $tbl_transaksi['kurir'] = $data->kurir;
+                $tbl_transaksi['service'] = $data->service;
+                $tbl_transaksi['catatan_beli'] = $id_pembayaran;
+
+                $id_transaksi = $this->server_side->createRowsReturnID($tbl_transaksi, 'tbl_transaksi');
+
+                $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi_])->getResult();
+                foreach ($data_detail as $d) {
+                    $tbl_transaksi_detail['id_transaksi'] = $id_transaksi;
+                    $tbl_transaksi_detail['id_barang'] = $d->id_barang;
+                    $tbl_transaksi_detail['qty'] = $d->qty;
+                    $tbl_transaksi_detail['weight'] = $d->weight;
+                    $tbl_transaksi_detail['harga'] = $d->harga;
+                    $tbl_transaksi_detail['subtotal'] = $d->harga;
+
+                    $result = $this->server_side->createRows($tbl_transaksi_detail, 'tbl_transaksi_detail');
+                }
+            }
         }
 
-        
+        if ($this->server_side->db->transStatus() === false) {
+            $this->server_side->db->transRollback();
+            echo 'gagal';
+        } else {
+            $this->server_side->db->transCommit();
+            return redirect()->to('/notifikasi-kerjasama/KJS' . $no_kerjasama);
+        }
     }
 
     public function umkm($slug = NULL)
@@ -490,7 +488,7 @@ class Frontend extends BaseController
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="vertical-align:middle" class="text-center"><div class="d-flex align-items-center"><input type="number" onchange="qty(' . $td->id . ')" id="qty_' . $td->id . '" min="1" max="' . $td->max_qty . '" class="form-control" value="' . $td->qty . '"><label class="p-2">'.$td->satuan.'</label></div></td>
+                                    <td style="vertical-align:middle" class="text-center"><div class="d-flex align-items-center"><input type="number" onchange="qty(' . $td->id . ')" id="qty_' . $td->id . '" min="1" max="' . $td->max_qty . '" class="form-control" value="' . $td->qty . '"><label class="p-2">' . $td->satuan . '</label></div></td>
                                     <td style="vertical-align:middle" class="text-right"><b>Rp ' . number_format($td->subtotal, 0, ',', '.') . '</b></td>
                                     <td style="vertical-align:middle" width="5%"><a href="javascript:void(0)" class="remove" data-id="' . $td->id . '" data-id_transaksi="' . $t->id . '"><i class="fas fa-trash-alt text-danger"></i></a></td>
                                 </tr>';
@@ -529,26 +527,26 @@ class Frontend extends BaseController
                             <div class="d-flex align-self-center">
                                 <div class="mr-auto">
                                     <label class="form-check-label" for="' . $t->id . '">
-                                        <a href="'.base_url('profil-umkm/'.$t->slug_url).'"><h5>' . $t->nama_toko . '</h5></a>
+                                        <a href="' . base_url('profil-umkm/' . $t->slug_url) . '"><h5>' . $t->nama_toko . '</h5></a>
                                     </label>
                                 </div>
                                 <div class="ml-auto">
-                                    <a href="'.base_url('kerjasama/umkm/'.$t->kode_transaksi).'" class="btn btn-success"><i class="fas fa-plus-circle"></i> <b>Pengajuan Kerja Sama</b></a>
+                                    <a href="' . base_url('kerjasama/umkm/' . $t->kode_transaksi) . '" class="btn btn-success"><i class="fas fa-plus-circle"></i> <b>Pengajuan Kerja Sama</b></a>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <table class="table table-sm">
                                 <tbody>';
-                    foreach ($this->server_side->transaksi_detail($t->id) as $td) {
-                        if($td->qty >= $td->min_qty_kerjasama){
-                            $subtotal = $td->harga_min * $td->qty;
-                            $qty = $td->qty;
-                        }else{
-                            $qty = 10;
-                            $subtotal = $td->harga_min * $qty;
-                        }
-                        $cart_  .= '<tr>
+            foreach ($this->server_side->transaksi_detail($t->id) as $td) {
+                if ($td->qty >= $td->min_qty_kerjasama) {
+                    $subtotal = $td->harga_min * $td->qty;
+                    $qty = $td->qty;
+                } else {
+                    $qty = 10;
+                    $subtotal = $td->harga_min * $qty;
+                }
+                $cart_  .= '<tr>
                                         <td class="product-image" width="60%">
                                             <div class="d-flex">
                                                 <div class="p-2 align-self-center">
@@ -556,19 +554,19 @@ class Frontend extends BaseController
                                                 </div>
                                                 <div class="p-2 align-self-center">
                                                     <b>' . $td->nama . '</b>
-                                                    <p class="text-warning">Minimal order pengajuan kerjasama <b>'.$td->min_qty_kerjasama.' '.$td->satuan.'</b></p>
+                                                    <p class="text-warning">Minimal order pengajuan kerjasama <b>' . $td->min_qty_kerjasama . ' ' . $td->satuan . '</b></p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="vertical-align:middle" class="text-center"><div class="d-flex align-items-center"><input type="number" onchange="qty(' . $td->id . ')" id="qty_' . $td->id . '" min="'.$td->min_qty_kerjasama.'" max="' . $td->max_qty . '" class="form-control" value="' . $qty . '"><label class="p-2"><b>'.$td->satuan.'</b></label></div></td>
+                                        <td style="vertical-align:middle" class="text-center"><div class="d-flex align-items-center"><input type="number" onchange="qty(' . $td->id . ')" id="qty_' . $td->id . '" min="' . $td->min_qty_kerjasama . '" max="' . $td->max_qty . '" class="form-control" value="' . $qty . '"><label class="p-2"><b>' . $td->satuan . '</b></label></div></td>
                                         <td style="vertical-align:middle" class="text-right">
-                                            <div class="text-danger"><s>Rp '.number_format($td->harga_produk * $qty, 0, ',', '.').'</s></div>
+                                            <div class="text-danger"><s>Rp ' . number_format($td->harga_produk * $qty, 0, ',', '.') . '</s></div>
                                             <b>Rp ' . number_format($subtotal, 0, ',', '.') . '</b>
                                         </td>
                                         <td style="vertical-align:middle" width="5%"><a href="javascript:void(0)" class="remove p-2" data-id="' . $td->id . '" data-id_transaksi="' . $t->id . '"><i class="fas fa-trash-alt text-danger"></i></a></td>
                                     </tr>';
-                    }
-                    $cart_ .= '</tbody>
+            }
+            $cart_ .= '</tbody>
                             </table>
                             <div class="form-group">
                                 <label for="catatan">Catatan Pesanan</label>
@@ -597,7 +595,7 @@ class Frontend extends BaseController
     {
         $row_id = $this->request->getPost('id');
         $qty = $this->request->getPost('jumlah');
-        
+
         $id_barang = $this->db->table('tbl_transaksi_detail')->getWhere(['id' => $row_id])->getRow()->id_barang;
         $harga = $this->db->table('tbl_produk_umkm')->getWhere(['id' => $id_barang])->getRow()->harga;
 

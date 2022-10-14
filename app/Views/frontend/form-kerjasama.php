@@ -33,6 +33,7 @@ $this->server_side = new ServerSideModel();
                                 <label for="nama" class="col-sm-3 col-form-label">Nama</label>
                                 <div class="col-sm-9">
                                     <input type="hidden" class="form-control" id="kode_transaksi" name="kode_transaksi" value="<?= $kode_transaksi ?>">
+                                    <input type="hidden" class="form-control" id="total_tagihan" name="total_tagihan">
                                     <input type="text" class="form-control" id="nama" name="nama" value="<?= session()->get('nama') ?>" required>
                                 </div>
                             </div>
@@ -101,7 +102,7 @@ $this->server_side = new ServerSideModel();
             <div class="row justify-content-center mt-5">
                 <div class="col-lg-9">
                     <div class="section-title text-center">
-                        <h3>DAFTAR <span class="orange-text">BARANG</span></h3>
+                        <h3>DAFTAR <span class="orange-text">PRODUK</span></h3>
                     </div>
                     <div class="card">
                         <div class="card-body">

@@ -74,13 +74,7 @@ $this->server_side = new ServerSideModel(); ?>
 						<nav class="main-menu">
 							<ul>
 								<li class="current-list-item"><a href="<?= base_url('/') ?>">Home</a></li>
-								<li><a href="#">Kategori</a>
-									<ul class="sub-menu">
-										<?php foreach ($this->server_side->getKategoriUMKMreal() as $k) : ?>
-											<li><a href="<?= base_url('/kategori/' . $k->id) ?>"><?= $k->nama; ?></a></li>
-										<?php endforeach; ?>
-									</ul>
-								</li>
+								<li><a href="<?= base_url('/list-produk') ?>">Produk</a></li>
 								<li><a href="<?= base_url('/list-berita') ?>">Berita</a></li>
 								<?php if ($session->get("role") == "RESELLER") { ?>
 									<li><a href="<?= base_url('kerjasama') ?>">Kerja Sama</a></li>

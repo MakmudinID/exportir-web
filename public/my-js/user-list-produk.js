@@ -1,21 +1,20 @@
-function filter(){
+function filter() {
     // console.log('asd');
     $.ajax({
-        url: base_url+'/list_produk_',
+        url: base_url + '/list_produk_',
         method: 'POST',
         data: {
-            umkm : $('#umkm').val(),
             kategori: $('#kategori').val()
         },
-        success: function(res){
+        success: function(res) {
             $('#list-produk').html(res);
         }
     })
 }
 
-function add_cart(id,id_umkm,img,produk,qty,harga, weight){
+function add_cart(id, id_umkm, img, produk, qty, harga, weight) {
     $.ajax({
-        url: base_url+'/add-cart',
+        url: base_url + '/add-cart',
         type: 'POST',
         data: {
             id: id,
@@ -27,9 +26,9 @@ function add_cart(id,id_umkm,img,produk,qty,harga, weight){
             weight: weight,
         },
         dataType: 'JSON',
-        success:function(res){
+        success: function(res) {
             $('.total-cart').html(res.total);
-            if(res.result != true){
+            if (res.result != true) {
                 Swal.fire({
                     title: 'Gagal',
                     html: "Maaf Anda Belum Login !",
@@ -39,7 +38,7 @@ function add_cart(id,id_umkm,img,produk,qty,harga, weight){
                     showConfirmButton: false,
                     buttons: false,
                 });
-            }else{
+            } else {
                 Swal.fire({
                     title: 'Berhasil',
                     html: "Produk Berhasil Masuk Keranjang",
@@ -58,15 +57,11 @@ function add_cart(id,id_umkm,img,produk,qty,harga, weight){
 jQuery(document).ready(function() {
     filter();
 
-    $('#umkm').on('change', function(){
+    $('#kategori').on('change', function() {
         filter();
     })
 
-    $('#kategori').on('change', function(){
-        filter();
-    })
-
-    $(document).on('click', '.add-cart', function(e){
+    $(document).on('click', '.add-cart', function(e) {
         e.preventDefault();
         var id = $(this).data('id');
         var umkm = $(this).data('umkm');
@@ -75,6 +70,6 @@ jQuery(document).ready(function() {
         var qty = $(this).data('qty');
         var harga = $(this).data('harga');
         var weight = $(this).data('weight');
-        add_cart(id,umkm,img,produk,qty,harga,weight)
+        add_cart(id, umkm, img, produk, qty, harga, weight)
     })
 })

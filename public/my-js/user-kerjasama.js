@@ -89,7 +89,7 @@ jQuery(document).ready(function() {
                         style: 'currency',
                         currency: 'IDR'
                     });
-
+                    $('#total_tagihan').val(total);
                     $('#total').html('<b>' + rupiah_total.replace(",00", "") + '</b>');
                 }
             }

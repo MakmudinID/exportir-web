@@ -1,0 +1,30 @@
+CRITICAL - 2022-10-14 10:17:15 --> Undefined property: stdClass::$id_transaksi
+in APPPATH\Controllers\Frontend.php on line 201.
+ 1 APPPATH\Controllers\Frontend.php(201): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$id_transaksi', 'APPPATH\\Controllers\\Frontend.php', 201)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->kerjasama_pengajuan()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-14 10:18:57 --> Undefined property: stdClass::$id_transaksi
+in APPPATH\Controllers\Frontend.php on line 228.
+ 1 APPPATH\Controllers\Frontend.php(228): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$id_transaksi', 'APPPATH\\Controllers\\Frontend.php', 228)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->kerjasama_pengajuan()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-14 17:23:23 --> Invalid file: reseller/kerjasama.php
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 33.
+ 1 SYSTEMPATH\View\View.php(201): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('reseller/kerjasama.php')
+ 2 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('reseller/kerjasama', [], true)
+ 3 APPPATH\Views\template\adminlte.php(104): view('reseller/kerjasama')
+ 4 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 5 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 6 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 7 APPPATH\Controllers\Reseller.php(45): view('template/adminlte', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama()
+ 9 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+10 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
