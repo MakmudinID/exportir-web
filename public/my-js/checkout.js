@@ -17,20 +17,31 @@ jQuery(document).ready(function() {
                 },
                 success: function(res) {
                     var data = JSON.parse(res);
-                    var data_kurir = data.rajaongkir.results;
-                    var datas = data_kurir[0].costs;
-                    var isi = '<option value="">- Pilih Layanan -</option>';
-
-                    for (var i = 0; i < datas.length; i++) {
-                        ongkir = datas[i].cost[0].value;
-                        let rupiah = ongkir.toLocaleString('id', {
-                            style: 'currency',
-                            currency: 'IDR'
+                    if (data.rajaongkir.status.code == 400) {
+                        Swal.fire({
+                            title: '404',
+                            html: data.rajaongkir.status.description,
+                            icon: 'error',
+                            showCancelButton: false,
+                            showConfirmButton: true,
                         });
+                    } else {
+                        var data_kurir = data.rajaongkir.results;
+                        console.log(JSON.parse(res));
+                        var datas = data_kurir[0].costs;
+                        var isi = '<option value="">- Pilih Layanan -</option>';
 
-                        isi += "<option value='" + datas[i].service + "' data-cost='" + datas[i].cost[0].value + "'>" + datas[i].description + " (estimasi " + datas[i].cost[0].etd + " hari) - " + rupiah.replace(",00", "") + " </option>";
+                        for (var i = 0; i < datas.length; i++) {
+                            ongkir = datas[i].cost[0].value;
+                            let rupiah = ongkir.toLocaleString('id', {
+                                style: 'currency',
+                                currency: 'IDR'
+                            });
+
+                            isi += "<option value='" + datas[i].service + "' data-cost='" + datas[i].cost[0].value + "'>" + datas[i].description + " (estimasi " + datas[i].cost[0].etd + " hari) - " + rupiah.replace(",00", "") + " </option>";
+                        }
+                        $('#layanan_' + id).html(isi);
                     }
-                    $('#layanan_' + id).html(isi);
                 }
             })
         };

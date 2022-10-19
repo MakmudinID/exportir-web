@@ -24,7 +24,6 @@ function add_cart(id, id_umkm, img, produk, qty, harga, weight) {
                     timer: 2000,
                     showCancelButton: false,
                     showConfirmButton: false,
-                    buttons: false,
                 });
             } else {
                 Swal.fire({
@@ -34,8 +33,8 @@ function add_cart(id, id_umkm, img, produk, qty, harga, weight) {
                     timer: 2000,
                     showCancelButton: false,
                     showConfirmButton: false,
-                    buttons: false,
                 });
+                $("a.url-kerjasama").attr("href", res.url);
             }
         }
     })

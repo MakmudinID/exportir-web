@@ -7,7 +7,8 @@ use Hashids\Hashids;
 class Frontend extends BaseController
 {
     private $url = "https://api.rajaongkir.com/starter/";
-    private $apiKey = "2a304d172f3b55cb66741ce72a3a6eb9";
+    // private $apiKey = "2a304d172f3b55cb66741ce72a3a6eb9";
+    private $apiKey = "402f8932f6311186b7ce7e6211ac2b66";
 
     public function __construct()
     {
@@ -64,7 +65,7 @@ class Frontend extends BaseController
         $data['main_content']   = 'frontend/home';
         $data['produk']   = $this->server_side->getProdukRand();
         $data['umkm'] = $this->server_side->getUMKM();
-
+        $data['title'] = 'Home';
         $data['berita'] = $this->server_side->getBerita();
         $data['kategori']   = $this->server_side->getKategoriUMKM();
         echo view('template/fruitkha', $data);
@@ -73,6 +74,7 @@ class Frontend extends BaseController
     public function kategori($id_kategori_umkm)
     {
         //Kategori
+        $data['title'] = 'Kategori';
         $data['main_content']   = 'frontend/kategori-produk-umkm';
         $data['kategori'] = $this->db->query("select nama from tbl_kategori_umkm where id=?", array($id_kategori_umkm))->getRow();
         $data['produk_umkm'] = $this->server_side->getProdukByKategoriUMKM($id_kategori_umkm);
@@ -87,7 +89,7 @@ class Frontend extends BaseController
     {
         $data['js'] = array("user-list-produk.js?r=" . uniqid());
         $data['main_content']   = 'frontend/list-produk';
-        // $data['produk']   = $this->server_side->getProdukRand();
+        $data['title'] = 'Produk';
         $data['umkm'] = $this->server_side->getUMKM();
         $data['kategori_produk'] = $this->server_side->getKategoriProduk();
         echo view('template/fruitkha', $data);
@@ -132,7 +134,7 @@ class Frontend extends BaseController
         //Berita
         $data['produk'] = $this->server_side->getProdukById($id);
         $data['produk_related'] = $this->server_side->getProdukRelated($data['produk']->id_kategori);
-        // var_dump($data);die;
+        $data['title'] = 'Produk';
         $data['js'] = array("produk.js?r=" . uniqid());
         $data['main_content']   = 'frontend/produk';
         echo view('template/fruitkha', $data);
@@ -142,6 +144,7 @@ class Frontend extends BaseController
     public function kerjasama()
     {
         $this->auth->is_login();
+        $data['title'] = 'Kerja Sama';
         $data['js'] = array("reseller-kerjasama.js?r=" . uniqid());
         $data['main_content']   = 'frontend/kerjasama';
         echo view('template/fruitkha', $data);
@@ -151,9 +154,10 @@ class Frontend extends BaseController
     {
         $this->auth->is_login();
         if ($slug == null) {
-            redirect('/');
+            return redirect()->to('/');
         }
         $data['kode_transaksi'] = $slug;
+        $data['title'] = 'Kerja Sama';
         $data['umkm'] = $this->server_side->getUMKMbyKodeTransaksi($slug);
         $data['transaksi'] = $this->server_side->transaksi_in_kode($slug);
         $data['js'] = array("user-kerjasama.js?r=" . uniqid());
@@ -182,7 +186,9 @@ class Frontend extends BaseController
         $tbl_transaksi_kerjasama['status'] = 'Inactive';
 
         $id_kerjasama = $this->server_side->createRowsReturnID($tbl_transaksi_kerjasama, 'tbl_transaksi_kerjasama');
-
+        if(!$id_kerjasama){
+            echo 'error create transaksi kerjasama<br>';
+        }
         for ($i = 1; $i <= $this->request->getPost('kontrak'); $i++) {
             $tbl_transaksi_pembayaran['id_kerjasama'] = $id_kerjasama;
             $tbl_transaksi_pembayaran['bayar_bulan_ke'] = $i;
@@ -191,6 +197,9 @@ class Frontend extends BaseController
             $tbl_transaksi_pembayaran['status'] = 'BELUM';
 
             $id_pembayaran = $this->server_side->createRowsReturnID($tbl_transaksi_pembayaran, 'tbl_transaksi_pembayaran');
+            if(!$id_pembayaran){
+                echo 'error create transaksi pembayaran<br>';
+            }
 
             if ($i == 1) {
                 $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
@@ -219,16 +228,9 @@ class Frontend extends BaseController
                 }
             } else {
                 $data = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi])->getRow();
-
-                $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-                $milis = time() + (60 * 60 * 4);
-                $convert = $hashids->encode($milis);
-                $kode = substr($convert, 0, 8);
-
                 $id_transaksi_ = $data->id;
-
                 $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
-                $tbl_transaksi['kode_transaksi'] = $kode;
+                $tbl_transaksi['kode_transaksi'] = $kode_transaksi;
                 $tbl_transaksi['id_pengguna'] = $data->id_pengguna;
                 $tbl_transaksi['id_umkm'] = $data->id_umkm;
                 $tbl_transaksi['jumlah'] = $data->jumlah;
@@ -271,7 +273,13 @@ class Frontend extends BaseController
     public function umkm($slug = NULL)
     {
         if ($slug == null) {
-            redirect('/');
+            return redirect()->to('/');
+        }
+        $data['title'] = 'Kerja Sama';
+        $data['kode_transaksi'] = $this->server_side->getKodeTransaksibySlug($slug);
+        $data['url'] = base_url('kerjasama/umkm/'.$data['kode_transaksi']);
+        if(!$data['kode_transaksi']){
+            $data['url'] = base_url('kerjasama');
         }
         $data['umkm'] = $this->server_side->getUMKMbySlug($slug);
         $data['produk'] = $this->server_side->getProdukByUMKM($slug);
@@ -284,6 +292,7 @@ class Frontend extends BaseController
     public function berita($id)
     {
         //Berita
+        $data['title'] = 'Berita';
         $data['berita']   = $this->server_side->getBeritaByid($id);
         $data['berita_random'] = $this->server_side->getBeritaRandom();
         // var_dump($data); die;
@@ -294,6 +303,7 @@ class Frontend extends BaseController
 
     public function list_berita()
     {
+        $data['title'] = 'Berita';
         $data['js'] = array("user-list-berita.js?r=" . uniqid());
         $data['main_content']   = 'frontend/list-berita';
         // $data['produk']   = $this->server_side->getProdukRand();
@@ -339,6 +349,7 @@ class Frontend extends BaseController
 
     public function keranjang()
     {
+        $data['title'] = 'Keranjang';
         $data['transaksi'] = $this->server_side->transaksi();
         $data['js'] = array("cart.js?r=" . uniqid());
         $data['main_content']   = 'frontend/keranjang';
@@ -436,6 +447,12 @@ class Frontend extends BaseController
                 $this->server_side->db->transCommit();
 
                 if ($result) {
+                    $r['kode_transaksi'] = $this->server_side->getKodeTransaksibyIdUMKM($id_umkm);
+                    $r['url'] = base_url('kerjasama/umkm/'.$r['kode_transaksi']);
+                    if(!$r['kode_transaksi']){
+                        $r['url'] = base_url('kerjasama');
+                    }
+
                     $r['result'] = true;
                     $r['total'] =  $this->db->table('tbl_transaksi')->getWhere(['status' => 'CART', 'id_pengguna' => session()->get('id')])->getNumRows();
                     echo json_encode($r);
@@ -637,7 +654,12 @@ class Frontend extends BaseController
 
     public function checkout()
     {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->to('/login');
+        }
+
         $transaksi_list = rtrim($this->request->getPost('id_transaksi'), ',');
+        $data['title'] = 'Checkout';
         $data['id_transaksi'] = $transaksi_list;
         $data['transaksi']  = $this->server_side->transaksi_in($transaksi_list);
         $data['pemesan']  = $this->server_side->transaksi_in_limit($transaksi_list);
@@ -674,6 +696,7 @@ class Frontend extends BaseController
     public function notifikasi($inv)
     {
         $data['kode'] = $inv;
+        $data['title'] = 'Notifikasi';
         $data['total_bayar'] = $this->db->table('tbl_transaksi_pembayaran')->getWhere(['kode_bayar' => $inv])->getRow()->total_tagihan;
         $data['main_content']   = 'frontend/notifikasi';
         echo view('template/fruitkha', $data);
@@ -682,6 +705,7 @@ class Frontend extends BaseController
     public function notifikasi_kerjasama($kode)
     {
         $data['kode'] = $kode;
+        $data['title'] = 'Notifikasi';
         // $data['total_bayar'] = $this->db->table('tbl_transaksi_pembayaran')->getWhere(['kode_bayar' => $inv])->getRow()->total_tagihan;
         $data['main_content']   = 'frontend/notifikasi_kerjasama';
         echo view('template/fruitkha', $data);

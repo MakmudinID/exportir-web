@@ -39,7 +39,7 @@ class Reseller extends BaseController
         if (session()->get('role') != 'RESELLER') {
             return redirect()->route('logout');
         }
-        $data['title'] = 'Kejasama Saya';
+        $data['title'] = 'Kerjasama Saya';
         $data['js'] = array("reseller-kerjasama.js?r=" . uniqid());
         $data['main_content']   = 'reseller/kerjasama';
         echo view('template/adminlte', $data);

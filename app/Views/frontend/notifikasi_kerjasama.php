@@ -31,7 +31,7 @@ $this->server_side = new ServerSideModel();
                         Pengajuan Kerjasama Berhasil
                         <hr>
                         <a href="<?=base_url('/')?>" class="btn btn-warning">Beranda</a>
-                        <a href="<?=base_url('/reseller/kerjasamasaya')?>"  class="btn btn-primary">Kerjasama Saya</a>
+                        <a href="<?=base_url('/reseller/kerjasama')?>"  class="btn btn-primary">Kerjasama Saya</a>
                     </div>
                 </div>
             </div>

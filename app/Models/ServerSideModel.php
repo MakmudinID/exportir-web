@@ -167,6 +167,38 @@ class ServerSideModel extends Model
         return $q->getResult();
     }
 
+    public function getKodeTransaksibySlug($slug)
+    {
+        $q = $this->db->query("SELECT kode_transaksi
+        FROM tbl_transaksi 
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        WHERE tbl_transaksi.status = 'CART'
+        AND tbl_transaksi.id_pengguna =? 
+        AND tbl_umkm.slug=?", array(session()->get('id'), $slug));
+        
+        if($q->getNumRows() > 0){
+            return $q->getRow()->kode_transaksi;
+        }else{
+            return false;
+        }
+    }
+
+    public function getKodeTransaksibyIdUMKM($id)
+    {
+        $q = $this->db->query("SELECT kode_transaksi
+        FROM tbl_transaksi 
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        WHERE tbl_transaksi.status = 'CART'
+        AND tbl_transaksi.id_pengguna =? 
+        AND tbl_umkm.id=?", array(session()->get('id'), $id));
+        
+        if($q->getNumRows() > 0){
+            return $q->getRow()->kode_transaksi;
+        }else{
+            return false;
+        }
+    }
+
     public function getKategoriByUMKM($slug)
     {
         $q = $this->db->query("SELECT tbl_kategori_produk.nama as kategori, tbl_kategori_produk.id FROM tbl_kategori_produk JOIN tbl_umkm ON tbl_umkm.id = tbl_kategori_produk.id_umkm where tbl_kategori_produk.status = 'ACTIVE' and tbl_umkm.slug=?", array($slug));
