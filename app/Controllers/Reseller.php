@@ -50,6 +50,19 @@ class Reseller extends BaseController
         echo 'te';
     }
 
+    public function kerjasama_pdf($no_kerjasama)
+    {
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - '.$no_kerjasama);
+        
+        $data['no_kerjasama'] = $no_kerjasama;
+        $html = view('reseller/kerjasama_pdf', $data);
+
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output('arjun.pdf','I'); // opens in browser
+    }
+
     public function kerjasama_()
     {
         if (session()->get('role') != 'RESELLER') {
@@ -68,12 +81,20 @@ class Reseller extends BaseController
             $row['umkm'] = $field->nama_umkm;
             $row['kontrak'] = $field->lama_kerjasama.' Bulan';
             if($field->status == 'BELUM_UPLOAD'){
-                $row['dokumen_kerjasama'] = '<i class="fas fa-download text-primary"></i> <a href="" class="text-primary">Unduh Dokumen</a> <b>|</b> <i class="fas fa-upload text-danger"></i> <a href="" class="text-danger">Unggah Dokumen</a>';
+                $row['status'] = '
+                <div class="d-flex justify-content-center">
+                    <div class="badge badge-danger">Belum Unggah Dokumen</div>
+                    <div class="align-self-center ml-2" role="button"><i class="fas fa-upload text-danger"></i></div>
+                </div>';
             }else{
-                $row['dokumen_kerjasama'] = '<i class="fas fa-upload text-success"></i>';
+                $row['status'] = '<span class="badge badge-primary">'.$field->status.'</span>';
             }
-            $row['status'] = $field->status;
-            $row['detail'] = '<a href="'.base_url('reseller/kerjasama/'.$field->no_kerjasama).'" class="btn btn-primary">Detail</a>';
+
+            $row['detail'] = '
+            <div class="d-flex justify-content-center">
+                <a href="'.base_url('reseller/kerjasama/'.$field->no_kerjasama).'" class="p-1"><i class="fas fa-search-plus"></i></a>
+                <a href="'.base_url('reseller/pdf/'.$field->no_kerjasama).'" class="p-1"><i class="fas fa-file-pdf"></i></a>
+            </div>';
             $data[] = $row;
         }
 

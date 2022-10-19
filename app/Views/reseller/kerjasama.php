@@ -67,7 +67,6 @@
                                     <th>No. Kerja Sama</th>
                                     <th>UMKM</th>
                                     <th>Kontrak</th>
-                                    <th>Dokumen Kerjasama</th>
                                     <th>Status</th>
                                     <th>Detail</th>
                                 </tr>

@@ -23,7 +23,6 @@ jQuery(document).ready(function() {
             { "data": "no_kerjasama" },
             { "data": "umkm" },
             { "data": "kontrak" },
-            { "data": "dokumen_kerjasama" },
             { "data": "status" },
             { "data": "detail" },
         ],
