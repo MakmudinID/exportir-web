@@ -16,7 +16,7 @@ class Admin extends BaseController
         if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
-        $data['title'] = 'Admin | dashboard';
+        $data['title'] = 'Dashboard';
         $data['js'] = array("admin-dashboard.js?r=" . uniqid());
         $data['main_content']   = 'admin/dashboard';
         echo view('template/adminlte', $data);
@@ -28,7 +28,7 @@ class Admin extends BaseController
         if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
-        $data['title'] = 'Admin | Profil';
+        $data['title'] = 'Profil';
         $data['js'] = array("admin-profil.js?r=" . uniqid());
         $data['main_content']   = 'admin/profil';
         echo view('template/adminlte', $data);
@@ -40,7 +40,7 @@ class Admin extends BaseController
         if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
-        $data['title'] = 'Admin | Reseller';
+        $data['title'] = 'Reseller';
         $data['js'] = array("admin-reseller.js?r=" . uniqid());
         $data['main_content']   = 'admin/reseller';
         echo view('template/adminlte', $data);
@@ -56,7 +56,7 @@ class Admin extends BaseController
     public function umkm()
     {
         //UMKM
-        $data['title'] = 'Admin | UMKM';
+        $data['title'] = 'UMKM';
         $data['js'] = array("admin-umkm.js?r=" . uniqid());
         $data['pengguna'] = $this->db->query('select * from tbl_pengguna')->getResult();
         $data['kategori_umkm'] = $this->db->query('select * from tbl_kategori_umkm')->getResult();
@@ -240,7 +240,7 @@ class Admin extends BaseController
         if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
-        $data['title'] = 'Admin | Produk';
+        $data['title'] = 'Produk';
         $data['js'] = array("admin-produk.js?r=" . uniqid());
         $data['main_content']   = 'admin/data/produk';
         echo view('template/adminlte', $data);
@@ -430,7 +430,7 @@ class Admin extends BaseController
             return redirect()->route('logout');
         }
 
-        $data['title'] = 'Admin | User';
+        $data['title'] = 'Pengguna';
         $data['propinsi'] = $this->server_side->getPropinsi();
         $data['kota'] = $this->server_side->getKotaAll();
         $data['js'] = array("admin-user.js?r=" . uniqid());
@@ -485,7 +485,7 @@ class Admin extends BaseController
         if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
-        $data['title'] = 'Admin | Berita';
+        $data['title'] = 'Berita';
         $data['js'] = array("admin-berita.js?r=" . uniqid());
         $data['kategori'] = $this->db->query('select * from tbl_berita_kategori')->getResult();
         $data['main_content']   = 'admin/berita/berita';
@@ -664,7 +664,7 @@ class Admin extends BaseController
     public function berita_kategori()
     {
         //UMKM
-        $data['title'] = 'Admin | Berita Kategori';
+        $data['title'] = 'Berita Kategori';
         $data['js'] = array("admin-beritakategori.js?r=" . uniqid());
         $data['main_content']   = 'admin/berita/berita_kategori';
         echo view('template/adminlte', $data);
@@ -784,7 +784,7 @@ class Admin extends BaseController
     public function kategori_umkm()
     {
         //UMKM
-        $data['title'] = 'Admin | Kategori UMKM';
+        $data['title'] = 'Kategori UMKM';
         $data['js'] = array("admin-kategori-umkm.js?r=" . uniqid());
         $data['main_content']   = 'admin/data/kategori-umkm';
         echo view('template/adminlte', $data);
@@ -904,7 +904,7 @@ class Admin extends BaseController
     
     public function transaksi()
     {
-        $data['title'] = 'Transaksi';
+        $data['title'] = 'Transaksi Penjualan';
         $data['js'] = array("admin-transaksi.js?r=".uniqid());
 		$data['main_content']   = 'admin/transaksi'; 
 		echo view('template/adminlte', $data);

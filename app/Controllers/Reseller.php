@@ -45,6 +45,39 @@ class Reseller extends BaseController
         echo view('template/adminlte', $data);
     }
 
+    public function kerjasama_()
+    {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+
+        $list = $this->transaksi->limitRowsKerjasama();
+        // var_dump($list);die;
+        $data = array();
+        $no = $this->request->getPost('start');
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row['tanggal_pengajuan'] = $field->create_date;
+            $row['no_kerjasama'] = $field->no_kerjasama;
+            $row['umkm'] = $field->nama_umkm;
+            $row['kontrak'] = $field->lama_kerjasama.' Bulan';
+            $row['dokumen_kerjasama'] = $field->lama_kerjasama.' Bulan';
+            $row['status'] = $field->status;
+            $row['detail'] = 'detail';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $this->transaksi->countFilteredKerjasama(),
+            "recordsFiltered" => $this->transaksi->countFilteredKerjasama(),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+
     public function berita()
     {
         if (session()->get('role') != 'RESELLER') {
