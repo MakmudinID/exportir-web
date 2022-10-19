@@ -101,6 +101,7 @@ $routes->post('reseller/update_profil', 'Reseller::update_profil');
 $routes->get('reseller/berita', 'Reseller::berita');
 $routes->post('reseller/berita_', 'Reseller::berita_');
 $routes->get('reseller/kerjasama', 'Reseller::kerjasama');
+$routes->get('reseller/kerjasama/(:any)', 'Reseller::kerjasama_detail/$1');
 $routes->post('reseller/kerjasama_', 'Reseller::kerjasama_');
 $routes->get('reseller/detail-berita/(:any)', 'Reseller::detail_berita/$1');
 

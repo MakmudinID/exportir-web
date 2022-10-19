@@ -45,6 +45,11 @@ class Reseller extends BaseController
         echo view('template/adminlte', $data);
     }
 
+    public function kerjasama_detail($no_kerjasama)
+    {
+        echo 'te';
+    }
+
     public function kerjasama_()
     {
         if (session()->get('role') != 'RESELLER') {
@@ -52,7 +57,7 @@ class Reseller extends BaseController
         }
 
         $list = $this->transaksi->limitRowsKerjasama();
-        // var_dump($list);die;
+
         $data = array();
         $no = $this->request->getPost('start');
         foreach ($list as $field) {
@@ -62,9 +67,13 @@ class Reseller extends BaseController
             $row['no_kerjasama'] = $field->no_kerjasama;
             $row['umkm'] = $field->nama_umkm;
             $row['kontrak'] = $field->lama_kerjasama.' Bulan';
-            $row['dokumen_kerjasama'] = $field->lama_kerjasama.' Bulan';
+            if($field->status == 'BELUM_UPLOAD'){
+                $row['dokumen_kerjasama'] = '<i class="fas fa-download text-primary"></i> <a href="" class="text-primary">Unduh Dokumen</a> <b>|</b> <i class="fas fa-upload text-danger"></i> <a href="" class="text-danger">Unggah Dokumen</a>';
+            }else{
+                $row['dokumen_kerjasama'] = '<i class="fas fa-upload text-success"></i>';
+            }
             $row['status'] = $field->status;
-            $row['detail'] = 'detail';
+            $row['detail'] = '<a href="'.base_url('reseller/kerjasama/'.$field->no_kerjasama).'" class="btn btn-primary">Detail</a>';
             $data[] = $row;
         }
 
