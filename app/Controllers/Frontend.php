@@ -183,7 +183,7 @@ class Frontend extends BaseController
         $tbl_transaksi_kerjasama['alamat'] = $this->request->getPost('alamat');
         $tbl_transaksi_kerjasama['email'] = $this->request->getPost('email');
         $tbl_transaksi_kerjasama['no_ktp'] = $this->request->getPost('nik');
-        $tbl_transaksi_kerjasama['status'] = 'Inactive';
+        $tbl_transaksi_kerjasama['status'] = 'BELUM_UPLOAD';
 
         $id_kerjasama = $this->server_side->createRowsReturnID($tbl_transaksi_kerjasama, 'tbl_transaksi_kerjasama');
         if(!$id_kerjasama){

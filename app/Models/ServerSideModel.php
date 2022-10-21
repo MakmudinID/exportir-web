@@ -15,6 +15,21 @@ class ServerSideModel extends Model
         $this->db = db_connect();
     }
 
+    public function getKerjasama($no_kerjasama)
+    {
+        $sql="SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota, tbl_umkm.alamat as alamat_umkm, tbl_umkm.no_telepon as telepon_umkm
+        FROM tbl_transaksi_kerjasama
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id_kerjasama = tbl_transaksi_kerjasama.id
+        JOIN tbl_transaksi ON tbl_transaksi.id_pembayaran = tbl_transaksi_pembayaran.id
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi_kerjasama.no_kerjasama = ?
+        GROUP BY tbl_transaksi_kerjasama.no_kerjasama";
+
+        return $this->db->query($sql, array($no_kerjasama))->getRow();
+    }
+
     public function transaksi_in($list){
         $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi

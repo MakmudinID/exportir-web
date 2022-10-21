@@ -55,7 +55,8 @@ class Reseller extends BaseController
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - '.$no_kerjasama);
         
-        $data['no_kerjasama'] = $no_kerjasama;
+        $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
+        
         $html = view('reseller/kerjasama_pdf', $data);
 
         $mpdf->WriteHTML($html);
@@ -80,14 +81,21 @@ class Reseller extends BaseController
             $row['no_kerjasama'] = $field->no_kerjasama;
             $row['umkm'] = $field->nama_umkm;
             $row['kontrak'] = $field->lama_kerjasama.' Bulan';
+
+            //BELUM_UPLOAD
+            //SUDAH_UPLOAD
+            //SUDAH_DISETUJUI
+
             if($field->status == 'BELUM_UPLOAD'){
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
                     <div class="badge badge-danger">Belum Unggah Dokumen</div>
                     <div class="align-self-center ml-2" role="button"><i class="fas fa-upload text-danger"></i></div>
                 </div>';
+            }else if($field->status == 'SUDAH_UPLOAD'){
+                $row['status'] = '<span class="badge badge-warning">'.$field->status.'</span>';
             }else{
-                $row['status'] = '<span class="badge badge-primary">'.$field->status.'</span>';
+                $row['status'] = '<span class="badge badge-success">'.$field->status.'</span>';
             }
 
             $row['detail'] = '
