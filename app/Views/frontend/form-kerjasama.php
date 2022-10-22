@@ -50,6 +50,12 @@ $this->server_side = new ServerSideModel();
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label for="no_telp" class="col-sm-3 col-form-label">No. Telepon/Handphone</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="no_telp" name="no_telp" value="<?= session()->get('nohp') ?>" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label for="nik" class="col-sm-3 col-form-label">No. KTP (NIK)</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="nik" name="nik" required>

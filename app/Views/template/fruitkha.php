@@ -76,7 +76,7 @@ $this->server_side = new ServerSideModel(); ?>
 								<li <?=($title == 'Home') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('/') ?>">Home</a></li>
 								<li <?=($title == 'Produk') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('/list-produk') ?>">Produk</a></li>
 								<li <?=($title == 'Berita') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('/list-berita') ?>">Berita</a></li>
-								<?php if ($session->get("role") == "RESELLER" && $title == 'Kerja Sama') { ?>
+								<?php if ($session->get("role") == "RESELLER") { ?>
 									<li <?=($title == 'Kerja Sama') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('kerjasama') ?>">Kerja Sama</a></li>
 								<?php } ?>
 								<li>

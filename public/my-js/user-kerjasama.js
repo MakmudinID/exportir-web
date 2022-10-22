@@ -120,6 +120,9 @@ jQuery(document).ready(function() {
                 required: true,
                 email: true
             },
+            no_telp: {
+                required: true,
+            },
             nik: {
                 required: true,
                 number: true

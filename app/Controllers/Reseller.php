@@ -47,7 +47,14 @@ class Reseller extends BaseController
 
     public function kerjasama_detail($no_kerjasama)
     {
-        echo 'te';
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Kerjasama Saya';
+        $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
+        $data['js'] = array("reseller-kerjasama-detail.js?r=" . uniqid());
+        $data['main_content']   = 'reseller/kerjasama_detail';
+        echo view('template/adminlte', $data);
     }
 
     public function kerjasama_pdf($no_kerjasama)
@@ -82,10 +89,6 @@ class Reseller extends BaseController
             $row['umkm'] = $field->nama_umkm;
             $row['kontrak'] = $field->lama_kerjasama.' Bulan';
 
-            //BELUM_UPLOAD
-            //SUDAH_UPLOAD
-            //SUDAH_DISETUJUI
-
             if($field->status == 'BELUM_UPLOAD'){
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
@@ -100,8 +103,8 @@ class Reseller extends BaseController
 
             $row['detail'] = '
             <div class="d-flex justify-content-center">
+                <a href="'.base_url('reseller/pdf/'.$field->no_kerjasama).'" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
                 <a href="'.base_url('reseller/kerjasama/'.$field->no_kerjasama).'" class="p-1"><i class="fas fa-search-plus"></i></a>
-                <a href="'.base_url('reseller/pdf/'.$field->no_kerjasama).'" class="p-1"><i class="fas fa-file-pdf"></i></a>
             </div>';
             $data[] = $row;
         }

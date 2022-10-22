@@ -145,7 +145,7 @@ class Frontend extends BaseController
     {
         $this->auth->is_login();
         $data['title'] = 'Kerja Sama';
-        $data['js'] = array("reseller-kerjasama.js?r=" . uniqid());
+        $data['js'] = array("kerjasama.js?r=" . uniqid());
         $data['main_content']   = 'frontend/kerjasama';
         echo view('template/fruitkha', $data);
     }
@@ -170,15 +170,17 @@ class Frontend extends BaseController
         $total_tagihan = $this->request->getPost('total_tagihan');
         $kode_transaksi = $this->request->getPost('kode_transaksi');
 
-        $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-        $milis = time() + (60 * 60 * 4);
-        $convert = $hashids->encode($milis);
-        $no_kerjasama = substr($convert, 0, 8);
+        $data_transaksi = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi]);
 
+        $str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        
+        $no_kerjasama = 'KJS'.date('ymd').'-'.substr(str_shuffle($str), 0, 8);
         $this->server_side->db->transBegin();
 
-        $tbl_transaksi_kerjasama['no_kerjasama'] = 'KJS' . $no_kerjasama;
+        $tbl_transaksi_kerjasama['no_kerjasama'] = $no_kerjasama;
         $tbl_transaksi_kerjasama['lama_kerjasama'] = $this->request->getPost('kontrak');
+        $tbl_transaksi_kerjasama['no_telepon'] = $this->request->getPost('no_telp');
+        $tbl_transaksi_kerjasama['jumlah_produk'] = $this->server_side->count_cart_by($kode_transaksi);
         $tbl_transaksi_kerjasama['nama'] = $this->request->getPost('nama');
         $tbl_transaksi_kerjasama['alamat'] = $this->request->getPost('alamat');
         $tbl_transaksi_kerjasama['email'] = $this->request->getPost('email');
@@ -186,87 +188,65 @@ class Frontend extends BaseController
         $tbl_transaksi_kerjasama['status'] = 'BELUM_UPLOAD';
 
         $id_kerjasama = $this->server_side->createRowsReturnID($tbl_transaksi_kerjasama, 'tbl_transaksi_kerjasama');
-        if(!$id_kerjasama){
+        if (!$id_kerjasama) {
             echo 'error create transaksi kerjasama<br>';
         }
+
+        $hashids = new Hashids('', 6, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+        $milis = time() + (60 * 60 * 4);
+        $convert = $hashids->encode($milis);
+        $kode_ = substr($convert, 0, 6);
+
+        $kode_bayar = 'INV'.date('ymd').'-'.$kode_;
+
         for ($i = 1; $i <= $this->request->getPost('kontrak'); $i++) {
-            $tbl_transaksi_pembayaran['id_kerjasama'] = $id_kerjasama;
+            $tbl_transaksi_pembayaran['no_kerjasama'] = $no_kerjasama;
             $tbl_transaksi_pembayaran['bayar_bulan_ke'] = $i;
-            $tbl_transaksi_pembayaran['kode_bayar'] = $id_kerjasama;
+            $tbl_transaksi_pembayaran['kode_bayar'] = $kode_bayar;
             $tbl_transaksi_pembayaran['total_tagihan'] = $total_tagihan;
-            $tbl_transaksi_pembayaran['status'] = 'BELUM';
+            $tbl_transaksi_pembayaran['status'] = 'BELUM_BAYAR';
+            $tbl_transaksi_pembayaran['create_user'] = session()->get('nama');
 
-            $id_pembayaran = $this->server_side->createRowsReturnID($tbl_transaksi_pembayaran, 'tbl_transaksi_pembayaran');
-            if(!$id_pembayaran){
+            $result = $this->server_side->createRows($tbl_transaksi_pembayaran, 'tbl_transaksi_pembayaran');
+            if (!$result) {
                 echo 'error create transaksi pembayaran<br>';
+                die;
             }
+        }
 
-            if ($i == 1) {
-                $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
-                $tbl_transaksi['status'] = 'SEDANG';
-                $this->server_side->updateRowsByField('kode_transaksi', $kode_transaksi, $tbl_transaksi, 'tbl_transaksi');
+        $tbl_transaksi['kode_bayar'] = $kode_bayar;
+        $tbl_transaksi['status'] = 'BELUM_DIPROSES';
+        $tbl_transaksi['no_kerjasama'] = $no_kerjasama;
+        $this->server_side->updateRowsByField('kode_transaksi', $kode_transaksi, $tbl_transaksi, 'tbl_transaksi');
 
-                //update transaksi_detail
-                $id_transaksi = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi])->getRow()->id;
-                $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi])->getResult();
+        //update transaksi_detail
+        $id_transaksi = $data_transaksi->getRow()->id;
+        $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi])->getResult();
 
-                foreach ($data_detail as $d) {
-                    $produk = $this->db->table('tbl_produk_umkm')->getWhere(['id' => $d->id_barang])->getRow();
-                    if ($d->qty <= 10) {
-                        $tbl_transaksi_detail['qty'] = 10;
-                        $tbl_transaksi_detail['weight'] = $produk->weight * 10;
-                        $tbl_transaksi_detail['harga'] = $produk->harga_min;
-                        $tbl_transaksi_detail['subtotal'] = $produk->harga_min * 10;
-                        $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
-                    } else {
-                        $tbl_transaksi_detail['qty'] = $d->qty;
-                        $tbl_transaksi_detail['weight'] = $produk->weight * $d->qty;
-                        $tbl_transaksi_detail['harga'] = $produk->harga_min;
-                        $tbl_transaksi_detail['subtotal'] = $produk->harga_min * $d->qty;
-                        $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
-                    }
-                }
+        foreach ($data_detail as $d) {
+            $produk = $this->db->table('tbl_produk_umkm')->getWhere(['id' => $d->id_barang])->getRow();
+            if ($d->qty <= 10) {
+                $tbl_transaksi_detail['qty'] = 10;
+                $tbl_transaksi_detail['weight'] = $produk->weight * 10;
+                $tbl_transaksi_detail['harga'] = $produk->harga_min;
+                $tbl_transaksi_detail['subtotal'] = $produk->harga_min * 10;
+                $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
             } else {
-                $data = $this->db->table('tbl_transaksi')->getWhere(['kode_transaksi' => $kode_transaksi])->getRow();
-                $id_transaksi_ = $data->id;
-                $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
-                $tbl_transaksi['kode_transaksi'] = $kode_transaksi;
-                $tbl_transaksi['id_pengguna'] = $data->id_pengguna;
-                $tbl_transaksi['id_umkm'] = $data->id_umkm;
-                $tbl_transaksi['jumlah'] = $data->jumlah;
-                $tbl_transaksi['ongkir'] = $data->ongkir;
-                $tbl_transaksi['nama'] = $data->nama;
-                $tbl_transaksi['email'] = $data->email;
-                $tbl_transaksi['nohp'] = $data->nohp;
-                $tbl_transaksi['alamat'] = $data->alamat;
-                $tbl_transaksi['province_id'] = $data->province_id;
-                $tbl_transaksi['city_id'] = $data->city_id;
-                $tbl_transaksi['kurir'] = $data->kurir;
-                $tbl_transaksi['service'] = $data->service;
-                $tbl_transaksi['catatan_beli'] = $id_pembayaran;
-
-                $id_transaksi = $this->server_side->createRowsReturnID($tbl_transaksi, 'tbl_transaksi');
-
-                $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi_])->getResult();
-                foreach ($data_detail as $d) {
-                    $tbl_transaksi_detail['id_transaksi'] = $id_transaksi;
-                    $tbl_transaksi_detail['id_barang'] = $d->id_barang;
-                    $tbl_transaksi_detail['qty'] = $d->qty;
-                    $tbl_transaksi_detail['weight'] = $d->weight;
-                    $tbl_transaksi_detail['harga'] = $d->harga;
-                    $tbl_transaksi_detail['subtotal'] = $d->harga;
-
-                    $result = $this->server_side->createRows($tbl_transaksi_detail, 'tbl_transaksi_detail');
-                }
+                $tbl_transaksi_detail['qty'] = $d->qty;
+                $tbl_transaksi_detail['weight'] = $produk->weight * $d->qty;
+                $tbl_transaksi_detail['harga'] = $produk->harga_min;
+                $tbl_transaksi_detail['subtotal'] = $produk->harga_min * $d->qty;
+                $this->server_side->updateRows($d->id, $tbl_transaksi_detail, 'tbl_transaksi_detail');
             }
         }
 
         if ($this->server_side->db->transStatus() === false) {
             $this->server_side->db->transRollback();
             echo 'gagal';
+            die;
         } else {
             $this->server_side->db->transCommit();
-            return redirect()->to('/notifikasi-kerjasama/KJS' . $no_kerjasama);
+            return redirect()->to('/notifikasi-kerjasama/' . $no_kerjasama);
         }
     }
 
@@ -277,8 +257,8 @@ class Frontend extends BaseController
         }
         $data['title'] = 'Kerja Sama';
         $data['kode_transaksi'] = $this->server_side->getKodeTransaksibySlug($slug);
-        $data['url'] = base_url('kerjasama/umkm/'.$data['kode_transaksi']);
-        if(!$data['kode_transaksi']){
+        $data['url'] = base_url('kerjasama/umkm/' . $data['kode_transaksi']);
+        if (!$data['kode_transaksi']) {
             $data['url'] = base_url('kerjasama');
         }
         $data['umkm'] = $this->server_side->getUMKMbySlug($slug);
@@ -448,8 +428,8 @@ class Frontend extends BaseController
 
                 if ($result) {
                     $r['kode_transaksi'] = $this->server_side->getKodeTransaksibyIdUMKM($id_umkm);
-                    $r['url'] = base_url('kerjasama/umkm/'.$r['kode_transaksi']);
-                    if(!$r['kode_transaksi']){
+                    $r['url'] = base_url('kerjasama/umkm/' . $r['kode_transaksi']);
+                    if (!$r['kode_transaksi']) {
                         $r['url'] = base_url('kerjasama');
                     }
 
@@ -672,25 +652,27 @@ class Frontend extends BaseController
     {
         $transaksi_list = $this->request->getPost('id_transaksi');
 
-        $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+        $hashids = new Hashids('', 6, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
         $milis = time() + (60 * 60 * 4);
         $convert = $hashids->encode($milis);
-        $kode = substr($convert, 0, 8);
+        $kode_ = substr($convert, 0, 6);
 
-        $tbl_transaksi_pembayaran['kode_bayar'] = 'INV' . $kode;
+        $kode_bayar = 'INV'.date('ymd').'-'.$kode_;
+
+        $tbl_transaksi_pembayaran['kode_bayar'] = $kode_bayar;
         $tbl_transaksi_pembayaran['total_tagihan'] = $this->server_side->jumlah_total_bayar($transaksi_list);
-        $tbl_transaksi_pembayaran['status'] = 'BELUM';
+        $tbl_transaksi_pembayaran['status'] = 'BELUM_BAYAR';
         $tbl_transaksi_pembayaran['create_user'] = session()->get('nama');
 
         $id_pembayaran = $this->server_side->createRowsReturnID($tbl_transaksi_pembayaran, 'tbl_transaksi_pembayaran');
         foreach (explode(',', $transaksi_list) as $val) {
             $id_transaksi = $val;
-            $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
-            $tbl_transaksi['status'] = 'BELUM';
+            $tbl_transaksi['kode_bayar'] = $kode_bayar;
+            $tbl_transaksi['status'] = 'BELUM_DIPROSES';
             $this->server_side->updateRows($id_transaksi, $tbl_transaksi, 'tbl_transaksi');
         }
 
-        return redirect()->to('/notifikasi/INV' . $kode);
+        return redirect()->to('/notifikasi/'.$kode_bayar);
     }
 
     public function notifikasi($inv)
@@ -758,64 +740,5 @@ class Frontend extends BaseController
         curl_close($curl);
 
         return $response;
-    }
-
-    public function transaksi()
-    {
-        $cart = \Config\Services::cart();
-
-        $hashids = new Hashids('', 8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-        $milis = time() + (60 * 60 * 4);
-        $convert = $hashids->encode($milis);
-        $kode = substr($convert, 0, 8);
-
-        $pembayaran['total_tagihan'] = $this->request->getPost('jumlah');
-        $pembayaran['status'] = 'BELUM';
-        $pembayaran['create_user'] = session()->get('nama');
-
-        $this->server_side->db->transBegin();
-        try {
-            $id_pembayaran = $this->server_side->createRowsReturnID($pembayaran, 'tbl_transaksi_pembayaran');
-
-            $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
-            $tbl_transaksi['kode_transaksi'] = 'TR' . date('ymd') . '-' . $kode;
-            $tbl_transaksi['id_pengguna'] = session()->get('id');
-            $tbl_transaksi['id_umkm'] = $this->request->getPost('id_umkm');
-            $tbl_transaksi['nama'] = $this->request->getPost('nama');
-            $tbl_transaksi['email'] = $this->request->getPost('email');
-            $tbl_transaksi['alamat'] = $this->request->getPost('alamat');
-            $tbl_transaksi['nohp'] = $this->request->getPost('nohp');
-            $tbl_transaksi['keterangan'] = $this->request->getPost('keterangan');
-            $tbl_transaksi['kurir'] = $this->request->getPost('kurir');
-            $tbl_transaksi['service'] = $this->request->getPost('service');
-            $tbl_transaksi['ongkir'] = $this->request->getPost('ongkir');
-            $tbl_transaksi['status'] = "BELUM";
-            $tbl_transaksi['jumlah'] = $this->request->getPost('jumlah');
-
-            $id_transaksi = $this->server_side->createRowsReturnID($tbl_transaksi, 'tbl_transaksi');
-            // var_dump($id_transaksi);die;
-            $data_cart = $cart->contents();
-            foreach ($data_cart as $val) {
-                $tbl_transaksi_detail['id_transaksi'] = $id_transaksi;
-                $tbl_transaksi_detail['id_barang'] = $val['id'];
-                $tbl_transaksi_detail['qty'] = $val['qty'];
-                $tbl_transaksi_detail['harga'] = $val['price'];
-                $tbl_transaksi_detail['subtotal'] = $val['subtotal'];
-                $tbl_transaksi_detail['weight'] = $val['weight'];
-
-                $this->server_side->createRows($tbl_transaksi_detail, 'tbl_transaksi_detail');
-                $cart->remove($val['rowid']);
-            }
-            $this->server_side->db->transCommit();
-            $r['result'] = true;
-            $r['total'] =  count($cart->contents());
-        } catch (\Exception $e) {
-            $this->server_side->db->transRollback();
-            $r['result'] = false;
-            $r['total'] =  count($cart->contents());
-        }
-
-        echo json_encode($r);
-        return;
     }
 }
