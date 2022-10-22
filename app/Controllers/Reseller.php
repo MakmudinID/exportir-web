@@ -87,6 +87,7 @@ class Reseller extends BaseController
             $row['tanggal_pengajuan'] = $field->create_date;
             $row['no_kerjasama'] = $field->no_kerjasama;
             $row['umkm'] = $field->nama_umkm;
+            $row['progress'] ='';
             $row['kontrak'] = $field->lama_kerjasama.' Bulan';
 
             if($field->status == 'BELUM_UPLOAD'){

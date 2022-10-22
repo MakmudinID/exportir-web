@@ -24,6 +24,7 @@ jQuery(document).ready(function() {
             { "data": "umkm" },
             { "data": "kontrak" },
             { "data": "status" },
+            { "data": "progress" },
             { "data": "detail" },
         ],
         columnDefs: [{

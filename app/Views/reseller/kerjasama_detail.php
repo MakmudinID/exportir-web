@@ -106,62 +106,16 @@ $this->server_side = new ServerSideModel(); ?>
 
         <hr>
 
-        <div class="row">
-            <div class="col-md-6">
-                <?php foreach ($this->server_side->getTransaksiPembayaran($kerjasama->no_kerjasama) as $pembayaran) : ?>
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="d-flex">
-                                <div class="card-text-title">
-                                    <b>Transaksi Bulan Ke-<?= $pembayaran->bayar_bulan_ke; ?></b>
-                                </div>
-                                <div class="ml-auto">
-                                    <span class="badge badge-danger"><?= str_replace("_", " ", $pembayaran->status); ?></span>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Batas Bayar</label>
-                                <div class="col-sm-8">
-                                    <input type="text" disabled class="form-control" name="batas_bayar" value="<?=$pembayaran->batas_bayar?>">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Status Pesanan</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="status" value="" disabled></input>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Bukti Bayar</label>
-                                <div class="col-sm-8">
-                                    <input type="file" class="form-control" name="bukti_bayar">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Keterangan</label>
-                                <div class="col-sm-8">
-                                    <textarea class="form-control" name="keterangan"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex">
-                            <button type="submit" class="btn btn-primary ml-auto">Simpan</button>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-            <div class="col-md-6">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
                 <div class="card card-success card-outline">
                     <div class="card-header text-center">
-                        <b>DAFTAR PESANAN</b>
+                        <H4><b>DAFTAR PRODUK</b></H4>
                     </div>
                     <div class="card-body">
                         <?php
                         $total = 0;
-                        foreach ($this->server_side->transaksi_by_kerjasama($kerjasama->no_kerjasama) as $t) : ?>
+                        foreach ($this->server_side->transaksi_in_kode_detail($kerjasama->kode_transaksi) as $t) : ?>
                             <table class="table table-sm" width="100%">
                                 <?php foreach ($this->server_side->transaksi_detail($t->id) as $td) : ?>
                                     <tr>
@@ -201,6 +155,60 @@ $this->server_side = new ServerSideModel(); ?>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row justify-content-center">
+            <?php foreach ($this->server_side->getTransaksiPembayaran($kerjasama->no_kerjasama) as $pembayaran) : ?>
+                <div class="col-md-6">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex">
+                                <div class="card-text-title">
+                                    <b>Transaksi Bulan Ke-<?= $pembayaran->bayar_bulan_ke; ?></b>
+                                </div>
+                                <div class="ml-auto">
+                                    <span class="badge badge-danger"><?= str_replace("_", " ", $pembayaran->status); ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Batas Bayar</label>
+                                <div class="col-sm-8">
+                                    <input type="text" disabled class="form-control" name="batas_bayar" value="<?= $this->server_side->formatTanggal($pembayaran->batas_bayar) ?>">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Tanggal Kirim</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="tanggal_pengiriman" value="<?= $this->server_side->formatTanggal($pembayaran->tanggal_kirim) ?>" disabled></input>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Status Pesanan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="status" value="<?= str_replace("_", " ", $pembayaran->status_transaksi); ?>" disabled></input>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Bukti Bayar</label>
+                                <div class="col-sm-8">
+                                    <input type="file" class="form-control" name="bukti_bayar">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Keterangan</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="keterangan"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex">
+                            <button type="submit" class="btn btn-primary ml-auto">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
 
     </div>

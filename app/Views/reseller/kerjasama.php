@@ -68,6 +68,7 @@
                                     <th>UMKM</th>
                                     <th>Kontrak</th>
                                     <th>Status</th>
+                                    <th>Progress</th>
                                     <th>Detail</th>
                                 </tr>
                             </thead>

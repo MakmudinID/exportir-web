@@ -36,7 +36,7 @@ class TransaksiModel extends Model
         $sql = "SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
         FROM tbl_transaksi_kerjasama 
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
-        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_transaksi ON tbl_transaksi.id_pembayaran = tbl_transaksi_pembayaran.id
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
         JOIN (
                 SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang

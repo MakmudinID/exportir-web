@@ -64,3 +64,314 @@ in APPPATH\Views\reseller\kerjasama_detail.php on line 126.
 12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
 13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
 14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-22 04:46:57 --> Unknown column 'tbl_transaksi.kode_bayar' in 'on clause'
+CRITICAL - 2022-10-22 04:46:57 --> Unknown column 'tbl_transaksi.kode_bayar' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30')
+ 4 APPPATH\Models\TransaksiModel.php(27): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30')
+ 5 APPPATH\Controllers\Reseller.php(80): App\Models\TransaksiModel->limitRowsKerjasama()
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-22 04:50:35 --> Unknown column 'tbl_transaksi.kode_bayar' in 'on clause'
+CRITICAL - 2022-10-22 04:50:35 --> Unknown column 'tbl_transaksi.kode_bayar' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30')
+ 4 APPPATH\Models\TransaksiModel.php(27): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30')
+ 5 APPPATH\Controllers\Reseller.php(80): App\Models\TransaksiModel->limitRowsKerjasama()
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-22 04:51:39 --> Unknown column 'tbl_transaksi.kode_bayar' in 'on clause'
+CRITICAL - 2022-10-22 04:51:39 --> Unknown column 'tbl_transaksi.kode_bayar' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30')
+ 4 APPPATH\Models\TransaksiModel.php(27): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        FROM tbl_transaksi_kerjasama 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
+        JOIN (
+                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
+                FROM tbl_transaksi
+                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
+                GROUP BY tbl_transaksi.id
+            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
+        WHERE 1 AND (  tbl_transaksi_kerjasama.create_date like \'%%\' or tbl_transaksi_kerjasama.no_kerjasama like \'%%\' or tbl_umkm.nama like \'%%\' or tbl_transaksi_kerjasama.lama_kerjasama like \'%%\'  ) GROUP BY tbl_transaksi_kerjasama.no_kerjasama  ORDER BY tbl_transaksi_kerjasama.create_date DESC limit 0,30')
+ 5 APPPATH\Controllers\Reseller.php(80): App\Models\TransaksiModel->limitRowsKerjasama()
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-22 04:54:34 --> Unknown column 'tbl_transaksi.kode_bayar' in 'on clause'
+CRITICAL - 2022-10-22 04:54:34 --> Unknown column 'tbl_transaksi.kode_bayar' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota, tbl_umkm.alamat as alamat_umkm, tbl_umkm.no_telepon as telepon_umkm
+        FROM tbl_transaksi_kerjasama
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.no_kerjasama = tbl_transaksi_kerjasama.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi_kerjasama.no_kerjasama = \'KJS221022-T8L3BUJI\'
+        GROUP BY tbl_transaksi_kerjasama.no_kerjasama', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota, tbl_umkm.alamat as alamat_umkm, tbl_umkm.no_telepon as telepon_umkm
+        FROM tbl_transaksi_kerjasama
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.no_kerjasama = tbl_transaksi_kerjasama.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi_kerjasama.no_kerjasama = \'KJS221022-T8L3BUJI\'
+        GROUP BY tbl_transaksi_kerjasama.no_kerjasama')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota, tbl_umkm.alamat as alamat_umkm, tbl_umkm.no_telepon as telepon_umkm
+        FROM tbl_transaksi_kerjasama
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.no_kerjasama = tbl_transaksi_kerjasama.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi_kerjasama.no_kerjasama = \'KJS221022-T8L3BUJI\'
+        GROUP BY tbl_transaksi_kerjasama.no_kerjasama')
+ 4 APPPATH\Models\ServerSideModel.php(51): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota, tbl_umkm.alamat as alamat_umkm, tbl_umkm.no_telepon as telepon_umkm
+        FROM tbl_transaksi_kerjasama
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.no_kerjasama = tbl_transaksi_kerjasama.no_kerjasama
+        JOIN tbl_transaksi ON tbl_transaksi.kode_bayar = tbl_transaksi_pembayaran.kode_bayar
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi_kerjasama.no_kerjasama = ?
+        GROUP BY tbl_transaksi_kerjasama.no_kerjasama', [...])
+ 5 APPPATH\Controllers\Reseller.php(54): App\Models\ServerSideModel->getKerjasama('KJS221022-T8L3BUJI')
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_detail('KJS221022-T8L3BUJI')
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-22 04:55:34 --> Unknown column 'tbl_transaksi.no_kerjasama' in 'where clause'
+CRITICAL - 2022-10-22 04:55:34 --> Unknown column 'tbl_transaksi.no_kerjasama' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+        FROM tbl_transaksi
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi.id_pengguna = \'14\'
+        AND tbl_transaksi.no_kerjasama=\'KJS221022-T8L3BUJI\' ', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+        FROM tbl_transaksi
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi.id_pengguna = \'14\'
+        AND tbl_transaksi.no_kerjasama=\'KJS221022-T8L3BUJI\' ')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+        FROM tbl_transaksi
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi.id_pengguna = \'14\'
+        AND tbl_transaksi.no_kerjasama=\'KJS221022-T8L3BUJI\' ')
+ 4 APPPATH\Models\ServerSideModel.php(36): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+        FROM tbl_transaksi
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi.id_pengguna = ?
+        AND tbl_transaksi.no_kerjasama=? ', [...])
+ 5 APPPATH\Views\reseller\kerjasama_detail.php(164): App\Models\ServerSideModel->transaksi_by_kerjasama('KJS221022-T8L3BUJI')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\reseller\\kerjasama_detail.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('reseller/kerjasama_detail', [], true)
+ 9 APPPATH\Views\template\adminlte.php(109): view('reseller/kerjasama_detail')
+10 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+11 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+12 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+13 APPPATH\Controllers\Reseller.php(57): view('template/adminlte', [...])
+14 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_detail('KJS221022-T8L3BUJI')
+15 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+16 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+17 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+18 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-22 05:50:11 --> Attempt to read property "no_kerjasama" on null
+in APPPATH\Views\reseller\kerjasama_detail.php on line 12.
+ 1 APPPATH\Views\reseller\kerjasama_detail.php(12): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "no_kerjasama" on null', 'APPPATH\\Views\\reseller\\kerjasama_detail.php', 12)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\reseller\\kerjasama_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('reseller/kerjasama_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(109): view('reseller/kerjasama_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Reseller.php(57): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_detail('KJS221022-T8L3BUJI')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-22 09:47:27 --> Unknown column 'create_date' in 'field list'
+CRITICAL - 2022-10-22 09:47:27 --> Unknown column 'create_date' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('UPDATE `tbl_transaksi` SET `create_date` = \'2022-10-22 09:47:27\', `tanggal_kirim` = \'2022-10-25 09:47:27\', `id_pembayaran` = 1, `status` = \'BELUM_DIPROSES\'
+WHERE `kode_transaksi` = \'TR221022-2Q2Z172N\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `tbl_transaksi` SET `create_date` = \'2022-10-22 09:47:27\', `tanggal_kirim` = \'2022-10-25 09:47:27\', `id_pembayaran` = 1, `status` = \'BELUM_DIPROSES\'
+WHERE `kode_transaksi` = \'TR221022-2Q2Z172N\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `tbl_transaksi` SET `create_date` = \'2022-10-22 09:47:27\', `tanggal_kirim` = \'2022-10-25 09:47:27\', `id_pembayaran` = 1, `status` = \'BELUM_DIPROSES\'
+WHERE `kode_transaksi` = \'TR221022-2Q2Z172N\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2046): CodeIgniter\Database\BaseConnection->query('UPDATE `tbl_transaksi` SET `create_date` = :create_date:, `tanggal_kirim` = :tanggal_kirim:, `id_pembayaran` = :id_pembayaran:, `status` = :status:
+WHERE `kode_transaksi` = :kode_transaksi:', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(567): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 APPPATH\Controllers\Frontend.php(258): App\Models\ServerSideModel->updateRowsByField('kode_transaksi', 'TR221022-2Q2Z172N', [...], 'tbl_transaksi')
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->kerjasama_pengajuan()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-22 09:57:47 --> Undefined property: stdClass::$status_pesanan
+in APPPATH\Views\reseller\kerjasama_detail.php on line 190.
+ 1 APPPATH\Views\reseller\kerjasama_detail.php(190): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$status_pesanan', 'APPPATH\\Views\\reseller\\kerjasama_detail.php', 190)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\reseller\\kerjasama_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('reseller/kerjasama_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(109): view('reseller/kerjasama_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Reseller.php(57): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_detail('KJS221022-BKGWZO2F')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
