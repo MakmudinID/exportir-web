@@ -23,7 +23,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <div class="form-group">
                                     <label>Rentang Tanggal:</label>
                                     <div class="input-group">
@@ -41,15 +41,16 @@
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
                                         <option value="ALL">ALL</option>
-                                        <option value="ACTIVE">Disetujui</option>
-                                        <option value="INACTIVE">Menunggu Konfirmasi</option>
+                                        <option value="BELUM_UPLOAD">Belum Unggah Perjanjian</option>
+                                        <option value="SUDAH_UPLOAD">Menunggu Persetujuan</option>
+                                        <option value="SUDAH_DISETUJUI">Kerjasama Disetujui</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="status">Aksi</label><br>
-                                    <button type="button" class="btn btn-primary" style="width: 100%;">Terapkan</button>
+                                    <button type="button" id="btn-filter" class="btn btn-primary" style="width: 100%;">Terapkan</button>
                                 </div>
                             </div>
                         </div>

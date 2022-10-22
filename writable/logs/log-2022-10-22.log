@@ -375,3 +375,33 @@ in APPPATH\Views\reseller\kerjasama_detail.php on line 190.
 12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
 13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
 14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-22 17:40:08 --> Undefined array key 5
+in APPPATH\Models\TransaksiModel.php on line 74.
+ 1 APPPATH\Models\TransaksiModel.php(74): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 5', 'APPPATH\\Models\\TransaksiModel.php', 74)
+ 2 APPPATH\Models\TransaksiModel.php(20): App\Models\TransaksiModel->selectFieldKerjasama('BELUM_UPLOAD', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 3 APPPATH\Controllers\Reseller.php(94): App\Models\TransaksiModel->limitRowsKerjasama('BELUM_UPLOAD', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 4 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_()
+ 5 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+ 6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-22 17:40:11 --> Undefined array key 4
+in APPPATH\Models\TransaksiModel.php on line 74.
+ 1 APPPATH\Models\TransaksiModel.php(74): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 4', 'APPPATH\\Models\\TransaksiModel.php', 74)
+ 2 APPPATH\Models\TransaksiModel.php(20): App\Models\TransaksiModel->selectFieldKerjasama('BELUM_UPLOAD', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 3 APPPATH\Controllers\Reseller.php(94): App\Models\TransaksiModel->limitRowsKerjasama('BELUM_UPLOAD', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 4 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_()
+ 5 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+ 6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-22 17:40:16 --> Undefined array key 4
+in APPPATH\Models\TransaksiModel.php on line 74.
+ 1 APPPATH\Models\TransaksiModel.php(74): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 4', 'APPPATH\\Models\\TransaksiModel.php', 74)
+ 2 APPPATH\Models\TransaksiModel.php(20): App\Models\TransaksiModel->selectFieldKerjasama('BELUM_UPLOAD', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 3 APPPATH\Controllers\Reseller.php(94): App\Models\TransaksiModel->limitRowsKerjasama('BELUM_UPLOAD', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 4 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->kerjasama_()
+ 5 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+ 6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

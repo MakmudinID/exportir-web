@@ -77,7 +77,21 @@ class Reseller extends BaseController
             return redirect()->route('logout');
         }
 
-        $list = $this->transaksi->limitRowsKerjasama();
+        if ($this->request->getPost('tgl_transaksi') <> "") {
+            $start_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[0];
+            $end_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[1];
+        } else {
+            $start_date = "";
+            $end_date = "";
+        }
+
+        if($this->request->getPost('status') == 'ALL'){
+            $status="";
+        }else{
+            $status=$this->request->getPost('status');
+        }
+
+        $list = $this->transaksi->limitRowsKerjasama($status, $start_date, $end_date);
 
         $data = array();
         $no = $this->request->getPost('start');
@@ -87,7 +101,16 @@ class Reseller extends BaseController
             $row['tanggal_pengajuan'] = $field->create_date;
             $row['no_kerjasama'] = $field->no_kerjasama;
             $row['umkm'] = $field->nama_umkm;
-            $row['progress'] ='';
+            $progress = $this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama);
+
+            $row['progress'] ='
+                <div class="progress progress-sm active">
+                  <div class="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuenow="'.$progress.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$progress.'%">
+                    <span class="sr-only">'.$progress.'% Complete</span>
+                  </div>
+                </div>
+                <div class="align-self-center">'.$progress.'%</div>
+            ';
             $row['kontrak'] = $field->lama_kerjasama.' Bulan';
 
             if($field->status == 'BELUM_UPLOAD'){
@@ -112,8 +135,8 @@ class Reseller extends BaseController
 
         $output = array(
             "draw" => $this->request->getPost('draw'),
-            "recordsTotal" => $this->transaksi->countFilteredKerjasama(),
-            "recordsFiltered" => $this->transaksi->countFilteredKerjasama(),
+            "recordsTotal" => $this->transaksi->countFilteredKerjasama($status, $start_date, $end_date),
+            "recordsFiltered" => $this->transaksi->countFilteredKerjasama($status, $start_date, $end_date),
             "data" => $data,
         );
         //output dalam format JSON
