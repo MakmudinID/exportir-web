@@ -1,0 +1,43 @@
+ERROR - 2022-10-23 00:22:11 --> Unknown column 'id_pembayaran' in 'where clause'
+CRITICAL - 2022-10-23 00:22:11 --> Unknown column 'id_pembayaran' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('UPDATE `tbl_transaksi_pembayaran` SET `status` = \'SUDAH_DIBAYAR\'
+WHERE `id_pembayaran` = \'5\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `tbl_transaksi_pembayaran` SET `status` = \'SUDAH_DIBAYAR\'
+WHERE `id_pembayaran` = \'5\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `tbl_transaksi_pembayaran` SET `status` = \'SUDAH_DIBAYAR\'
+WHERE `id_pembayaran` = \'5\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2046): CodeIgniter\Database\BaseConnection->query('UPDATE `tbl_transaksi_pembayaran` SET `status` = :status:
+WHERE `id_pembayaran` = :id_pembayaran:', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(576): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 APPPATH\Controllers\Admin.php(917): App\Models\ServerSideModel->updateRowsByField('id_pembayaran', '5', [...], 'tbl_transaksi_pembayaran')
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->update_status_transaksi()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-23 00:22:55 -->  route cannot be found while reverse-routing.
+in SYSTEMPATH\HTTP\RedirectResponse.php on line 56.
+ 1 SYSTEMPATH\HTTP\RedirectResponse.php(56): CodeIgniter\HTTP\Exceptions\HTTPException::forInvalidRedirectRoute('ROOTPATH\\public')
+ 2 APPPATH\Controllers\Admin.php(919): CodeIgniter\HTTP\RedirectResponse->route(false)
+ 3 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->update_status_transaksi()
+ 4 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 5 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-23 00:23:09 --> Attempt to read property "kode_transaksi" on null
+in APPPATH\Views\admin\transaksi_detail.php on line 13.
+ 1 APPPATH\Views\admin\transaksi_detail.php(13): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "kode_transaksi" on null', 'APPPATH\\Views\\admin\\transaksi_detail.php', 13)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\admin\\transaksi_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('admin/transaksi_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(109): view('admin/transaksi_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Admin.php(988): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->transaksi_detail('5')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

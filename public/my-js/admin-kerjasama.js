@@ -16,27 +16,31 @@ jQuery(document).ready(function() {
     var endDate = moment().endOf('month');
     $('#date_transaction').val(moment(today).format('YYYY-MM-DD HH:mm:ss') + " - " + moment(endDate).format('YYYY-MM-DD HH:mm:ss'));
 
-    $(document).on('click', '.unggah-bukti-bayar', function() {
-        $('[name="id_pembayaran"]').val($(this).data('id_pembayaran'));
+    $(document).on('click', '.unggah-perjanjian', function() {
+        document.getElementById("btn-unduh-kerjasama").href = $(this).data('url');
+        $('[name="no_kerjasama"]').val($(this).data('no_kerjasama'));
         $('#modal-default').modal('show');
     });
 
-    $("#form-bukti").validate({
+    $("#form-dokumen").validate({
         errorClass: "is-invalid",
         // validClass: "is-valid",
         rules: {
-            foto: {
+            no_kerjasama: {
                 required: true
             },
+            dokumen: {
+                required: true
+            }
         },
         submitHandler: function(form) {
             let url;
-            url = base_url + '/admin/update_bayar';
+            url = base_url + '/admin/pdf_upload';
 
             $.ajax({
                 url: url,
                 type: "POST",
-                data: new FormData(document.getElementById("form-bukti")),
+                data: new FormData(document.getElementById("form-dokumen")),
                 dataType: "JSON",
                 contentType: false,
                 cache: false,
@@ -52,11 +56,11 @@ jQuery(document).ready(function() {
                             showConfirmButton: false,
                             buttons: false,
                         });
-                        window.location.reload();
+                        table.ajax.reload();
                     } else {
                         Swal.fire({
                             title: 'Berhasil',
-                            html: "Bukti Berhasil Diunggah!",
+                            html: "Dokumen Berhasil Diunggah!",
                             icon: 'success',
                             timer: 3000,
                             showCancelButton: false,
@@ -65,7 +69,7 @@ jQuery(document).ready(function() {
 
                         $('#modal-default').modal('hide');
                         $('body').removeClass('modal-open');
-                        window.location.reload();
+                        table.ajax.reload();
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -77,7 +81,7 @@ jQuery(document).ready(function() {
 
     table = $('#table').DataTable({
         ajax: {
-            url: base_url + "/admin/transaksi_",
+            url: base_url + "/admin/kerjasama_",
             type: "POST",
             data: function(data) {
                 data.tgl_transaksi = $('#date_transaction').val();
@@ -91,12 +95,13 @@ jQuery(document).ready(function() {
         pageLength: 30,
         order: [],
         columns: [{
-                "data": 'tanggal_transaksi',
+                "data": 'tanggal_pengajuan',
             },
-            { "data": "no_transaksi" },
+            { "data": "no_kerjasama" },
             { "data": "umkm" },
-            { "data": "total_tagihan" },
+            { "data": "kontrak" },
             { "data": "status" },
+            { "data": "progress" },
             { "data": "detail" },
         ],
         columnDefs: [{
@@ -111,13 +116,3 @@ jQuery(document).ready(function() {
         table.ajax.reload(); //just reload table
     });
 });
-
-function preview_image(event) {
-    document.getElementById("row-display").style.display = "block";
-    var reader = new FileReader();
-    reader.onload = function() {
-        var output = document.getElementById('output_image');
-        output.src = reader.result;
-    }
-    reader.readAsDataURL(event.target.files[0]);
-}

@@ -102,12 +102,12 @@ $routes->get('reseller/berita', 'Reseller::berita');
 $routes->post('reseller/berita_', 'Reseller::berita_');
 $routes->get('reseller/kerjasama', 'Reseller::kerjasama');
 $routes->get('reseller/kerjasama/(:any)', 'Reseller::kerjasama_detail/$1');
-$routes->get('reseller/transaksi/(:any)', 'Reseller::transaksi_detail/$1');
 $routes->get('reseller/pdf/(:any)', 'Reseller::kerjasama_pdf/$1');
 $routes->get('reseller/pdf_download/(:any)', 'Reseller::kerjasama_pdf_download/$1');
 $routes->post('reseller/pdf_upload', 'Reseller::kerjasama_pdf_upload');
 $routes->post('reseller/update_bayar', 'Reseller::update_bayar');
 $routes->post('reseller/kerjasama_', 'Reseller::kerjasama_');
+$routes->get('reseller/transaksi/(:any)', 'Reseller::transaksi_detail/$1');
 $routes->post('reseller/transaksi_', 'Reseller::transaksi_');
 $routes->get('reseller/detail-berita/(:any)', 'Reseller::detail_berita/$1');
 
@@ -129,6 +129,7 @@ $routes->get('admin/umkm', 'Admin::umkm');
 $routes->post('admin/umkm_', 'Admin::umkm_');
 $routes->post('admin/create_umkm', 'Admin::create_umkm');
 $routes->post('admin/update_umkm', 'Admin::update_umkm');
+$routes->post('admin/update_status_transaksi', 'Admin::update_status_transaksi');
 $routes->post('admin/delete_umkm', 'Admin::delete_umkm');
 $routes->get('admin/kategori-umkm', 'Admin::kategori_umkm');
 $routes->post('admin/kategori_umkm_', 'Admin::kategori_umkm_');
@@ -145,8 +146,14 @@ $routes->post('admin/berita_', 'Admin::berita_');
 $routes->post('admin/create_berita', 'Admin::create_berita');
 $routes->post('admin/update_berita', 'Admin::update_berita');
 $routes->post('admin/delete_berita', 'Admin::delete_berita');
-$routes->get('admin/transaksi', 'admin::transaksi');
-$routes->post('admin/transaksi_', 'admin::transaksi_');
+$routes->get('admin/transaksi', 'Admin::transaksi');
+$routes->post('admin/transaksi_', 'Admin::transaksi_');
+$routes->get('admin/transaksi/(:any)', 'Admin::transaksi_detail/$1');
+
+$routes->post('admin/kerjasama_', 'Admin::kerjasama_');
+$routes->get('admin/kerjasama', 'Admin::kerjasama');
+$routes->get('admin/kerjasama/(:any)', 'Admin::kerjasama_detail/$1');
+
 $routes->get('admin/produk', 'Admin::produk');
 $routes->post('admin/produk_', 'Admin::produk_');
 

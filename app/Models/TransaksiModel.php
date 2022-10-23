@@ -49,7 +49,8 @@ class TransaksiModel extends Model
     protected function selectFieldKerjasama($status, $start_date, $end_date)
     {
         $id_pengguna = session()->get('id');
-        
+        $role = session()->get('role');
+
         $column_order = array('tbl_transaksi_kerjasama.create_date', 'tbl_transaksi_kerjasama.no_kerjasama', 'tbl_umkm.nama', 'tbl_transaksi_kerjasama.lama_kerjasama', 'tbl_transaksi_kerjasama.status', null, null); //field yang ada di table user
         $column_search = array('tbl_transaksi_kerjasama.create_date', 'tbl_transaksi_kerjasama.no_kerjasama', 'tbl_umkm.nama', 'tbl_transaksi_kerjasama.lama_kerjasama');
 
@@ -66,15 +67,18 @@ class TransaksiModel extends Model
             ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
         WHERE 1
         AND tbl_transaksi.kerjasama = 'Y'
-        AND tbl_transaksi.id_pengguna = $id_pengguna
         ";
 
-        if($start_date != '' && $end_date != ''){
-            $sql.=" AND (tbl_transaksi_kerjasama.create_date BETWEEN '$start_date' AND '$end_date') ";
+        if ($role != 'SUPERADMIN') {
+            $sql .= " AND tbl_transaksi.id_pengguna = $id_pengguna  ";
         }
 
-        if($status != ''){
-            $sql.=" AND tbl_transaksi_kerjasama.status='$status' ";
+        if ($start_date != '' && $end_date != '') {
+            $sql .= " AND (tbl_transaksi_kerjasama.create_date BETWEEN '$start_date' AND '$end_date') ";
+        }
+
+        if ($status != '') {
+            $sql .= " AND tbl_transaksi_kerjasama.status='$status' ";
         }
 
         $i = 0;
@@ -93,10 +97,9 @@ class TransaksiModel extends Model
 
         $sql .= "GROUP BY tbl_transaksi_kerjasama.no_kerjasama ";
 
-        if(isset($_POST['order'])) {
-            $sql .= " ORDER BY ".$column_order[$_POST['order']['0']['column']] ." ". $_POST['order']['0']['dir'] ." ";
-        }
-        else {
+        if (isset($_POST['order'])) {
+            $sql .= " ORDER BY " . $column_order[$_POST['order']['0']['column']] . " " . $_POST['order']['0']['dir'] . " ";
+        } else {
             $sql .= " ORDER BY tbl_transaksi_kerjasama.create_date DESC ";
         }
 
@@ -134,6 +137,7 @@ class TransaksiModel extends Model
     protected function selectFieldTransaksi($status, $start_date, $end_date)
     {
         $id_pengguna = session()->get('id');
+        $role = session()->get('role');
 
         $column_order = array('tbl_transaksi.create_date', 'tbl_transaksi.kode_transaksi', 'tbl_umkm.nama', null, null); //field yang ada di table user
         $column_search = array('tbl_transaksi.kode_transaksi', 'tbl_umkm.nama');
@@ -149,15 +153,18 @@ class TransaksiModel extends Model
                 GROUP BY tbl_transaksi.id
             ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
         WHERE 1
-        AND tbl_transaksi.kerjasama = 'T'
-        AND tbl_transaksi.id_pengguna = $id_pengguna ";
+        AND tbl_transaksi.kerjasama = 'T'";
 
-        if($start_date != '' && $end_date != ''){
-            $sql.=" AND (tbl_transaksi.create_date BETWEEN '$start_date' AND '$end_date') ";
+        if ($role != 'SUPERADMIN') {
+            $sql .= " AND tbl_transaksi.id_pengguna = $id_pengguna  ";
         }
 
-        if($status != ''){
-            $sql.=" AND tbl_transaksi.status='$status' ";
+        if ($start_date != '' && $end_date != '') {
+            $sql .= " AND (tbl_transaksi.create_date BETWEEN '$start_date' AND '$end_date') ";
+        }
+
+        if ($status != '') {
+            $sql .= " AND tbl_transaksi.status='$status' ";
         }
 
         $i = 0;
@@ -174,13 +181,11 @@ class TransaksiModel extends Model
             $sql .= " ) ";
         }
 
-        if(isset($_POST['order'])) {
-            $sql .= " ORDER BY ".$column_order[$_POST['order']['0']['column']] ." ". $_POST['order']['0']['dir'] ." ";
-        }
-        else {
+        if (isset($_POST['order'])) {
+            $sql .= " ORDER BY " . $column_order[$_POST['order']['0']['column']] . " " . $_POST['order']['0']['dir'] . " ";
+        } else {
             $sql .= " ORDER BY tbl_transaksi.create_date DESC ";
         }
-
         return $sql;
     }
 }

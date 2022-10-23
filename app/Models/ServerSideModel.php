@@ -67,17 +67,24 @@ class ServerSideModel extends Model
     }
 
     public function transaksi_in_kode_detail($kode_transaksi){
+        $role = session()->get('role');
+
         $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.keterangan as keterangan_bayar, tbl_transaksi_pembayaran.bukti_url as bukti_bayar, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
         JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
         JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
-        WHERE tbl_transaksi.id_pengguna = ?
-        AND tbl_transaksi.kode_transaksi=?
-        LIMIT 1 ";
-
-        return $this->db->query($sql, array(session()->get('id'), $kode_transaksi))->getRow();
+        WHERE tbl_transaksi.kode_transaksi=?";
+        
+        if ($role != 'SUPERADMIN') {
+            $sql.=" AND tbl_transaksi.id_pengguna = ? ";
+            $sql.="LIMIT 1 ";
+            return $this->db->query($sql, array(session()->get('id'), $kode_transaksi))->getRow();
+        }else{
+            $sql.="LIMIT 1 ";
+            return $this->db->query($sql, array($kode_transaksi))->getRow();
+        }
     }
 
     public function transaksi_in_limit($list){
