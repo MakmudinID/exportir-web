@@ -16,6 +16,68 @@ jQuery(document).ready(function() {
     var endDate = moment().endOf('month');
     $('#date_transaction').val(moment(today).format('YYYY-MM-DD HH:mm:ss') + " - " + moment(endDate).format('YYYY-MM-DD HH:mm:ss'));
 
+    $(document).on('click', '.unggah-perjanjian', function() {
+        document.getElementById("btn-unduh-kerjasama").href = $(this).data('url');
+        $('[name="no_kerjasama"]').val($(this).data('no_kerjasama'));
+        $('#modal-default').modal('show');
+    });
+
+    $("#form-dokumen").validate({
+        errorClass: "is-invalid",
+        // validClass: "is-valid",
+        rules: {
+            no_kerjasama: {
+                required: true
+            },
+            dokumen: {
+                required: true
+            }
+        },
+        submitHandler: function(form) {
+            let url;
+            url = base_url + '/reseller/pdf_upload';
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: new FormData(document.getElementById("form-dokumen")),
+                dataType: "JSON",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (data.result != true) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            html: "Gagal Unggah Dokumen",
+                            icon: 'error',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            buttons: false,
+                        });
+                        table.ajax.reload();
+                    } else {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: "Dokumen Berhasil Diunggah!",
+                            icon: 'success',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false
+                        });
+
+                        $('#modal-default').modal('hide');
+                        $('body').removeClass('modal-open');
+                        table.ajax.reload();
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        }
+    });
 
     table = $('#table').DataTable({
         ajax: {
@@ -43,7 +105,7 @@ jQuery(document).ready(function() {
             { "data": "detail" },
         ],
         columnDefs: [{
-            targets: [-1, -2],
+            targets: [-1, -2, 3],
             orderable: false,
             searchable: false,
             className: "text-center"

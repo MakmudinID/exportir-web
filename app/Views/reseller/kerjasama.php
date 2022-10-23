@@ -82,3 +82,35 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="form-dokumen">
+                <div class="modal-header">
+                    <h4 class="modal-title">Unggah Dokumen</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <a class="btn btn-success btn-sm" id="btn-unduh-kerjasama" style="width: 100%;">Unduh Dokumen Perjanjian Kerjasama</a>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="foto">Unggah Dokumen PDF</label><br>
+                                <input type="file" class="form-control" name="dokumen" id="dokumen" accept="application/pdf">
+                                <input type="hidden" name="no_kerjasama" id="no_kerjasama">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -34,6 +34,95 @@ class Reseller extends BaseController
         echo view('template/adminlte', $data);
     }
 
+    public function transaksi_()
+    {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+
+        if ($this->request->getPost('tgl_transaksi') <> "") {
+            $start_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[0];
+            $end_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[1];
+        } else {
+            $start_date = "";
+            $end_date = "";
+        }
+
+        if($this->request->getPost('status') == 'ALL'){
+            $status="";
+        }else{
+            $status=$this->request->getPost('status');
+        }
+
+        if ($this->request->getPost('tgl_transaksi') <> "") {
+            $start_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[0];
+            $end_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[1];
+        } else {
+            $start_date = "";
+            $end_date = "";
+        }
+
+        if($this->request->getPost('status') == 'ALL'){
+            $status="";
+        }else{
+            $status=$this->request->getPost('status');
+        }
+
+        $list = $this->transaksi->limitRowstTransaksi($status, $start_date, $end_date);
+
+        $data = array();
+        $no = $this->request->getPost('start');
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row['tanggal_transaksi'] = $field->create_date;
+            $row['no_transaksi'] = $field->kode_transaksi;
+            $row['umkm'] = $field->nama_umkm;
+            $row['total_tagihan'] = 'Rp '.number_format($field->jumlah+$field->ongkir, 0,',','.');
+
+            if($field->status == 'BELUM_DIBAYAR'){
+                $row['status'] = '
+                <div class="d-flex justify-content-center">
+                    <div class="badge badge-danger">Belum Dibayar</div>
+                    <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="'.$field->id_pembayaran.'" role="button"><i class="fas fa-upload text-danger"></i></div>
+                </div>';
+            }else if($field->status == 'SEDANG_DIPROSES'){
+                $row['status'] = '<span class="badge badge-warning">Sedang Diproses</span>';
+            }else if($field->status == 'SUDAH_DIKIRIM'){
+                $row['status'] = '<span class="badge badge-primary">Sudah Dikirim</span>';
+            }else{
+                $row['status'] = '<span class="badge badge-success">Selesai</span>';
+            }
+
+            $row['detail'] = '
+            <div class="d-flex justify-content-center">
+                <a href="'.base_url('reseller/transaksi/'.$field->kode_transaksi).'" class="p-1"><i class="fas fa-search-plus"></i></a>
+            </div>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $this->transaksi->countFilteredTransaksi($status, $start_date, $end_date),
+            "recordsFiltered" => $this->transaksi->countFilteredTransaksi($status, $start_date, $end_date),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+
+    public function transaksi_detail($kode_transaksi)
+    {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Pesanan Saya';
+        $data['js'] = array("reseller-transaksi-detail.js?r=" . uniqid());
+        $data['transaksi'] = $this->server_side->transaksi_in_kode_detail($kode_transaksi);
+        $data['main_content']   = 'reseller/transaksi_detail';
+        echo view('template/adminlte', $data);
+    }
+
     public function kerjasama()
     {
         if (session()->get('role') != 'RESELLER') {
@@ -68,7 +157,103 @@ class Reseller extends BaseController
 
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('arjun.pdf','I'); // opens in browser
+        $mpdf->Output('Dokumen Perjanjian Kerjasama.pdf','I'); // opens in browser
+    }
+
+    public function kerjasama_pdf_download($no_kerjasama)
+    {
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - '.$no_kerjasama);
+        
+        $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
+        
+        $html = view('reseller/kerjasama_pdf', $data);
+
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output('arjun.pdf','D'); // opens in browser
+    }
+
+    public function update_bayar()
+    {
+        $id = $this->request->getPost('id_pembayaran');
+        $foto = $this->request->getFile('foto');
+
+        if ($foto->getName() != '') {
+            $foto->move('../public/assets/photo-bukti-bayar/', $foto->getName());
+            $filepath = base_url() . '/assets/photo-bukti-bayar/' . $foto->getName();
+            $path = $foto->getName();
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif' || 'JPEG') {
+                $data['bukti_url'] = $filepath;
+            } else {
+                $r['result'] = false;
+                $r['title'] = 'Gagal!';
+                $r['icon'] = 'error';
+                $r['status'] = 'Format File Tidak Diijinkan!';
+            }
+        }
+
+        $data['status'] = 'MENUNGGU_KONFIRMASI';
+        $data['keterangan'] = htmlspecialchars($this->request->getPost('keterangan'), ENT_QUOTES);
+        $data['edit_user'] = session()->get('nama');
+        $data['edit_date'] = date('Y-m-d H:i:s');
+
+        $table = 'tbl_transaksi_pembayaran';
+
+        $result = $this->server_side->updateRows($id, $data, $table);
+
+        $data_transaksi['status'] = 'SEDANG_DIPROSES';
+        $data_transaksi['edit_date'] = date('Y-m-d H:i:s');
+
+        $table_transaksi = 'tbl_transaksi';
+        $result = $this->server_side->updateRowsByField('id_pembayaran', $id, $data_transaksi, $table_transaksi);
+
+        $r['result'] = true;
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
+    public function kerjasama_pdf_upload()
+    {
+        $dokumen = $this->request->getFile('dokumen');
+        $no_kerjasama = $this->request->getPost('no_kerjasama');
+        if ($dokumen->getName() != '') {
+            $dokumen->move('../public/assets/dokumen-kerjasama/', $dokumen->getName());
+            $filepath = base_url() . '/assets/dokumen-kerjasama/' . $dokumen->getName();
+            $path = $dokumen->getName();
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            if ($ext == 'pdf') {
+                $data['file_kerjasama'] = $filepath;
+                $data['status'] = 'SUDAH_UPLOAD';
+
+                $table = 'tbl_transaksi_kerjasama';
+                $result = $this->server_side->updateRowsByField('no_kerjasama', $no_kerjasama, $data, $table);
+                $r['result'] = true;
+                if (!$result) {
+                    $r['result'] = false;
+                    $r['title'] = 'Maaf Gagal Menyimpan!';
+                    $r['icon'] = 'error';
+                    $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+                }
+                echo json_encode($r);
+                return;
+            } else {
+                $r['result'] = false;
+                $r['title'] = 'Gagal!';
+                $r['icon'] = 'error';
+                $r['status'] = 'Format File Tidak Diijinkan!';
+            }
+        } else {
+            echo 'ERROR';
+            die;
+        }
     }
 
     public function kerjasama_()
@@ -114,20 +299,26 @@ class Reseller extends BaseController
             $row['kontrak'] = $field->lama_kerjasama.' Bulan';
 
             if($field->status == 'BELUM_UPLOAD'){
+                $url = base_url('reseller/pdf/'.$field->no_kerjasama);
+
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
                     <div class="badge badge-danger">Belum Unggah Dokumen</div>
-                    <div class="align-self-center ml-2" role="button"><i class="fas fa-upload text-danger"></i></div>
+                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="'.$field->no_kerjasama.'" data-url="'.base_url('reseller/pdf_download/'.$field->no_kerjasama).'" role="button"><i class="fas fa-upload text-danger"></i></div>
                 </div>';
             }else if($field->status == 'SUDAH_UPLOAD'){
-                $row['status'] = '<span class="badge badge-warning">'.$field->status.'</span>';
+                $url = $field->file_kerjasama;
+
+                $row['status'] = '<span class="badge badge-warning">Menunggu Konfirmasi</span>';
             }else{
-                $row['status'] = '<span class="badge badge-success">'.$field->status.'</span>';
+                $url = $field->file_kerjasama;
+
+                $row['status'] = '<span class="badge badge-success">Disetujui</span>';
             }
 
             $row['detail'] = '
             <div class="d-flex justify-content-center">
-                <a href="'.base_url('reseller/pdf/'.$field->no_kerjasama).'" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
+                <a href="'.$url.'" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
                 <a href="'.base_url('reseller/kerjasama/'.$field->no_kerjasama).'" class="p-1"><i class="fas fa-search-plus"></i></a>
             </div>';
             $data[] = $row;

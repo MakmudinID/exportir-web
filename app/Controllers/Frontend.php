@@ -254,7 +254,8 @@ class Frontend extends BaseController
                     }
                     
                     $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
-                    $tbl_transaksi['status'] = 'BELUM_DIPROSES';
+                    $tbl_transaksi['status'] = 'BELUM_DIBAYAR';
+                    $tbl_transaksi['kerjasama'] = 'Y';
                     $this->server_side->updateRowsByField('kode_transaksi', $kode_transaksi, $tbl_transaksi, 'tbl_transaksi');
 
                     //update transaksi_detail
@@ -739,6 +740,10 @@ class Frontend extends BaseController
         $kode_bayar = 'INV' . date('ymd') . '-' . $kode_;
 
         $tbl_transaksi_pembayaran['kode_bayar'] = $kode_bayar;
+
+        $datetime_now = date('Y-m-d H:i:s');
+        
+        $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 2 days'));
         $tbl_transaksi_pembayaran['total_tagihan'] = $this->server_side->jumlah_total_bayar($transaksi_list);
         $tbl_transaksi_pembayaran['status'] = 'BELUM_DIBAYAR';
         $tbl_transaksi_pembayaran['create_user'] = session()->get('nama');
@@ -747,7 +752,8 @@ class Frontend extends BaseController
         foreach (explode(',', $transaksi_list) as $val) {
             $id_transaksi = $val;
             $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
-            $tbl_transaksi['status'] = 'BELUM_DIPROSES';
+            $tbl_transaksi['status'] = 'BELUM_DIBAYAR';
+            $tbl_transaksi['kerjasama'] = 'T';
             $this->server_side->updateRows($id_transaksi, $tbl_transaksi, 'tbl_transaksi');
         }
 
