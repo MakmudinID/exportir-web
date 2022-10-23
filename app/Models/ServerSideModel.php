@@ -75,16 +75,10 @@ class ServerSideModel extends Model
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
         JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
         JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
-        WHERE tbl_transaksi.kode_transaksi=?";
+        WHERE tbl_transaksi.kode_transaksi=?
+        LIMIT 1 ";
+        return $this->db->query($sql, array($kode_transaksi))->getRow();
         
-        if ($role != 'SUPERADMIN') {
-            $sql.=" AND tbl_transaksi.id_pengguna = ? ";
-            $sql.="LIMIT 1 ";
-            return $this->db->query($sql, array(session()->get('id'), $kode_transaksi))->getRow();
-        }else{
-            $sql.="LIMIT 1 ";
-            return $this->db->query($sql, array($kode_transaksi))->getRow();
-        }
     }
 
     public function transaksi_in_limit($list){

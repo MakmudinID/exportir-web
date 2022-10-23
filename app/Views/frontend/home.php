@@ -1,3 +1,4 @@
+<?php $session = \Config\Services::session();?>
 	<div class="hero-area hero-bg">
 		<div class="container">
 			<div class="row justify-content-center">
@@ -6,9 +7,11 @@
 						<div class="hero-text-tablecell">
 							<p class="subtitle">Toko Rempah</p>
 							<h4 class="text-white">Website ini di buat untuk dapat memberikan kemudahan dan membantu UMKM dalam memperluas dan meningkatkan bisnis serta membangun kerjasama dengan beberapa reseller dan importin lokal secara terpercaya dan mudah.</h4>
+							<?php if(session()->get('id') == ''): ?>
 							<div class="hero-btns">
 								<a href="contact.html" class="boxed-btn">Ke Halaman Login <i class="fa fa-arrow-right"></i></a>
 							</div>
+							<?php endif; ?>
 						</div>
 					</div>
 				</div>
