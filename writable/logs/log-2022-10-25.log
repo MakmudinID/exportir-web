@@ -14,3 +14,11 @@ in APPPATH\Views\frontend\produk.php on line 74.
 12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
 13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
 14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-25 10:49:47 --> Undefined property: App\Controllers\Login::$db
+in APPPATH\Controllers\Login.php on line 14.
+ 1 APPPATH\Controllers\Login.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: App\\Controllers\\Login::$db', 'APPPATH\\Controllers\\Login.php', 14)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Login->daftar()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
