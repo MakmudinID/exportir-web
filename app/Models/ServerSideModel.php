@@ -217,6 +217,31 @@ class ServerSideModel extends Model
         return $q->getResult();
     }
 
+    public function getProdukByUMKMfilter($umkm, $kategori, $keyword)
+    {
+        $sql = "SELECT tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
+        FROM tbl_produk_umkm 
+        JOIN tbl_kategori_produk ON tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_produk_umkm.id_umkm 
+        JOIN tbl_city on tbl_city.city_id = tbl_umkm.city_id
+        WHERE tbl_produk_umkm.status = 'ACTIVE' ";
+        
+        if($umkm != ''){
+            $sql.="AND tbl_umkm.id=$umkm ";
+        }
+
+        if($kategori != ''){
+            $sql.="AND tbl_produk_umkm.id_kategori=$kategori ";
+        }
+        
+        if($keyword != ''){
+            $sql.="AND tbl_produk_umkm.nama LIKE '%$keyword%' ";
+        }
+
+        $q = $this->db->query($sql);
+        return $q->getResult();
+    }
+
     public function getKodeTransaksibySlug($slug)
     {
         $q = $this->db->query("SELECT kode_transaksi
@@ -282,12 +307,11 @@ class ServerSideModel extends Model
 
     public function getProdukRelated($kategori)
     {
-        $sql = "SELECT 
-                    tbl_kategori_produk.nama as kategori, 
-                    tbl_produk_umkm.* 
+        $sql = "SELECT tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
                 FROM tbl_produk_umkm 
-                left join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
-                left join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
+                join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
+                join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
+                join tbl_city on tbl_city.city_id = tbl_umkm.city_id
                 where tbl_produk_umkm.status = 'ACTIVE' and tbl_kategori_produk.id = $kategori order by rand() limit 3";
         $q = $this->db->query($sql);
         return $q->getResult();
@@ -340,7 +364,7 @@ class ServerSideModel extends Model
         return $q->getResult();
     }
 
-    public function getListBerita($kategori)
+    public function getListBerita($kategori, $keyword)
     {
         $sql = "SELECT tbl_berita_kategori.nama as kategori, tbl_berita.* 
                 FROM tbl_berita 
@@ -349,6 +373,11 @@ class ServerSideModel extends Model
         if ($kategori != '') {
             $sql .= "and tbl_berita_kategori.id = $kategori ";
         }
+        
+        if ($keyword != '') {
+            $sql .= "and tbl_berita.judul like '%$keyword%' ";
+        }
+
         $q = $this->db->query($sql)->getResult();
         return $q;
     }

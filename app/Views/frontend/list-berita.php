@@ -19,17 +19,20 @@
                         <div class="card">
                             <div class="card-body">
                                 <form id="form-filter">
-                                    <div class="form row">
-                                        <div class="form-group col-md-8 align-self-center">
-                                            <input type="text" name="cari" class="form-control form-control-lg" placeholder="Cari Berita" id="cari">
+                                    <div class="form row justify-content-center">
+                                        <div class="col-md-4 align-self-center">
+                                            <input type="text" name="keyword" class="form-control" placeholder="Cari Berita" id="keyword">
                                         </div>
-                                        <div class="form-group col-md-4 align-self-center">
-                                            <select id="kategori" class="form-control form-control-lg">
-                                                <option value="">- Pilih Kategori -</option>
+                                        <div class="col-md-4 align-self-center">
+                                            <select id="kategori" class="form-control">
+                                                <option value="">- Semua Kategori -</option>
                                                 <?php foreach($kategori_berita as $kp){ ?>
                                                     <option value="<?= $kp->id?>"><?= $kp->nama?></option>
                                                 <?php } ?>
                                             </select>
+                                        </div>
+                                        <div class="col-md-3 align-self-center">
+                                            <button type="button" class="btn btn-primary filter" style="width:100%">Terapkan</button>
                                         </div>
                                     </div>
                                 </form>

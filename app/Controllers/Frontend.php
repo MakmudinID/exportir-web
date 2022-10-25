@@ -95,6 +95,43 @@ class Frontend extends BaseController
         echo view('template/fruitkha', $data);
     }
 
+    public function list_produk_by_umkm()
+    {
+        $umkm = $this->request->getPost('umkm');
+        $kategori = $this->request->getPost('kategori');
+        $keyword = $this->request->getPost('keyword');
+
+        $produk = $this->server_side->getProdukByUMKMfilter($umkm, $kategori, $keyword);
+        $html = '';
+
+        foreach ($produk as $p) {
+            $html .= '<div class="col-lg-3 col-md-3 abt-textcol-6 text-center">
+            <div class="single-product-item">
+                <div class="product-image">
+                    <a href="' . base_url('/produk/' . $p->id) . '"><img src="' . $p->foto . '" alt="' . $p->nama . '"></a>
+                </div>
+                <label style="font-size:17px"><a href="' . base_url('/produk/' . $p->id) . '"><b>' . $p->nama . '</b></a></label>
+                <p class="product-price">Rp ' . number_format($p->harga, 0, ',', '.') . ' </p>
+                <a href="#" data-id="' . $p->id . '" data-img="' . $p->foto . '" data-produk="' . $p->nama . '" data-qty="1" data-harga="' . $p->harga . '" data-weight="' . $p->weight . '" data-umkm="' . $p->id_umkm . '" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                <hr>
+                <span><b><a href="' . base_url('profil-umkm/' . $p->slug) . '">' . $p->nama_toko . '</a></b></span><br>
+                <span><i class="fas fa-city mr-1"></i>' . $p->city_name . '</span>
+        </div>
+        </div>';
+        }
+
+        if (empty($produk)) {
+            $html .= '<div class="col-lg-12 col-md-12 abt-textcol-6 text-center">
+                        <div class="card">
+                            <div class="card-body">
+                            <p class="text-danger"><b>Produk tidak ditemukan</b></p>
+                            </div>
+                        </div>
+                    </div>';
+        }
+        echo $html;
+    }
+
     public function list_produk_()
     {
         $kategori = $this->request->getPost('kategori');
@@ -199,30 +236,30 @@ class Frontend extends BaseController
             $tbl_transaksi_pembayaran['bayar_bulan_ke'] = $i;
             $tbl_transaksi_pembayaran['kode_bayar'] = $kode_bayar;
             $tbl_transaksi_pembayaran['total_tagihan'] = $total_tagihan;
-            
+
             $datetime_now = date('Y-m-d H:i:s');
             $date_now = date('Y-m-d');
-            
-            if($i == 1){
+
+            if ($i == 1) {
                 $tbl_transaksi_pembayaran['create_date'] = $datetime_now;
-                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 2 days'));
-            }else if($i == 2){
-                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 1 month'));
-                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 2 days'));
-            }else if($i == 3){
-                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 2 month'));
-                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 2 days'));
-            }else if($i == 4){
-                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 3 month'));
-                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 2 days'));
-            }else if($i == 5){
-                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 4 month'));
-                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 2 days'));
-            }else if($i == 6){
-                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 5 month'));
-                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 2 days'));
+                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 2 days'));
+            } else if ($i == 2) {
+                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 1 month'));
+                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 2 days'));
+            } else if ($i == 3) {
+                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 2 month'));
+                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 2 days'));
+            } else if ($i == 4) {
+                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 3 month'));
+                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 2 days'));
+            } else if ($i == 5) {
+                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 4 month'));
+                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 2 days'));
+            } else if ($i == 6) {
+                $tbl_transaksi_pembayaran['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 5 month'));
+                $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 2 days'));
             }
-            
+
             $tbl_transaksi_pembayaran['status'] = 'BELUM_DIBAYAR';
             $tbl_transaksi_pembayaran['create_user'] = session()->get('nama');
 
@@ -233,26 +270,26 @@ class Frontend extends BaseController
                 die;
             } else {
                 if ($i == 1) {
-                    if($i == 1){
+                    if ($i == 1) {
                         $tbl_transaksi['create_date'] = $datetime_now;
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 3 days'));
-                    }else if($i == 2){
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 1 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 3 days'));
-                    }else if($i == 3){
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 2 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 3 days'));
-                    }else if($i == 4){
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 3 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 3 days'));
-                    }else if($i == 5){
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 4 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 3 days'));
-                    }else if($i == 6){
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 5 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date']. ' + 3 days'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 3 days'));
+                    } else if ($i == 2) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 1 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
+                    } else if ($i == 3) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 2 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
+                    } else if ($i == 4) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 3 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
+                    } else if ($i == 5) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 4 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
+                    } else if ($i == 6) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 5 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
                     }
-                    
+
                     $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
                     $tbl_transaksi['status'] = 'BELUM_DIBAYAR';
                     $tbl_transaksi['kerjasama'] = 'Y';
@@ -297,7 +334,7 @@ class Frontend extends BaseController
                     $tbl_transaksi['kurir'] = $data->kurir;
                     $tbl_transaksi['service'] = $data->service;
                     $tbl_transaksi['catatan_beli'] = $data->catatan_beli;
-                    $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($data->tanggal_kirim. ' + 1 month'));
+                    $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 1 month'));
                     $id_transaksi = $this->server_side->createRowsReturnID($tbl_transaksi, 'tbl_transaksi');
 
                     $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi_])->getResult();
@@ -310,7 +347,7 @@ class Frontend extends BaseController
                         $tbl_transaksi_detail['subtotal'] = $d->harga;
 
                         $result = $this->server_side->createRows($tbl_transaksi_detail, 'tbl_transaksi_detail');
-                        if(!$result){
+                        if (!$result) {
                             $this->server_side->db->transRollback();
                             echo 'gagal';
                             die;
@@ -373,8 +410,9 @@ class Frontend extends BaseController
 
     public function list_berita_()
     {
+        $keyword = $this->request->getPost('keyword');
         $kategori = $this->request->getPost('kategori');
-        $berita = $this->server_side->getListBerita($kategori);
+        $berita = $this->server_side->getListBerita($kategori, $keyword);
         $html = '';
         foreach ($berita as $b) {
             $html .= '<div class="col-lg-4 col-md-6">
@@ -393,7 +431,18 @@ class Frontend extends BaseController
                     </div>';
         }
 
-        echo $html;
+        if (!empty($berita)) {
+            echo $html;
+        } else {
+            $html .= '<div class="col-lg-12 col-md-12 abt-textcol-6 text-center">
+                            <div class="card">
+                                <div class="card-body">
+                                <p class="text-danger"><b>Berita tidak ditemukan</b></p>
+                                </div>
+                            </div>
+                        </div>';
+            echo $html;
+        }
     }
 
 
@@ -587,7 +636,7 @@ class Frontend extends BaseController
                         <div class="card-body text-center">
                             <h3>Wah, keranjang belanjamu kosong</h3>
                             <p>Yuk, isi dengan barang-barang kebutuhanmu!</p>
-                            <a href="' . base_url('/') . '" class="btn btn-primary">Mulai Belanja</a>
+                            <a href="' . base_url('/list-produk') . '" class="btn btn-primary">Mulai Belanja</a>
                         </div>
                     </div>';
             echo $cart_;
@@ -742,8 +791,8 @@ class Frontend extends BaseController
         $tbl_transaksi_pembayaran['kode_bayar'] = $kode_bayar;
 
         $datetime_now = date('Y-m-d H:i:s');
-        
-        $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($datetime_now. ' + 2 days'));
+
+        $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 2 days'));
         $tbl_transaksi_pembayaran['total_tagihan'] = $this->server_side->jumlah_total_bayar($transaksi_list);
         $tbl_transaksi_pembayaran['status'] = 'BELUM_DIBAYAR';
         $tbl_transaksi_pembayaran['create_user'] = session()->get('nama');

@@ -157,7 +157,7 @@ class Reseller extends BaseController
 
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('Dokumen Perjanjian Kerjasama.pdf','I'); // opens in browser
+        $mpdf->Output('Dokumen Perjanjian Kerjasama - '.$no_kerjasama.'.pdf','I'); // opens in browser
     }
 
     public function kerjasama_pdf_download($no_kerjasama)
@@ -171,7 +171,7 @@ class Reseller extends BaseController
 
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('arjun.pdf','D'); // opens in browser
+        $mpdf->Output('Dokumen Perjanjian Kerjasama - '.$no_kerjasama.'.pdf','D'); // opens in browser
     }
 
     public function update_bayar()

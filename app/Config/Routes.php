@@ -51,6 +51,7 @@ $routes->post('kerjasama_pengajuan', 'Frontend::kerjasama_pengajuan');
 $routes->post('kirim_kerjasama', 'Frontend::kirim_kerjasama');
 $routes->get('list-produk', 'Frontend::list_produk');
 $routes->post('list_produk_', 'Frontend::list_produk_');
+$routes->post('list_produk_by_umkm', 'Frontend::list_produk_by_umkm');
 $routes->get('list-berita', 'Frontend::list_berita');
 $routes->post('list_berita_', 'Frontend::list_berita_');
 $routes->get('berita/(:any)', 'Frontend::berita/$1');

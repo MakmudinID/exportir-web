@@ -1,10 +1,15 @@
+let keyword;
+let kategori;
+let umkm;
+
 function filter() {
-    // console.log('asd');
     $.ajax({
-        url: base_url + '/list_produk_',
+        url: base_url + '/list_produk_by_umkm',
         method: 'POST',
         data: {
-            kategori: $('#kategori').val()
+            umkm: '',
+            kategori: $('#kategori').val(),
+            keyword: $('#keyword').val(),
         },
         success: function(res) {
             $('#list-produk').html(res);
@@ -15,7 +20,7 @@ function filter() {
 jQuery(document).ready(function() {
     filter();
 
-    $('#kategori').on('change', function() {
+    $(document).on('click', '.filter', function() {
         filter();
-    })
+    });
 })

@@ -19,22 +19,19 @@
                             <div class="card-body">
                                 <form id="form-filter">
                                     <div class="row justify-content-center">
-                                        <div class="form-group col-md-4">
-                                            <label for="cari">Kata Kunci</label>
-                                            <input type="text" name="cari" class="form-control" placeholder="Cari Produk" id="cari">
+                                        <div class="col-md-4 align-self-center">
+                                            <input type="text" name="keyword" class="form-control" placeholder="Cari Produk" id="keyword">
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="kategori">Kategori Produk</label>
+                                        <div class="col-md-4 align-self-center">
                                             <select id="kategori" class="form-control">
-                                                <option value="">- Pilih Kategori -</option>
+                                                <option value="">- Semua Kategori -</option>
                                                 <?php foreach($kategori_produk as $kp){ ?>
                                                     <option value="<?= $kp->id?>"><?= $kp->nama?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="jenis">Aksi</label><br>
-                                            <button type="button" class="btn btn-primary" style="width: 100%;">Terapkan</button>
+                                        <div class="col-md-3 align-self-center">
+                                            <button type="button" class="btn btn-primary filter" style="width: 100%;">Terapkan</button>
                                         </div> 
                                     </div>
                                 </form>

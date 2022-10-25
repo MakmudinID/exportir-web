@@ -79,21 +79,17 @@ $this->server_side = new ServerSideModel(); ?>
 								<li>
 									<div class="header-icons">
 										<?php if ($session->get("role") == "RESELLER") { ?>
-											<a class="mobile-hide search-bar-icon" href="javascript:void(0)"><i class="fas fa-search"></i></a>
 											<a class="shopping-cart" href="<?= base_url('/cart') ?>"><i class="fas fa-shopping-cart"></i> <span class="badge badge-primary total-cart">0</span></a>
 											<a href="<?= base_url('/reseller/profil') ?>"><i class="fas fa-user"></i> Profil</a>
 											<a href="<?= base_url('/logout') ?>"><i class="fa fa-sign-out-alt"></i> Logout</a>
 										<?php } else if ($session->get("role") == "UMKM") { ?>
-											<a class="mobile-hide search-bar-icon" href="javascript:void(0)"><i class="fas fa-search"></i></a>
 											<a href="<?= base_url('/umkm/profil') ?>"><i class="fas fa-user"></i> <?= $session->get("nama") ?> </a>
 											<a href="<?= base_url('/logout') ?>"><i class="fa fa-sign-out-alt"></i> Logout</a>
 										<?php } else if ($session->get("role") == "SUPERADMIN") { ?>
-											<a class="mobile-hide search-bar-icon" href="javascript:void(0)"><i class="fas fa-search"></i></a>
 											<a class="shopping-cart" href="<?= base_url('/login') ?>"><i class="fas fa-shopping-cart"></i> <span class="badge badge-primary total-cart" style="margin-left:-10px;margin-right:20px">0</span></a>
 											<a href="<?= base_url('/admin/dashboard') ?>"><i class="fas fa-user"></i> <?= $session->get("nama") ?> </a>
 											<a href="<?= base_url('/logout') ?>"><i class="fa fa-sign-out-alt"></i> Logout</a>
 										<?php } else { ?>
-											<a class="mobile-hide search-bar-icon" href="javascript:void(0)"><i class="fas fa-search"></i></a>
 											<a class="shopping-cart" href="<?= base_url('/login') ?>"><i class="fas fa-shopping-cart"></i> <span class="badge badge-primary total-cart" style="margin-left:-10px;margin-right:20px">0</span></a>
 											<a href="<?= base_url('/login') ?>"><i class="fa fa-sign-in-alt"></i> Login</a>
 										<?php } ?>
@@ -101,7 +97,6 @@ $this->server_side = new ServerSideModel(); ?>
 								</li>
 							</ul>
 						</nav>
-						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 						<div class="mobile-menu"></div>
 						<!-- menu end -->
 					</div>
@@ -110,25 +105,6 @@ $this->server_side = new ServerSideModel(); ?>
 		</div>
 	</div>
 	<!-- end header -->
-
-	<!-- search area -->
-	<div class="search-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<span class="close-btn"><i class="fas fa-window-close"></i></span>
-					<div class="search-bar">
-						<div class="search-bar-tablecell">
-							<h3>Search For:</h3>
-							<input type="text" placeholder="Keywords">
-							<button type="submit">Search <i class="fas fa-search"></i></button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end search area -->
 
 	<!-- hero area -->
 	<?php echo view($main_content); ?>

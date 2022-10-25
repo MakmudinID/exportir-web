@@ -89,27 +89,21 @@
                     <div class="card">
                         <div class="card-body">
                             <form id="form-filter">
-                                <div class="row">
+                                <div class="row justify-content-center">
                                     <div class="col-md-4 align-self-center">
-                                        <label for="cari"></label>
-                                        <input type="text" name="cari" class="form-control form-control-lg" placeholder="Cari Produk" id="cari">
+                                        <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Cari Produk">
                                         <input type="hidden" name="umkm" id="umkm" value="<?= $umkm->id ?>">
                                     </div>
                                     <div class="col-md-4 align-self-center">
-                                        <label for="kategori"></label>
-                                        <select id="kategori" class="form-control form-control-lg">
-                                            <option value="">- Pilih Kategori -</option>
+                                        <select id="kategori" class="form-control">
+                                            <option value="">- Semua Kategori -</option>
                                             <?php foreach ($produk_kategori as $kp) { ?>
                                                 <option value="<?= $kp->id ?>"><?= $kp->kategori ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
-                                    <div class="col-md-4 align-self-center">
-                                        <label for="jenis"></label>
-                                        <select id="jenis" class="form-control form-control-lg">
-                                            <option value="TERLARIS">Terlaris</option>
-                                            <option value="TERBARU">Terbaru</option>
-                                        </select>
+                                    <div class="col-md-3 align-self-center">
+                                        <button type="button" class="btn btn-primary filter" style="width:100%">Terapkan</button>
                                     </div>
                                 </div>
                             </form>
