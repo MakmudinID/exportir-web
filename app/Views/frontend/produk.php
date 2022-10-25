@@ -25,9 +25,10 @@
 				<div class="col-md-7">
 					<div class="single-product-content">
 						<h3><?= $produk->nama ?></h3>
+						Terjual <?= $produk->satuan ?>
+						<hr>
 						<p class="single-product-pricing">
-							<span>Per <?= $produk->satuan ?></span>
-							Rp <?= number_format($produk->harga, 0, ',', '.') ?>
+							Rp <?= number_format($produk->harga, 0, ',', '.') ?>/<?= $produk->satuan ?>
 						</p>
 						<p><strong>Kategori: </strong> <?= $produk->nama_kategori ?></p>
 						<p><?= $produk->deskripsi ?></p>
@@ -41,8 +42,11 @@
 								<input type="hidden" name="img" value="<?= $produk->foto ?>" id="img">
 								<input type="hidden" name="weight" value="<?= $produk->weight ?>" id="weight">
 							</div>
-							<a href="#" class="cart-btn tambah-cart btn-sm ml-2"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<a href="#" class="cart-btn tambah-cart btn-sm ml-2"><i class="fas fa-shopping-cart"></i> Masukkan Keranjang</a>
 						</div>
+						<hr>
+							<i class="fas fa-store mr-2 align-self-center"></i>
+							<label><a href="<?=base_url('profil-umkm/'.$produk->slug)?>"><b><?= $produk->nama_umkm ?></b></a></label>
 					</div>
 				</div>
 			</div>
@@ -69,7 +73,7 @@
 								</a>
 							</label>
 							<p class="product-price"> Rp <?= number_format($p->harga, 0, ',','.'); ?> </p>
-							<a data-id="<?= $p->id ?>" data-img="<?= $p->foto ?>" data-produk="<?= $p->nama ?>" data-qty="1" data-harga="<?= $p->harga ?>" data-weight="<?=$p->weight?>" data-umkm="<?= $p->id_umkm ?>" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<a data-id="<?= $p->id ?>" data-img="<?= $p->foto ?>" data-produk="<?= $p->nama ?>" data-qty="1" data-harga="<?= $p->harga ?>" data-weight="<?=$p->weight?>" data-umkm="<?= $p->id_umkm ?>" class="cart-btn add-cart btn-sm"><i class="fas fa-shopping-cart"></i> Masukkan Keranjang</a>
 							<hr>
 							<span><b><a href="<?=base_url('profil-umkm/'.$p->slug)?>"><?= $p->nama_toko; ?></a></b></span><br>
 							<span><i class="fas fa-city mr-1"></i> <?= $p->city_name; ?></span>
@@ -79,7 +83,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<a href="<?= base_url('list-produk') ?>" class="boxed-btn">Lihat Lebih Lengkap</a>
+					<a href="<?= base_url('list-produk') ?>" class="boxed-btn btn-sm">Lihat Lebih Lengkap</a>
 				</div>
 			</div>
 		</div>

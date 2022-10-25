@@ -93,9 +93,9 @@ jQuery(document).ready(function() {
         columns: [{
                 "data": 'tanggal_transaksi',
             },
-            { "data": "no_transaksi" },
-            { "data": "umkm" },
+            { "data": "kode_bayar" },
             { "data": "total_tagihan" },
+            { "data": "batas_bayar" },
             { "data": "status" },
             { "data": "detail" },
         ],

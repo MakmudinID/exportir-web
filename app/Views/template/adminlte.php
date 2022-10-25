@@ -55,11 +55,6 @@ $this->server_side = new ServerSideModel();
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
-                <li class="nav-item ml-1 mr-1">
-                    <a class="nav-link btn btn-info" href="<?= base_url() ?>/" role="button">
-                        <b>Halaman Utama</b>
-                    </a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link btn btn-warning" href="<?= base_url() ?>/logout" role="button">
                         <i class="fas fa-sign-out-alt"></i> <b>Keluar</b>

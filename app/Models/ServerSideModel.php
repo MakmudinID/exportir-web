@@ -53,6 +53,31 @@ class ServerSideModel extends Model
         return $this->db->query($sql, array(session()->get('id')))->getResult();
     }
 
+    public function pembayaran($kode_bayar){
+        $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.bukti_url, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+        FROM tbl_transaksi
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
+        JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
+        WHERE tbl_transaksi.id_pengguna =?
+        AND tbl_transaksi_pembayaran.kode_bayar=?
+        LIMIT 1";
+
+        return $this->db->query($sql, array(session()->get('id'), $kode_bayar))->getRow();
+    }
+
+    public function transaksi_in_kodebayar($kode_bayar){
+        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.nama as slug
+        FROM tbl_transaksi
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE tbl_transaksi_pembayaran.kode_bayar=?
+        AND tbl_transaksi.id_pengguna=?";
+
+        return $this->db->query($sql, array($kode_bayar, session()->get('id')))->getResult();
+    }
+
     public function transaksi_in_kode($kode_transaksi){
         $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
@@ -297,8 +322,9 @@ class ServerSideModel extends Model
 
     public function getProdukById($id)
     {
-        $sql = "SELECT tbl_produk_umkm.*, tbl_kategori_produk.nama as nama_kategori 
+        $sql = "SELECT tbl_produk_umkm.*, tbl_umkm.nama as nama_umkm, tbl_umkm.slug, tbl_kategori_produk.nama as nama_kategori 
                 FROM tbl_produk_umkm 
+                join tbl_umkm ON tbl_umkm.id = tbl_produk_umkm.id_umkm
                 left join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori
                 where tbl_produk_umkm.id= $id and tbl_produk_umkm.status = 'ACTIVE'";
         $q = $this->db->query($sql)->getRow();

@@ -112,7 +112,7 @@ class Frontend extends BaseController
                 </div>
                 <label style="font-size:17px"><a href="' . base_url('/produk/' . $p->id) . '"><b>' . $p->nama . '</b></a></label>
                 <p class="product-price">Rp ' . number_format($p->harga, 0, ',', '.') . ' </p>
-                <a href="#" data-id="' . $p->id . '" data-img="' . $p->foto . '" data-produk="' . $p->nama . '" data-qty="1" data-harga="' . $p->harga . '" data-weight="' . $p->weight . '" data-umkm="' . $p->id_umkm . '" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                <a href="#" data-id="' . $p->id . '" data-img="' . $p->foto . '" data-produk="' . $p->nama . '" data-qty="1" data-harga="' . $p->harga . '" data-weight="' . $p->weight . '" data-umkm="' . $p->id_umkm . '" class="cart-btn add-cart"><i class="fas fa-shopping-cart btn-sm"></i> Masukkan Keranjang</a>
                 <hr>
                 <span><b><a href="' . base_url('profil-umkm/' . $p->slug) . '">' . $p->nama_toko . '</a></b></span><br>
                 <span><i class="fas fa-city mr-1"></i>' . $p->city_name . '</span>
@@ -146,7 +146,7 @@ class Frontend extends BaseController
                 </div>
                 <h3 >' . $p->nama . '</h3>
                 <p class="product-price">Rp. ' . number_format($p->harga) . ' </p>
-                <a href="#" data-id="' . $p->id . '" data-img="' . $p->foto . '" data-produk="' . $p->nama . '" data-qty="1" data-harga="' . $p->harga . '" data-weight="' . $p->weight . '" data-umkm="' . $p->id_umkm . '" class="cart-btn add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                <a href="#" data-id="' . $p->id . '" data-img="' . $p->foto . '" data-produk="' . $p->nama . '" data-qty="1" data-harga="' . $p->harga . '" data-weight="' . $p->weight . '" data-umkm="' . $p->id_umkm . '" class="cart-btn add-cart btn-sm"><i class="fas fa-shopping-cart"></i> Masukkan Keranjang</a>
                 <hr>
                 <span><b><a href="' . base_url('profil-umkm/' . $p->slug) . '">' . $p->nama_toko . '</a></b></span><br>
                 <span><i class="fas fa-city mr-1"></i>' . $p->city_name . '</span>
@@ -232,6 +232,7 @@ class Frontend extends BaseController
         for ($i = 1; $i <= $this->request->getPost('kontrak'); $i++) {
             $kode_bayar = 'INV' . date('ymd') . '-' . substr(str_shuffle($str), 0, 8) . '' . $i;
 
+            $tbl_transaksi_pembayaran['id_pengguna'] = session()->get('id');
             $tbl_transaksi_pembayaran['no_kerjasama'] = $no_kerjasama;
             $tbl_transaksi_pembayaran['bayar_bulan_ke'] = $i;
             $tbl_transaksi_pembayaran['kode_bayar'] = $kode_bayar;
@@ -272,22 +273,27 @@ class Frontend extends BaseController
                 if ($i == 1) {
                     if ($i == 1) {
                         $tbl_transaksi['create_date'] = $datetime_now;
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 3 days'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_now . ' + 3 days'));
                     } else if ($i == 2) {
                         $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 1 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
+                        $date_ = date('Y-m-d', strtotime($date_now . ' + 1 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_. ' + 3 days'));
                     } else if ($i == 3) {
                         $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 2 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
+                        $date_ = date('Y-m-d', strtotime($date_now . ' + 2 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
                     } else if ($i == 4) {
                         $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 3 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
+                        $date_ = date('Y-m-d', strtotime($date_now . ' + 3 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
                     } else if ($i == 5) {
                         $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 4 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
+                        $date_ = date('Y-m-d', strtotime($date_now . ' + 4 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
                     } else if ($i == 6) {
                         $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 5 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d H:i:s', strtotime($tbl_transaksi_pembayaran['create_date'] . ' + 3 days'));
+                        $date_ = date('Y-m-d', strtotime($date_now . ' + 5 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
                     }
 
                     $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
@@ -788,6 +794,7 @@ class Frontend extends BaseController
 
         $kode_bayar = 'INV' . date('ymd') . '-' . $kode_;
 
+        $tbl_transaksi_pembayaran['id_pengguna'] = session()->get('id');
         $tbl_transaksi_pembayaran['kode_bayar'] = $kode_bayar;
 
         $datetime_now = date('Y-m-d H:i:s');

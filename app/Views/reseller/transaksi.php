@@ -42,9 +42,8 @@
                                     <select name="status" id="status" class="form-control">
                                         <option value="ALL">ALL</option>
                                         <option value="BELUM_DIBAYAR">Belum Dibayar</option>
-                                        <option value="SEDANG_DIPROSES">Sedang Diproses</option>
-                                        <option value="SUDAH_DIKIRIM">Sudah Dikirim</option>
-                                        <option value="SELESAI">Sudah Sampai</option>
+                                        <option value="MENUNGGU_KONFIRMASI">Menunggu Konfirmasi</option>
+                                        <option value="SUDAH_DIBAYAR">Lunas</option>
                                     </select>
                                 </div>
                             </div>
@@ -66,9 +65,9 @@
                             <thead>
                                 <tr>
                                     <th>Tanggal Transaksi</th>
-                                    <th>No. Transaksi</th>
-                                    <th>UMKM</th>
+                                    <th>Kode Bayar</th>
                                     <th>Total Tagihan</th>
+                                    <th>Batas Bayar</th>
                                     <th>Status</th>
                                     <th>Detail</th>
                                 </tr>

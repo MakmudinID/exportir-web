@@ -139,32 +139,23 @@ class TransaksiModel extends Model
         $id_pengguna = session()->get('id');
         $role = session()->get('role');
 
-        $column_order = array('tbl_transaksi.create_date', 'tbl_transaksi.kode_transaksi', 'tbl_umkm.nama', null, null); //field yang ada di table user
-        $column_search = array('tbl_transaksi.kode_transaksi', 'tbl_umkm.nama');
+        $column_order = array('create_date', 'kode_bayar', 'total_tagihan', 'status', null); //field yang ada di table user
+        $column_search = array('kode_bayar');
 
-        $sql = "SELECT tbl_transaksi_pembayaran.status, tbl_transaksi.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
-        FROM tbl_transaksi 
-        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
-        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm 
-        JOIN (
-                SELECT COUNT(tbl_transaksi_detail.id_barang) as jumlah_barang, tbl_transaksi_detail.id_transaksi, SUM(tbl_transaksi_detail.qty) as total_barang
-                FROM tbl_transaksi
-                JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
-                GROUP BY tbl_transaksi.id
-            ) as dtl ON dtl.id_transaksi = tbl_transaksi.id
-        WHERE 1
-        AND tbl_transaksi.kerjasama = 'T'";
+        $sql = "SELECT *
+        FROM tbl_transaksi_pembayaran 
+        WHERE no_kerjasama IS NULL ";
 
         if ($role != 'SUPERADMIN') {
-            $sql .= " AND tbl_transaksi.id_pengguna = $id_pengguna  ";
+            $sql .= " AND tbl_transaksi_pembayaran.id_pengguna = $id_pengguna  ";
         }
 
         if ($start_date != '' && $end_date != '') {
-            $sql .= " AND (tbl_transaksi.create_date BETWEEN '$start_date' AND '$end_date') ";
+            $sql .= " AND (tbl_transaksi_pembayaran.create_date BETWEEN '$start_date' AND '$end_date') ";
         }
 
         if ($status != '') {
-            $sql .= " AND tbl_transaksi.status='$status' ";
+            $sql .= " AND tbl_transaksi_pembayaran.status='$status' ";
         }
 
         $i = 0;
@@ -184,8 +175,12 @@ class TransaksiModel extends Model
         if (isset($_POST['order'])) {
             $sql .= " ORDER BY " . $column_order[$_POST['order']['0']['column']] . " " . $_POST['order']['0']['dir'] . " ";
         } else {
-            $sql .= " ORDER BY tbl_transaksi.create_date DESC ";
+            $sql .= " ORDER BY tbl_transaksi_pembayaran.create_date DESC ";
         }
+
+        // echo $sql; 
+        // die;
+
         return $sql;
     }
 }

@@ -75,28 +75,30 @@ class Reseller extends BaseController
         foreach ($list as $field) {
             $no++;
             $row = array();
+            
             $row['tanggal_transaksi'] = $field->create_date;
-            $row['no_transaksi'] = $field->kode_transaksi;
-            $row['umkm'] = $field->nama_umkm;
-            $row['total_tagihan'] = 'Rp '.number_format($field->jumlah+$field->ongkir, 0,',','.');
+            $row['batas_bayar'] = $field->batas_bayar;
+
+            $row['kode_bayar'] = $field->kode_bayar;
+            $row['total_tagihan'] = 'Rp '.number_format($field->total_tagihan, 0,',','.');
 
             if($field->status == 'BELUM_DIBAYAR'){
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
                     <div class="badge badge-danger">Belum Dibayar</div>
-                    <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="'.$field->id_pembayaran.'" role="button"><i class="fas fa-upload text-danger"></i></div>
+                    <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="'.$field->id.'" role="button"><i class="fas fa-upload text-danger"></i></div>
                 </div>';
-            }else if($field->status == 'SEDANG_DIPROSES'){
-                $row['status'] = '<span class="badge badge-warning">Sedang Diproses</span>';
-            }else if($field->status == 'SUDAH_DIKIRIM'){
-                $row['status'] = '<span class="badge badge-primary">Sudah Dikirim</span>';
+            }else if($field->status == 'MENUNGGU_KONFIRMASI'){
+                $row['status'] = '<span class="badge badge-warning">Menunggu Konfirmasi</span>';
+            }else if($field->status == 'SUDAH_DIBAYAR'){
+                $row['status'] = '<span class="badge badge-success">Lunas</span>';
             }else{
-                $row['status'] = '<span class="badge badge-success">Selesai</span>';
+                $row['status'] = '<span class="badge badge-danger">Batal</span>';
             }
 
             $row['detail'] = '
             <div class="d-flex justify-content-center">
-                <a href="'.base_url('reseller/transaksi/'.$field->kode_transaksi).'" class="p-1"><i class="fas fa-search-plus"></i></a>
+                <a href="'.base_url('reseller/transaksi/'.$field->kode_bayar).'" class="p-1"><i class="fas fa-search-plus"></i></a>
             </div>';
             $data[] = $row;
         }
@@ -111,14 +113,15 @@ class Reseller extends BaseController
         echo json_encode($output);
     }
 
-    public function transaksi_detail($kode_transaksi)
+    public function transaksi_detail($kode_bayar)
     {
         if (session()->get('role') != 'RESELLER') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Pesanan Saya';
         $data['js'] = array("reseller-transaksi-detail.js?r=" . uniqid());
-        $data['transaksi'] = $this->server_side->transaksi_in_kode_detail($kode_transaksi);
+        $data['pembayaran'] = $this->server_side->pembayaran($kode_bayar);
+        $data['transaksi'] = $this->server_side->transaksi_in_kodebayar($kode_bayar);
         $data['main_content']   = 'reseller/transaksi_detail';
         echo view('template/adminlte', $data);
     }
