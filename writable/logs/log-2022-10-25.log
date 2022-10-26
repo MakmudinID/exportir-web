@@ -746,3 +746,343 @@ in APPPATH\Controllers\Reseller.php on line 150.
  6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
  7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
  8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-25 23:25:03 --> Table 'ex-web.tbl_pembayaran' doesn't exist
+CRITICAL - 2022-10-25 23:25:03 --> Table 'ex-web.tbl_pembayaran' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = \'1\'  order by tbl_pembayaran.create_date desc limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = \'1\'  order by tbl_pembayaran.create_date desc limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = \'1\'  order by tbl_pembayaran.create_date desc limit 0,30')
+ 4 APPPATH\Models\LaporanModel.php(91): CodeIgniter\Database\BaseConnection->query(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = ?  order by tbl_pembayaran.create_date desc limit 0,30', [...])
+ 5 APPPATH\Controllers\Umkm.php(126): App\Models\LaporanModel->laporan_transaksi()
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-25 23:25:33 --> Table 'ex-web.tbl_pembayaran' doesn't exist
+CRITICAL - 2022-10-25 23:25:33 --> Table 'ex-web.tbl_pembayaran' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = \'1\'  order by tbl_pembayaran.create_date desc limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = \'1\'  order by tbl_pembayaran.create_date desc limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = \'1\'  order by tbl_pembayaran.create_date desc limit 0,30')
+ 4 APPPATH\Models\LaporanModel.php(91): CodeIgniter\Database\BaseConnection->query(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = ?  order by tbl_pembayaran.create_date desc limit 0,30', [...])
+ 5 APPPATH\Controllers\Umkm.php(126): App\Models\LaporanModel->laporan_transaksi()
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-25 23:26:10 --> Table 'ex-web.tbl_pembayaran' doesn't exist
+CRITICAL - 2022-10-25 23:26:10 --> Table 'ex-web.tbl_pembayaran' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = \'1\'  order by tbl_pembayaran.create_date desc limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = \'1\'  order by tbl_pembayaran.create_date desc limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = \'1\'  order by tbl_pembayaran.create_date desc limit 0,30')
+ 4 APPPATH\Models\LaporanModel.php(91): CodeIgniter\Database\BaseConnection->query(' select
+                    tbl_pembayaran.id,
+                    tbl_pembayaran.total_tagihan,
+                    tbl_pembayaran.create_date,
+                    tbl_pembayaran.bukti_url,
+                    tbl_pembayaran.status as status_bayar,
+                    tbl_transaksi.status,
+                    tbl_transaksi.id as id_transaksi,
+                    tbl_transaksi.kode_transaksi,
+                    tbl_transaksi.jumlah,
+                    tbl_transaksi.ongkir,
+                    tbl_transaksi.nama as nama_penerima,
+                    tbl_transaksi.email as email_penerima,
+                    tbl_transaksi.nohp as nohp_penerima,
+                    tbl_transaksi.alamat as alamat_penerima,
+                    tbl_transaksi.keterangan as ket_penerima,
+                    tbl_transaksi.kurir,
+                    tbl_transaksi.service,
+                    tbl_umkm.nama as umkm,
+                    tbl_pengguna.nama
+                from tbl_pembayaran
+                    left join tbl_transaksi on tbl_transaksi.id_pembayaran = tbl_pembayaran.id
+                    left join tbl_pengguna on tbl_pengguna.id = tbl_transaksi.id_pengguna
+                    left join tbl_umkm on tbl_umkm.id = tbl_transaksi.id_umkm
+            where tbl_transaksi.id_umkm = ?  order by tbl_pembayaran.create_date desc limit 0,30', [...])
+ 5 APPPATH\Controllers\Umkm.php(126): App\Models\LaporanModel->laporan_transaksi()
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-25 23:26:47 --> Attempt to read property "foto" on null
+in APPPATH\Models\ServerSideModel.php on line 190.
+ 1 APPPATH\Models\ServerSideModel.php(190): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "foto" on null', 'APPPATH\\Models\\ServerSideModel.php', 190)
+ 2 APPPATH\Views\template\adminlte.php(80): App\Models\ServerSideModel->getFoto()
+ 3 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 4 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 5 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 6 APPPATH\Controllers\Umkm.php(121): view('template/adminlte', [...])
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

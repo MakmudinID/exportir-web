@@ -105,7 +105,7 @@ jQuery(document).ready(function() {
             { "data": "detail" },
         ],
         columnDefs: [{
-            targets: [-1, -2, 3],
+            targets: [-1, -2, 3, 4],
             orderable: false,
             searchable: false,
             className: "text-center"

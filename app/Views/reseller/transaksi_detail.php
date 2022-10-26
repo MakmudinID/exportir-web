@@ -98,8 +98,6 @@ $this->server_side = new ServerSideModel(); ?>
             </div>
         </div>
 
-        <hr>
-
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card card-warning card-outline">

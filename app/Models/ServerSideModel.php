@@ -92,9 +92,7 @@ class ServerSideModel extends Model
     }
 
     public function transaksi_in_kode_detail($kode_transaksi){
-        $role = session()->get('role');
-
-        $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.keterangan as keterangan_bayar, tbl_transaksi_pembayaran.bukti_url as bukti_bayar, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+        $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.total_tagihan, tbl_transaksi_pembayaran.tanggal_bayar, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.keterangan as keterangan_bayar, tbl_transaksi_pembayaran.bukti_url as bukti_bayar, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.slug, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran

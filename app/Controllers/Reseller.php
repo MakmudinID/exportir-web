@@ -207,6 +207,7 @@ class Reseller extends BaseController
         $data['status'] = 'MENUNGGU_KONFIRMASI';
         $data['keterangan'] = htmlspecialchars($this->request->getPost('keterangan'), ENT_QUOTES);
         $data['edit_user'] = session()->get('nama');
+        $data['tanggal_bayar'] = date('Y-m-d H:i:s');
         $data['edit_date'] = date('Y-m-d H:i:s');
 
         $table = 'tbl_transaksi_pembayaran';
@@ -306,7 +307,7 @@ class Reseller extends BaseController
                 </div>
                 <div class="align-self-center">' . $progress . '%</div>
             ';
-            $row['kontrak'] = $field->lama_kerjasama . ' Bulan';
+            $row['kontrak'] = $field->lama_kerjasama . ' Bulan ('.$field->jumlah_barang.' produk)';
 
             if ($field->status == 'BELUM_UPLOAD') {
                 $url = base_url('reseller/pdf/' . $field->no_kerjasama);

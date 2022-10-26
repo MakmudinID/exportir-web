@@ -121,6 +121,71 @@ class TransaksiModel extends Model
     }
 
     //TRANSAKSI
+    public function limitRowstTransaksiUMKM($status, $start_date, $end_date)
+    {
+        $sql = $this->selectFieldTransaksiUMKM($status, $start_date, $end_date);
+        if ($_POST['length'] != -1) {
+            $sql .= "limit " . $_POST['start'] . "," . $_POST['length'];
+        }
+
+        // echo $sql; die;
+
+        $query = $this->db->query($sql);
+        return $query->getResult();
+    }
+
+    protected function selectFieldTransaksiUMKM($status, $start_date, $end_date)
+    {
+        $id_umkm = session()->get('id_umkm');
+
+        $column_order = array('create_date', 'kode_transaksi', 'nama', null, null, null); //field yang ada di table user
+        $column_search = array('kode_transaksi', 'nama');
+
+        $sql = "SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = 'T'
+        AND id_umkm = $id_umkm ";
+
+        if ($start_date != '' && $end_date != '') {
+            $sql .= " AND (tbl_transaksi.create_date BETWEEN '$start_date' AND '$end_date') ";
+        }
+
+        if ($status != '') {
+            $sql .= " AND tbl_transaksi.status='$status' ";
+            $sql .= " AND tbl_transaksi_pembayaran.status == 'SUDAH_DIBAYAR' ";
+        }else{
+            $sql .= " AND tbl_transaksi.status != 'BELUM_DIBAYAR' ";
+            $sql .= " AND tbl_transaksi_pembayaran.status != 'BELUM_DIBAYAR' ";
+            $sql .= " AND tbl_transaksi_pembayaran.status != 'MENUNGGU_KONFIRMASI' ";
+        }
+
+        $i = 0;
+        if (isset($_POST['search']['value'])) {
+            $sql .= " AND ( ";
+            foreach ($column_search as $item) {
+                if ($i === 0) {
+                    $sql .= " " . $item . " like '%" . $_POST['search']['value'] . "%' ";
+                } else {
+                    $sql .= "or " . $item . " like '%" . $_POST['search']['value'] . "%' ";
+                }
+                $i++;
+            }
+            $sql .= " ) ";
+        }
+
+        if (isset($_POST['order'])) {
+            $sql .= " ORDER BY " . $column_order[$_POST['order']['0']['column']] . " " . $_POST['order']['0']['dir'] . " ";
+        } else {
+            $sql .= " ORDER BY tbl_transaksi.create_date DESC ";
+        }
+
+        // echo $sql; 
+        // die;
+
+        return $sql;
+    }
+   
     public function limitRowstTransaksi($status, $start_date, $end_date)
     {
         $sql = $this->selectFieldTransaksi($status, $start_date, $end_date);

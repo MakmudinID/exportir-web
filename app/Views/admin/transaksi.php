@@ -24,35 +24,29 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-5">
-                                <div class="form-group">
-                                    <label>Rentang Tanggal:</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="far fa-calendar-alt"></i>
-                                            </span>
-                                        </div>
-                                        <input type="text" class="form-control float-right" id="date_transaction">
+                                <label>Rentang Tanggal:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </span>
                                     </div>
+                                    <input type="text" class="form-control float-right" id="date_transaction">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="ALL">ALL</option>
-                                        <option value="BELUM_DIBAYAR">Belum Dibayar</option>
-                                        <option value="SEDANG_DIPROSES">Sedang Diproses</option>
-                                        <option value="SUDAH_DIKIRIM">Sudah Dikirim</option>
-                                        <option value="SELESAI">Sudah Sampai</option>
-                                    </select>
-                                </div>
+                                <label for="status">Status</label>
+                                <select name="status" id="status" class="form-control">
+                                    <option value="ALL">ALL</option>
+                                    <option value="BELUM_DIBAYAR">Belum Dibayar</option>
+                                    <option value="SEDANG_DIPROSES">Sedang Diproses</option>
+                                    <option value="SUDAH_DIKIRIM">Sudah Dikirim</option>
+                                    <option value="SELESAI">Sudah Sampai</option>
+                                </select>
                             </div>
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="status">Aksi</label><br>
-                                    <button type="button" class="btn btn-primary" id="btn-filter" style="width: 100%;">Terapkan</button>
-                                </div>
+                                <label for="status">Aksi</label><br>
+                                <button type="button" class="btn btn-primary" id="btn-filter" style="width: 100%;">Terapkan</button>
                             </div>
                         </div>
                     </div>

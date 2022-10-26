@@ -5,16 +5,16 @@ namespace App\Controllers;
 class Umkm extends BaseController
 {
     public function __construct()
-	{
-		$this->db = \Config\Database::connect();
-		$this->db = db_connect();
-		helper(['url', 'form', 'array']);
-	}
+    {
+        $this->db = \Config\Database::connect();
+        $this->db = db_connect();
+        helper(['url', 'form', 'array']);
+    }
 
     public function dashboard()
     {
         //Profil
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $data['title'] = 'UMKM | Dashboard';
@@ -23,8 +23,9 @@ class Umkm extends BaseController
         echo view('template/adminlte', $data);
     }
 
-    public function profil(){
-        if(session()->get('role') != 'UMKM'){
+    public function profil()
+    {
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Profil';
@@ -36,7 +37,8 @@ class Umkm extends BaseController
         echo view('template/adminlte', $data);
     }
 
-    public function edit_profil(){
+    public function edit_profil()
+    {
         $id = $this->request->getPost('id');
         $foto = $this->request->getFile('foto');
         $data['nama'] = $this->request->getPost('nama');
@@ -64,17 +66,17 @@ class Umkm extends BaseController
         $data['edit_date'] = date('Y-m-d H:i:s');
 
         $result = $this->server_side->updateRows($id, $data, 'tbl_pengguna');
-        if($result){
+        if ($result) {
             $r['result'] = true;
-        }else{
+        } else {
             $r['result'] = false;
         }
 
         return json_encode($r);
-        
     }
 
-    public function edit_umkm(){
+    public function edit_umkm()
+    {
         $id = $this->request->getPost('id_umkm');
         $foto = $this->request->getFile('foto_umkm');
         $data['nama'] = $this->request->getPost('nama_umkm');
@@ -103,109 +105,107 @@ class Umkm extends BaseController
         $data['edit_date'] = date('Y-m-d H:i:s');
 
         $result = $this->server_side->updateRows($id, $data, 'tbl_umkm');
-        if($result){
+        if ($result) {
             $r['result'] = true;
-        }else{
+        } else {
             $r['result'] = false;
         }
 
         return json_encode($r);
-        
     }
 
     public function transaksi()
     {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
         $data['title'] = 'Transaksi';
-        $data['js'] = array("umkm-transaksi.js?r=".uniqid());
-		$data['main_content']   = 'umkm/transaksi'; 
-		echo view('template/adminlte', $data);
+        $data['js'] = array("umkm-transaksi.js?r=" . uniqid());
+        $data['main_content']   = 'umkm/transaksi';
+        echo view('template/adminlte', $data);
+    }
+
+    public function transaksi_detail($kode_transaksi)
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Pesanan Saya';
+        $data['js'] = array("umkm-transaksi-detail.js?r=" . uniqid());
+        $data['transaksi'] = $this->server_side->transaksi_in_kode_detail($kode_transaksi);
+        $data['main_content']   = 'umkm/transaksi_detail';
+        echo view('template/adminlte', $data);
     }
 
     public function transaksi_()
     {
-        $list = $this->laporan->laporan_transaksi();
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+
+        if ($this->request->getPost('tgl_transaksi') <> "") {
+            $start_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[0];
+            $end_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[1];
+        } else {
+            $start_date = "";
+            $end_date = "";
+        }
+
+        $status = "SUDAH_DIBAYAR";
+
+        if ($this->request->getPost('tgl_transaksi') <> "") {
+            $start_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[0];
+            $end_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[1];
+        } else {
+            $start_date = "";
+            $end_date = "";
+        }
+
+        if ($this->request->getPost('status') == 'ALL') {
+            $status = "";
+        } else {
+            $status = $this->request->getPost('status');
+        }
+
+        $list = $this->transaksi->limitRowstTransaksiUMKM($status, $start_date, $end_date);
+
         $data = array();
         $no = $this->request->getPost('start');
         foreach ($list as $field) {
             $no++;
             $row = array();
-            $row['tanggal_pemesanan'] = $field->create_date;
-            $row['nama_pemesan'] = $field->nama;
-           
-            if($field->status == 'SELESAI'){
-				$bg = 'bg-success ';
-			}else if($field->status == 'SUDAH'){
-				$bg = 'bg-primary ';
-			}else if($field->status == 'SEDANG'){
-				$bg = 'bg-warning ';
-			}else if($field->status == 'BELUM'){
-				$bg = 'bg-danger ';
-			}
 
+            $row['tanggal_transaksi'] = $field->create_date;
             $row['kode_transaksi'] = $field->kode_transaksi;
-			$row['status'] = '<span class="badge '.$bg.'">'.$field->status.' DIPROSES</span>';
-            $row['status_pembayaran'] = $field->status_bayar." BAYAR";
-            if($field->bukti_url != null){
-                $link = "<a href='".$field->bukti_url."' target='_blank'>Bukti transaksi</a>";
-            }else{
-                $link = "Tidak ada";
-            }
-            $row['bukti'] = $link;
-            $row['kurir'] = $field->kurir;
-            $row['service'] = $field->service;
-            $row['tagihan'] = $field->total_tagihan;
-            $row['nama_penerima'] = $field->nama_penerima;
-            $row['email_penerima'] = $field->email_penerima;
-            $row['alamat_penerima'] = $field->alamat_penerima;
-            $row['nohp_penerima'] = $field->nohp_penerima;
-            $row['ket_penerima'] = $field->ket_penerima;
-            $row['ongkir'] = $field->ongkir;
+            $row['penerima'] = $field->nama;
+            $row['total_tagihan'] = 'Rp ' . number_format($field->jumlah + $field->ongkir, 0, ',', '.');
 
-            if(count($this->laporan->detail_transaksi($field->id_transaksi)) > 0){
-                $det = "<tr><td colspan='2'><h5>Detail Tagihan :</h5>
-                <table class='table table-bordered table-striped' style='width:100%'>
-                <thead>
-                  <th><b>Barang</b></th>
-                  <th><b>qty</b></th>
-                  <th><b>Berat</b></th>
-                  <th><b>Harga</b></th>
-                  <th><b>Sub Total</b></th>
-               </thead><tbody>";
-                $total = 0;
-                
-                foreach($this->laporan->detail_transaksi($field->id_transaksi) as $d){
-
-                    $det.="<tr>
-                        <td>".$d->nama."</td>
-                        <td>".$d->qty." </td>
-                        <td>".$d->weight." /Gram </td>
-                        <td>".number_format($d->harga,0,',','.')." </td>
-                        <td>".number_format($d->subtotal,0,',','.')." </td>
-                    </tr>";
-                    $total += $d->subtotal;
-                }
-                $det .= "<tr>
-                    <td colspan='4' align='right'><b>Total</b></td>
-                    <td><b>".number_format($total,0,',','.')."</b></td>
-                </tr>";
-                $det .= "</tbody></table></td></tr>";
-            }else{
-                $det = "";
+            if ($field->status == 'SEDANG_DIPROSES') {
+                $row['status'] = '
+                <div class="d-flex justify-content-center">
+                    <span class="badge badge-warning">Perlu Disiapkan</span>
+                    <div class="align-self-center ml-2 update-status" data-id_transaksi="' . $field->id . '" role="button"><i class="fas fa-edit"></i></div>
+                </div>
+                ';
+            } else if ($field->status == 'SEDANG_DIKIRIM') {
+                $row['status'] = '<span class="badge badge-primary">Sudah Dikirim</span>';
+            } else if ($field->status == 'SELESAI') {
+                $row['status'] = '<span class="badge badge-success">Selesai</span>';
+            } else {
+                $row['status'] = '<span class="badge badge-danger">Batal</span>';
             }
 
-
-            $row['act'] = "";
-            $row['det'] = $det;
-            $data[] = $row; 
+            $row['detail'] = '
+            <div class="d-flex justify-content-center">
+                <a href="' . base_url('umkm/transaksi/' . $field->kode_transaksi) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
+            </div>';
+            $data[] = $row;
         }
-
-        $recordsTotal = $this->laporan->count_all_transaksi();
-        $recordsFiltered = $this->laporan->count_filtered_transaksi();
 
         $output = array(
             "draw" => $this->request->getPost('draw'),
-            "recordsTotal" => $recordsTotal,
-            "recordsFiltered" => $recordsFiltered,
+            "recordsTotal" => $this->transaksi->countFilteredTransaksi($status, $start_date, $end_date),
+            "recordsFiltered" => $this->transaksi->countFilteredTransaksi($status, $start_date, $end_date),
             "data" => $data,
         );
         //output dalam format JSON
@@ -214,21 +214,22 @@ class Umkm extends BaseController
 
     public function produk()
     {
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
-        
+
         // echo session()->get('id_umkm'); die;
         $data['title'] = 'Produk';
-        $data['js'] = array("umkm-produk.js?r=".uniqid());
+        $data['js'] = array("umkm-produk.js?r=" . uniqid());
         $data['kategori'] = $this->server_side->getKategoriProdukById(session()->get('id_umkm'));
-		// var_dump($data['kategori']); die;
-        $data['main_content']   = 'umkm/produk'; 
-		echo view('template/adminlte', $data);
+        // var_dump($data['kategori']); die;
+        $data['main_content']   = 'umkm/produk';
+        echo view('template/adminlte', $data);
     }
 
-    public function produk_(){
-        if(session()->get('role') != 'UMKM'){
+    public function produk_()
+    {
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $cek = session()->get('id_umkm');
@@ -256,9 +257,9 @@ class Umkm extends BaseController
             $row['nama'] = $field->nama;
             $row['harga'] = number_format($field->harga);
             $row['kategori'] = $field->nama_kategori;
-            $row['qty'] = $field->qty." ".$field->satuan;
+            $row['qty'] = $field->qty . " " . $field->satuan;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-harga="' . $field->harga . '" data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="'. $field->qty .'" data-qty_min="'. $field->qty_min .'" data-satuan="'. $field->satuan .'" data-status="'. $field->status .'" data-foto="'. $field->foto .'" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-harga="' . $field->harga . '" data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="' . $field->qty . '" data-qty_min="' . $field->qty_min . '" data-satuan="' . $field->satuan . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
             </div>';
             $data[] = $row;
@@ -272,12 +273,11 @@ class Umkm extends BaseController
         );
         //output dalam format JSON
         echo json_encode($output);
-
     }
 
     public function create_produk()
     {
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $foto = $this->request->getFile('foto');
@@ -328,7 +328,7 @@ class Umkm extends BaseController
 
     public function update_produk()
     {
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $foto = $this->request->getFile('foto');
@@ -379,7 +379,7 @@ class Umkm extends BaseController
 
     public function delete_produk()
     {
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $table = 'tbl_produk_umkm';
@@ -398,18 +398,18 @@ class Umkm extends BaseController
 
     public function kategori_produk()
     {
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Kategori Produk';
-        $data['js'] = array("umkm-kategori-produk.js?r=".uniqid());
-		$data['main_content']   = 'umkm/kategori-produk'; 
-		echo view('template/adminlte', $data);
+        $data['js'] = array("umkm-kategori-produk.js?r=" . uniqid());
+        $data['main_content']   = 'umkm/kategori-produk';
+        echo view('template/adminlte', $data);
     }
 
     public function kategori_produk_()
     {
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $cek = session()->get('id_umkm');
@@ -452,7 +452,7 @@ class Umkm extends BaseController
 
     public function create_kategori()
     {
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $id_umkm = session()->get('id_umkm');
@@ -479,7 +479,7 @@ class Umkm extends BaseController
 
     public function update_kategori()
     {
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
@@ -507,7 +507,7 @@ class Umkm extends BaseController
 
     public function delete_kategori()
     {
-        if(session()->get('role') != 'UMKM'){
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $table = 'tbl_kategori_produk';
@@ -524,18 +524,20 @@ class Umkm extends BaseController
         echo json_encode($r);
     }
 
-    public function kontrak_perjanjian(){
-        if(session()->get('role') != 'UMKM'){
+    public function kontrak_perjanjian()
+    {
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Kontrak Perjanjian';
-        $data['js'] = array("umkm-kontrak-perjanjian.js?r=".uniqid());
-		$data['main_content']  = 'umkm/kontrak-perjanjian'; 
-		echo view('template/adminlte', $data);
+        $data['js'] = array("umkm-kontrak-perjanjian.js?r=" . uniqid());
+        $data['main_content']  = 'umkm/kontrak-perjanjian';
+        echo view('template/adminlte', $data);
     }
 
-    public function kontrak_perjanjian_(){
-        if(session()->get('role') != 'UMKM'){
+    public function kontrak_perjanjian_()
+    {
+        if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $id = session()->get('id');
@@ -563,7 +565,7 @@ class Umkm extends BaseController
             $row['no'] = $no;
             $row['nama'] = $field->nama_pengguna;
             $row['umkm'] = $field->nama_umkm;
-            $row['file'] = '<a href="'.$field->file_kerjasama.'" target="blank_">'.$field->file_kerjasama.'</a>';
+            $row['file'] = '<a href="' . $field->file_kerjasama . '" target="blank_">' . $field->file_kerjasama . '</a>';
             $row['status'] = ($field->status == 'ACTIVE') ? $field->status : $field->status;
             $data[] = $row;
         }
