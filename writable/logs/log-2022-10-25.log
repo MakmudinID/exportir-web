@@ -654,3 +654,85 @@ in APPPATH\Views\reseller\transaksi_detail.php on line 72.
 12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
 13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
 14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-25 21:20:12 --> Error connecting to the database: No connection could be made because the target machine actively refused it
+CRITICAL - 2022-10-25 21:20:12 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 416.
+ 1 SYSTEMPATH\Database\BaseConnection.php(586): CodeIgniter\Database\BaseConnection->initialize()
+ 2 APPPATH\Models\ServerSideModel.php(223): CodeIgniter\Database\BaseConnection->query('SELECT tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
+        FROM tbl_produk_umkm 
+        join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
+        join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
+        join tbl_city on tbl_city.city_id = tbl_umkm.city_id
+        where tbl_produk_umkm.status = \'ACTIVE\' 
+        LIMIT 9')
+ 3 APPPATH\Controllers\Frontend.php(66): App\Models\ServerSideModel->getProdukRand()
+ 4 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Frontend->index()
+ 5 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Frontend))
+ 6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-25 21:32:28 --> Undefined property: stdClass::$total_tagihan
+in APPPATH\Views\reseller\transaksi_detail.php on line 13.
+ 1 APPPATH\Views\reseller\transaksi_detail.php(13): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$total_tagihan', 'APPPATH\\Views\\reseller\\transaksi_detail.php', 13)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\reseller\\transaksi_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('reseller/transaksi_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(104): view('reseller/transaksi_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Reseller.php(126): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->transaksi_detail('INV221025-K07R2V')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-25 21:47:14 --> Attempt to read property "kode_bayar" on null
+in APPPATH\Views\reseller\transaksi_detail.php on line 13.
+ 1 APPPATH\Views\reseller\transaksi_detail.php(13): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "kode_bayar" on null', 'APPPATH\\Views\\reseller\\transaksi_detail.php', 13)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\reseller\\transaksi_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('reseller/transaksi_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(104): view('reseller/transaksi_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Reseller.php(126): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->transaksi_detail('BELUM_DIBAYAR')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-25 21:51:13 --> Undefined variable $field
+in APPPATH\Views\reseller\transaksi_detail.php on line 73.
+ 1 APPPATH\Views\reseller\transaksi_detail.php(73): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $field', 'APPPATH\\Views\\reseller\\transaksi_detail.php', 73)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\reseller\\transaksi_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('reseller/transaksi_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(104): view('reseller/transaksi_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Reseller.php(126): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->transaksi_detail('INV221025-K07R2V')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-25 21:51:23 --> Undefined variable $field
+in APPPATH\Views\reseller\transaksi_detail.php on line 77.
+ 1 APPPATH\Views\reseller\transaksi_detail.php(77): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $field', 'APPPATH\\Views\\reseller\\transaksi_detail.php', 77)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\reseller\\transaksi_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('reseller/transaksi_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(104): view('reseller/transaksi_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Reseller.php(126): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->transaksi_detail('INV221025-K07R2V')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

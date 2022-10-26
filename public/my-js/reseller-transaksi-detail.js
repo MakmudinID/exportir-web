@@ -58,7 +58,6 @@ jQuery(document).ready(function() {
     });
 
     $(document).on('click', '.unggah-bukti-bayar', function() {
-        alert();
         $('[name="id_pembayaran"]').val($(this).data('id_pembayaran'));
         $('#modal-default').modal('show');
     });

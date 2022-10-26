@@ -55,9 +55,9 @@ $this->server_side = new ServerSideModel(); ?>
                     </div>
                     <div class="col-md-6">
                         <div class="row">
-                            <label class="col-sm-4">Status transaksi</label>
+                            <label class="col-sm-4">Total Tagihan</label>
                             <div class="col-sm-8">
-                                <?= $pembayaran->nama; ?>
+                                Rp <?= number_format($pembayaran->total_tagihan, 0, ',', '.') ?>
                             </div>
                         </div>
                         <div class="row">
@@ -69,13 +69,28 @@ $this->server_side = new ServerSideModel(); ?>
                         <div class="row">
                             <label class="col-sm-4">Status Pembayaran</label>
                             <div class="col-sm-8">
-                                <?= $pembayaran->status_bayar; ?>
+                                <?php
+                                if ($pembayaran->status_bayar == 'BELUM_DIBAYAR') {
+                                    $status = '
+                                <div class="d-flex">
+                                    <div class="badge badge-danger">Belum Dibayar</div>
+                                    <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="' . $pembayaran->id . '" role="button"><i class="fas fa-upload text-danger"></i></div>
+                                </div>';
+                                } else if ($pembayaran->status_bayar == 'MENUNGGU_KONFIRMASI') {
+                                    $status = '<span class="badge badge-warning">Menunggu Konfirmasi</span>';
+                                } else if ($pembayaran->status_bayar == 'SUDAH_DIBAYAR') {
+                                    $status = '<span class="badge badge-success">Lunas</span>';
+                                } else {
+                                    $status = '<span class="badge badge-danger">Batal</span>';
+                                }
+                                echo $status;
+                                ?>
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-sm-4">Bukti Pembayaran</label>
                             <div class="col-sm-8">
-                                <?= $pembayaran->bukti_url; ?>
+                                <?= ($pembayaran->bukti_url != '') ? '<a href="' . $pembayaran->bukti_url . '" target="_blank">Lihat <i class="fas fa-eye"></i></a>' : '-' ?>
                             </div>
                         </div>
                     </div>
@@ -87,44 +102,65 @@ $this->server_side = new ServerSideModel(); ?>
 
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="card card-success card-outline">
+                <div class="card card-warning card-outline">
+                    <div class="card-header text-center">
+                        <b>DAFTAR PESANAN</b>
+                    </div>
                     <div class="card-body">
                         <?php foreach ($transaksi as $t) : ?>
-                            <p><b>Produk dari UMKM: <a href="<?= base_url('profil-umkm/' . $t->slug) ?>"><?= $t->nama_toko; ?></a></b></p>
+                            <div class="d-flex mb-2">
+                                <div class="align-self-center"><b>Produk dari UMKM: <a href="<?= base_url('profil-umkm/' . $t->slug) ?>"><?= $t->nama_toko; ?></a></b></div>
+                                <div class="ml-auto align-self-center">
+                                    <h5><span class="badge badge-primary"><?= str_replace("_", " ", $t->status); ?></span></h5>
+                                </div>
+                            </div>
                             <table class="table table-sm" width="100%">
-                                <?php $total = 0;
-                                foreach ($this->server_side->transaksi_detail($t->id) as $td) : ?>
+                                <thead>
                                     <tr>
-                                        <td width="10%">
-                                            <img src="<?= $td->foto ?>" alt="" class="img-fluid">
-                                        </td>
-                                        <td style="vertical-align:middle">
-                                            <?= $td->nama ?>
-                                        </td>
-                                        <td style="vertical-align:middle" class="text-center"><?= $td->qty . ' ' . $td->satuan ?></td>
-                                        <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($td->subtotal, 0, ',', '.') ?></b></td>
+                                        <th class="text-center" colspan="2">
+                                            PRODUK
+                                        </th>
+                                        <th class="text-center">QTY</th>
+                                        <th class="text-center">HARGA</th>
                                     </tr>
-                                <?php $total += $td->subtotal;
-                                endforeach; ?>
-                                <tr>
-                                    <td colspan="3" style="vertical-align:middle" class="text-right"><b>Sub Total</b></td>
-                                    <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($total, 0, ',', '.') ?></b></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" style="vertical-align:middle" class="text-right"><b>Kurir (<?= strtoupper($t->kurir) ?>)</b></td>
-                                    <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($t->ongkir, 0, ',', '.') ?></b></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" style="vertical-align:middle" class="text-right"><b>Total</b></td>
-                                    <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($total + $t->ongkir, 0, ',', '.') ?></b></td>
-                                </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $total = 0;
+                                    foreach ($this->server_side->transaksi_detail($t->id) as $td) : ?>
+                                        <tr>
+                                            <td width="8%" style="vertical-align:middle">
+                                                <img src="<?= $td->foto ?>" alt="" class="img-fluid">
+                                            </td>
+                                            <td style="vertical-align:middle">
+                                                <?= $td->nama ?>
+                                            </td>
+                                            <td style="vertical-align:middle" class="text-center" width="8%"><?= $td->qty . ' ' . $td->satuan ?></td>
+                                            <td style="vertical-align:middle" class="text-right" width="20%">Rp <?= number_format($td->subtotal, 0, ',', '.') ?></td>
+                                        </tr>
+                                    <?php $total += $td->subtotal;
+                                    endforeach; ?>
+                                    <tr>
+                                        <td colspan="3" style="vertical-align:middle" class="text-right"><b>Sub Total</b></td>
+                                        <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($total, 0, ',', '.') ?></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" style="vertical-align:middle" class="text-right"><b>Kurir (<?= strtoupper($t->kurir) ?>)</b></td>
+                                        <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($t->ongkir, 0, ',', '.') ?></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" style="vertical-align:middle" class="text-right"><b>Total</b></td>
+                                        <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($total + $t->ongkir, 0, ',', '.') ?></b></td>
+                                    </tr>
+                                </tbody>
                             </table>
 
                             <div class="row">
                                 <div class="col-md-12 align-self-center">
-                                    <p><b>Catatan Pesanan:</b> <?= ($t->catatan_beli != '') ? $t->catatan_beli : '-' ?></p>
+                                    <b>Catatan Pesanan:</b> <?= ($t->catatan_beli != '') ? $t->catatan_beli : '-' ?>
                                 </div>
                             </div>
+
+                            <hr style="border-top: 3px solid #ffc107;">
                         <?php endforeach; ?>
                     </div>
                 </div>

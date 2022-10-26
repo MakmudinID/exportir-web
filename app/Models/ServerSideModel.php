@@ -54,7 +54,7 @@ class ServerSideModel extends Model
     }
 
     public function pembayaran($kode_bayar){
-        $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.bukti_url, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+        $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.bukti_url, tbl_transaksi_pembayaran.total_tagihan, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
