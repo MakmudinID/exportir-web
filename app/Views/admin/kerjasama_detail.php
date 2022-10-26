@@ -28,7 +28,7 @@ $this->server_side = new ServerSideModel(); ?>
             <div class="col-md-6">
                 <div class="card card-primary card-outline">
                     <div class="card-header text-center">
-                        <H4><b>PIHAK PERTAMA</b></H4>
+                        <h5><b>PIHAK PERTAMA</b></h5>
                     </div>
                     <div class="card-body box-profile">
                         <div class="form-group row">
@@ -67,7 +67,7 @@ $this->server_side = new ServerSideModel(); ?>
             <div class="col-md-6">
                 <div class="card card-primary card-outline">
                     <div class="card-header text-center">
-                        <H4><b>PIHAK KEDUA</b></H4>
+                        <h5><b>PIHAK KEDUA</b></h5>
                     </div>
                     <div class="card-body box-profile">
                         <div class="form-group row">
@@ -111,7 +111,7 @@ $this->server_side = new ServerSideModel(); ?>
             <div class="col-md-12">
                 <div class="card card-success card-outline">
                     <div class="card-header text-center">
-                        <H4><b>DAFTAR PRODUK</b></H4>
+                        <h5><b>DAFTAR PRODUK</b></h5>
                     </div>
                     <div class="card-body">
                         <?php
@@ -218,7 +218,7 @@ $this->server_side = new ServerSideModel(); ?>
         <div class="modal-content">
             <form method="post" id="form-bukti">
                 <div class="modal-header">
-                    <h4 class="modal-title">Unggah Bukti Bayar</h4>
+                    <h5 class="modal-title">Unggah Bukti Bayar</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

@@ -271,31 +271,8 @@ class Frontend extends BaseController
                 die;
             } else {
                 if ($i == 1) {
-                    if ($i == 1) {
-                        $tbl_transaksi['create_date'] = $datetime_now;
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_now . ' + 3 days'));
-                    } else if ($i == 2) {
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 1 month'));
-                        $date_ = date('Y-m-d', strtotime($date_now . ' + 1 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_. ' + 3 days'));
-                    } else if ($i == 3) {
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 2 month'));
-                        $date_ = date('Y-m-d', strtotime($date_now . ' + 2 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
-                    } else if ($i == 4) {
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 3 month'));
-                        $date_ = date('Y-m-d', strtotime($date_now . ' + 3 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
-                    } else if ($i == 5) {
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 4 month'));
-                        $date_ = date('Y-m-d', strtotime($date_now . ' + 4 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
-                    } else if ($i == 6) {
-                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 5 month'));
-                        $date_ = date('Y-m-d', strtotime($date_now . ' + 5 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
-                    }
-
+                    $tbl_transaksi['create_date'] = $datetime_now;
+                    $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_now . ' + 3 days'));
                     $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
                     $tbl_transaksi['status'] = 'BELUM_DIBAYAR';
                     $tbl_transaksi['kerjasama'] = 'Y';
@@ -340,7 +317,30 @@ class Frontend extends BaseController
                     $tbl_transaksi['kurir'] = $data->kurir;
                     $tbl_transaksi['service'] = $data->service;
                     $tbl_transaksi['catatan_beli'] = $data->catatan_beli;
-                    $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 1 month'));
+
+                    if ($i == 2) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($data->create_date . ' + 1 month'));
+                        $date_ = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 1 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_. ' + 3 days'));
+                    } else if ($i == 3) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($data->create_date . ' + 2 month'));
+                        $date_ = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 2 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
+                    } else if ($i == 4) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($data->create_date . ' + 3 month'));
+                        $date_ = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 3 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
+                    } else if ($i == 5) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($data->create_date . ' + 4 month'));
+                        $date_ = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 4 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
+                    } else if ($i == 6) {
+                        $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($data->create_date . ' + 5 month'));
+                        $date_ = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 5 month'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
+                    }
+
+                    // $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 1 month'));
                     $id_transaksi = $this->server_side->createRowsReturnID($tbl_transaksi, 'tbl_transaksi');
 
                     $data_detail = $this->db->table('tbl_transaksi_detail')->getWhere(['id_transaksi' => $id_transaksi_])->getResult();

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 class Reseller extends BaseController
 {
     public function __construct()
@@ -48,10 +50,10 @@ class Reseller extends BaseController
             $end_date = "";
         }
 
-        if($this->request->getPost('status') == 'ALL'){
-            $status="";
-        }else{
-            $status=$this->request->getPost('status');
+        if ($this->request->getPost('status') == 'ALL') {
+            $status = "";
+        } else {
+            $status = $this->request->getPost('status');
         }
 
         if ($this->request->getPost('tgl_transaksi') <> "") {
@@ -62,10 +64,10 @@ class Reseller extends BaseController
             $end_date = "";
         }
 
-        if($this->request->getPost('status') == 'ALL'){
-            $status="";
-        }else{
-            $status=$this->request->getPost('status');
+        if ($this->request->getPost('status') == 'ALL') {
+            $status = "";
+        } else {
+            $status = $this->request->getPost('status');
         }
 
         $list = $this->transaksi->limitRowstTransaksi($status, $start_date, $end_date);
@@ -75,30 +77,30 @@ class Reseller extends BaseController
         foreach ($list as $field) {
             $no++;
             $row = array();
-            
+
             $row['tanggal_transaksi'] = $field->create_date;
             $row['batas_bayar'] = $field->batas_bayar;
 
             $row['kode_bayar'] = $field->kode_bayar;
-            $row['total_tagihan'] = 'Rp '.number_format($field->total_tagihan, 0,',','.');
+            $row['total_tagihan'] = 'Rp ' . number_format($field->total_tagihan, 0, ',', '.');
 
-            if($field->status == 'BELUM_DIBAYAR'){
+            if ($field->status == 'BELUM_DIBAYAR') {
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
                     <div class="badge badge-danger">Belum Dibayar</div>
-                    <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="'.$field->id.'" role="button"><i class="fas fa-upload text-danger"></i></div>
+                    <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="' . $field->id . '" role="button"><i class="fas fa-upload text-danger"></i></div>
                 </div>';
-            }else if($field->status == 'MENUNGGU_KONFIRMASI'){
+            } else if ($field->status == 'MENUNGGU_KONFIRMASI') {
                 $row['status'] = '<span class="badge badge-warning">Menunggu Konfirmasi</span>';
-            }else if($field->status == 'SUDAH_DIBAYAR'){
+            } else if ($field->status == 'SUDAH_DIBAYAR') {
                 $row['status'] = '<span class="badge badge-success">Lunas</span>';
-            }else{
+            } else {
                 $row['status'] = '<span class="badge badge-danger">Batal</span>';
             }
 
             $row['detail'] = '
             <div class="d-flex justify-content-center">
-                <a href="'.base_url('reseller/transaksi/'.$field->kode_bayar).'" class="p-1"><i class="fas fa-search-plus"></i></a>
+                <a href="' . base_url('reseller/transaksi/' . $field->kode_bayar) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
             </div>';
             $data[] = $row;
         }
@@ -144,6 +146,11 @@ class Reseller extends BaseController
         }
         $data['title'] = 'Kerjasama Saya';
         $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
+
+        if($data['kerjasama']->status == 'BELUM_UPLOAD'){
+            return redirect()->route('reseller/kerjasama');
+        }
+
         $data['js'] = array("reseller-kerjasama-detail.js?r=" . uniqid());
         $data['main_content']   = 'reseller/kerjasama_detail';
         echo view('template/adminlte', $data);
@@ -152,29 +159,29 @@ class Reseller extends BaseController
     public function kerjasama_pdf($no_kerjasama)
     {
         $mpdf = new \Mpdf\Mpdf();
-        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - '.$no_kerjasama);
-        
+        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - ' . $no_kerjasama);
+
         $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
-        
+
         $html = view('reseller/kerjasama_pdf', $data);
 
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('Dokumen Perjanjian Kerjasama - '.$no_kerjasama.'.pdf','I'); // opens in browser
+        $mpdf->Output('Dokumen Perjanjian Kerjasama - ' . $no_kerjasama . '.pdf', 'I'); // opens in browser
     }
 
     public function kerjasama_pdf_download($no_kerjasama)
     {
         $mpdf = new \Mpdf\Mpdf();
-        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - '.$no_kerjasama);
-        
+        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - ' . $no_kerjasama);
+
         $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
-        
+
         $html = view('reseller/kerjasama_pdf', $data);
 
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('Dokumen Perjanjian Kerjasama - '.$no_kerjasama.'.pdf','D'); // opens in browser
+        $mpdf->Output('Dokumen Perjanjian Kerjasama - ' . $no_kerjasama . '.pdf', 'D'); // opens in browser
     }
 
     public function update_bayar()
@@ -273,10 +280,10 @@ class Reseller extends BaseController
             $end_date = "";
         }
 
-        if($this->request->getPost('status') == 'ALL'){
-            $status="";
-        }else{
-            $status=$this->request->getPost('status');
+        if ($this->request->getPost('status') == 'ALL') {
+            $status = "";
+        } else {
+            $status = $this->request->getPost('status');
         }
 
         $list = $this->transaksi->limitRowsKerjasama($status, $start_date, $end_date);
@@ -291,39 +298,47 @@ class Reseller extends BaseController
             $row['umkm'] = $field->nama_umkm;
             $progress = $this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama);
 
-            $row['progress'] ='
+            $row['progress'] = '
                 <div class="progress progress-sm active">
-                  <div class="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuenow="'.$progress.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$progress.'%">
-                    <span class="sr-only">'.$progress.'% Complete</span>
+                  <div class="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuenow="' . $progress . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $progress . '%">
+                    <span class="sr-only">' . $progress . '% Complete</span>
                   </div>
                 </div>
-                <div class="align-self-center">'.$progress.'%</div>
+                <div class="align-self-center">' . $progress . '%</div>
             ';
-            $row['kontrak'] = $field->lama_kerjasama.' Bulan';
+            $row['kontrak'] = $field->lama_kerjasama . ' Bulan';
 
-            if($field->status == 'BELUM_UPLOAD'){
-                $url = base_url('reseller/pdf/'.$field->no_kerjasama);
+            if ($field->status == 'BELUM_UPLOAD') {
+                $url = base_url('reseller/pdf/' . $field->no_kerjasama);
 
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
                     <div class="badge badge-danger">Belum Unggah Dokumen</div>
-                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="'.$field->no_kerjasama.'" data-url="'.base_url('reseller/pdf_download/'.$field->no_kerjasama).'" role="button"><i class="fas fa-upload text-danger"></i></div>
+                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="' . $field->no_kerjasama . '" data-url="' . base_url('reseller/pdf_download/' . $field->no_kerjasama) . '" role="button"><i class="fas fa-upload text-danger"></i></div>
                 </div>';
-            }else if($field->status == 'SUDAH_UPLOAD'){
+                $row['detail'] = '
+                <div class="d-flex justify-content-center">
+                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
+                </div>';
+            } else if ($field->status == 'SUDAH_UPLOAD') {
                 $url = $field->file_kerjasama;
 
                 $row['status'] = '<span class="badge badge-warning">Menunggu Konfirmasi</span>';
-            }else{
+                $row['detail'] = '
+                <div class="d-flex justify-content-center">
+                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
+                </div>';
+            } else {
                 $url = $field->file_kerjasama;
 
                 $row['status'] = '<span class="badge badge-success">Disetujui</span>';
+                $row['detail'] = '
+                <div class="d-flex justify-content-center">
+                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
+                    <a href="' . base_url('reseller/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
+                </div>';
             }
 
-            $row['detail'] = '
-            <div class="d-flex justify-content-center">
-                <a href="'.$url.'" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
-                <a href="'.base_url('reseller/kerjasama/'.$field->no_kerjasama).'" class="p-1"><i class="fas fa-search-plus"></i></a>
-            </div>';
             $data[] = $row;
         }
 
@@ -385,10 +400,10 @@ class Reseller extends BaseController
             $no++;
             $row = array();
             $row['no'] = $no;
-            $row['judul'] = $field->judul.'<br><small>'.$field->create_date.'</small>';
+            $row['judul'] = $field->judul . '<br><small>' . $field->create_date . '</small>';
             $row['nama_kategori'] = $field->nama_kategori;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <a class="text-info align-items-center text-decoration-none detail mr-1" href="' .base_url('/reseller/detail-berita/'.$field->slug) . '" role="button"><i class="fa fa-eye mr-1"></i> Detail</a>
+            <a class="text-info align-items-center text-decoration-none detail mr-1" href="' . base_url('/reseller/detail-berita/' . $field->slug) . '" role="button"><i class="fa fa-eye mr-1"></i> Detail</a>
             </div>';
             $data[] = $row;
         }
@@ -431,26 +446,26 @@ class Reseller extends BaseController
         $data['nama'] =  htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['tgl_lahir'] = htmlspecialchars($this->request->getPost('tgl_lahir'), ENT_QUOTES);
         $data['no_hp'] = htmlspecialchars($this->request->getPost('no_hp'), ENT_QUOTES);
-        
+
         $password = htmlspecialchars($this->request->getPost('password'), ENT_QUOTES);
         $re_password = htmlspecialchars($this->request->getPost('re_password'), ENT_QUOTES);
-        
-        if($password != ''){
-            if($password != $re_password){
+
+        if ($password != '') {
+            if ($password != $re_password) {
                 $r['result'] = false;
                 $r['title'] = 'Gagal!';
                 $r['icon'] = 'error';
                 $r['status'] = 'Ulangi Password tidak cocok!';
                 echo json_encode($r);
                 return;
-            }else{
+            } else {
                 $options = [
                     'cost' => 10,
                 ];
-                $data['password'] =  password_hash(htmlspecialchars($password, ENT_QUOTES), PASSWORD_BCRYPT, $options);        
+                $data['password'] =  password_hash(htmlspecialchars($password, ENT_QUOTES), PASSWORD_BCRYPT, $options);
             }
         }
-        
+
         $data['alamat'] = htmlspecialchars($this->request->getPost('alamat'), ENT_QUOTES);
         $data['id_propinsi'] = htmlspecialchars($this->request->getPost('propinsi'), ENT_QUOTES);
         $data['id_kota'] = htmlspecialchars($this->request->getPost('kota'), ENT_QUOTES);
@@ -465,7 +480,7 @@ class Reseller extends BaseController
             $r['title'] = 'Maaf Gagal Menyimpan!';
             $r['icon'] = 'error';
             $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
-        }else{
+        } else {
             $r['result'] = true;
             $r['title'] = 'Sukses!';
             $r['icon'] = 'success';
@@ -474,5 +489,4 @@ class Reseller extends BaseController
         echo json_encode($r);
         return;
     }
-
 }
