@@ -7,13 +7,16 @@ jQuery(document).ready(function() {
         errorClass: "is-invalid",
         // validClass: "is-valid",
         rules: {
+            no_resi: {
+                required: true
+            },
             foto: {
                 required: true
             },
         },
         submitHandler: function(form) {
             let url;
-            url = base_url + '/reseller/update_bayar';
+            url = base_url + '/umkm/update_kirim';
 
             $.ajax({
                 url: url,
@@ -27,7 +30,7 @@ jQuery(document).ready(function() {
                     if (data.result != true) {
                         Swal.fire({
                             title: 'Gagal',
-                            html: "Gagal Unggah Dokumen",
+                            html: "Gagal Unggah Bukti Kirim",
                             icon: 'error',
                             timer: 3000,
                             showCancelButton: false,
@@ -38,7 +41,7 @@ jQuery(document).ready(function() {
                     } else {
                         Swal.fire({
                             title: 'Berhasil',
-                            html: "Bukti Berhasil Diunggah!",
+                            html: "Bukti Kirim Berhasil Diunggah!",
                             icon: 'success',
                             timer: 3000,
                             showCancelButton: false,

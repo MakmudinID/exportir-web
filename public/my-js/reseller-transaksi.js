@@ -21,6 +21,38 @@ jQuery(document).ready(function() {
         $('#modal-default').modal('show');
     });
 
+    table = $('#table').DataTable({
+        ajax: {
+            url: base_url + "/reseller/transaksi_",
+            type: "POST",
+            data: function(data) {
+                data.tgl_transaksi = $('#date_transaction').val();
+                data.status = $('#status').val();
+            }
+        },
+        lengthMenu: [10, 20, 30, 40, 50, 60, 80, 100],
+        responsive: true,
+        serverSide: true,
+        processing: true,
+        pageLength: 30,
+        order: [],
+        columns: [{
+                "data": 'tanggal_transaksi',
+            },
+            { "data": "kode_bayar" },
+            { "data": "total_tagihan" },
+            { "data": "batas_bayar" },
+            { "data": "status" },
+            { "data": "detail" },
+        ],
+        columnDefs: [{
+            targets: [-1, -2, 3],
+            orderable: false,
+            searchable: false,
+            className: "text-center"
+        }],
+    });
+
     $("#form-bukti").validate({
         errorClass: "is-invalid",
         // validClass: "is-valid",
@@ -52,7 +84,7 @@ jQuery(document).ready(function() {
                             showConfirmButton: false,
                             buttons: false,
                         });
-                        window.location.reload();
+                        table.ajax.reload();
                     } else {
                         Swal.fire({
                             title: 'Berhasil',
@@ -65,7 +97,7 @@ jQuery(document).ready(function() {
 
                         $('#modal-default').modal('hide');
                         $('body').removeClass('modal-open');
-                        window.location.reload();
+                        table.ajax.reload();
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -73,38 +105,6 @@ jQuery(document).ready(function() {
                 }
             });
         }
-    });
-
-    table = $('#table').DataTable({
-        ajax: {
-            url: base_url + "/reseller/transaksi_",
-            type: "POST",
-            data: function(data) {
-                data.tgl_transaksi = $('#date_transaction').val();
-                data.status = $('#status').val();
-            }
-        },
-        lengthMenu: [10, 20, 30, 40, 50, 60, 80, 100],
-        responsive: true,
-        serverSide: true,
-        processing: true,
-        pageLength: 30,
-        order: [],
-        columns: [{
-                "data": 'tanggal_transaksi',
-            },
-            { "data": "kode_bayar" },
-            { "data": "total_tagihan" },
-            { "data": "batas_bayar" },
-            { "data": "status" },
-            { "data": "detail" },
-        ],
-        columnDefs: [{
-            targets: [-1, -2, 3],
-            orderable: false,
-            searchable: false,
-            className: "text-center"
-        }],
     });
 
     $('#btn-filter').click(function() { //button filter event click

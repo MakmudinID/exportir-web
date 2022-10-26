@@ -527,3 +527,245 @@ in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
  8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
  9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
 10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-26 10:33:05 --> Table 'ex-web.tbl_kerjasama' doesn't exist
+CRITICAL - 2022-10-26 10:33:05 --> Table 'ex-web.tbl_kerjasama' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = \'1\'
+AND `tbl_kerjasama`.`id_pengguna` = \'9\'
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = \'1\'
+AND `tbl_kerjasama`.`id_pengguna` = \'9\'
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = \'1\'
+AND `tbl_kerjasama`.`id_pengguna` = \'9\'
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = :tbl_kerjasama.id_umkm:
+AND `tbl_kerjasama`.`id_pengguna` = :tbl_kerjasama.id_pengguna:
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(667): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Umkm.php(605): App\Models\ServerSideModel->limitRows('tbl_kerjasama', 'tbl_pengguna.nama as nama_pengguna, tbl_umkm.nama as nama_umkm, tbl_kerjasama.*', [...], [...], [...], [...], [...])
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->kontrak_perjanjian_()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-26 10:58:51 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '= 'SUDAH_DIBAYAR'  AND (  kode_transaksi like '%%' or nama like '%%'  )  ORDE...' at line 5
+CRITICAL - 2022-10-26 10:58:51 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '= 'SUDAH_DIBAYAR'  AND (  kode_transaksi like '%%' or nama like '%%'  )  ORDE...' at line 5
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SEDANG_DIPROSES\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SEDANG_DIPROSES\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SEDANG_DIPROSES\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 4 APPPATH\Models\TransaksiModel.php(133): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SEDANG_DIPROSES\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 5 APPPATH\Controllers\Umkm.php(168): App\Models\TransaksiModel->limitRowstTransaksiUMKM('SEDANG_DIPROSES', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-26 10:58:55 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '= 'SUDAH_DIBAYAR'  AND (  kode_transaksi like '%%' or nama like '%%'  )  ORDE...' at line 5
+CRITICAL - 2022-10-26 10:58:55 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '= 'SUDAH_DIBAYAR'  AND (  kode_transaksi like '%%' or nama like '%%'  )  ORDE...' at line 5
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 4 APPPATH\Models\TransaksiModel.php(133): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 5 APPPATH\Controllers\Umkm.php(168): App\Models\TransaksiModel->limitRowstTransaksiUMKM('SELESAI', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-26 10:59:07 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '= 'SUDAH_DIBAYAR'  AND (  kode_transaksi like '%%' or nama like '%%'  )  ORDE...' at line 5
+CRITICAL - 2022-10-26 10:59:07 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '= 'SUDAH_DIBAYAR'  AND (  kode_transaksi like '%%' or nama like '%%'  )  ORDE...' at line 5
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 4 APPPATH\Models\TransaksiModel.php(133): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 5 APPPATH\Controllers\Umkm.php(168): App\Models\TransaksiModel->limitRowstTransaksiUMKM('SELESAI', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-26 10:59:12 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '= 'SUDAH_DIBAYAR'  AND (  kode_transaksi like '%%' or nama like '%%'  )  ORDE...' at line 5
+CRITICAL - 2022-10-26 10:59:12 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '= 'SUDAH_DIBAYAR'  AND (  kode_transaksi like '%%' or nama like '%%'  )  ORDE...' at line 5
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 4 APPPATH\Models\TransaksiModel.php(133): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi.*
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status=\'SELESAI\'  AND tbl_transaksi_pembayaran.status == \'SUDAH_DIBAYAR\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 5 APPPATH\Controllers\Umkm.php(168): App\Models\TransaksiModel->limitRowstTransaksiUMKM('SELESAI', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-26 11:01:08 --> Table 'ex-web.tbl_kerjasama' doesn't exist
+CRITICAL - 2022-10-26 11:01:08 --> Table 'ex-web.tbl_kerjasama' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = \'1\'
+AND `tbl_kerjasama`.`id_pengguna` = \'9\'
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = \'1\'
+AND `tbl_kerjasama`.`id_pengguna` = \'9\'
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = \'1\'
+AND `tbl_kerjasama`.`id_pengguna` = \'9\'
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = :tbl_kerjasama.id_umkm:
+AND `tbl_kerjasama`.`id_pengguna` = :tbl_kerjasama.id_pengguna:
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(667): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Umkm.php(603): App\Models\ServerSideModel->limitRows('tbl_kerjasama', 'tbl_pengguna.nama as nama_pengguna, tbl_umkm.nama as nama_umkm, tbl_kerjasama.*', [...], [...], [...], [...], [...])
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->kontrak_perjanjian_()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-26 11:03:10 --> Table 'ex-web.tbl_kerjasama' doesn't exist
+CRITICAL - 2022-10-26 11:03:10 --> Table 'ex-web.tbl_kerjasama' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = \'1\'
+AND `tbl_kerjasama`.`id_pengguna` = \'9\'
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = \'1\'
+AND `tbl_kerjasama`.`id_pengguna` = \'9\'
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = \'1\'
+AND `tbl_kerjasama`.`id_pengguna` = \'9\'
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT `tbl_pengguna`.`nama` as `nama_pengguna`, `tbl_umkm`.`nama` as `nama_umkm`, `tbl_kerjasama`.*
+FROM `tbl_kerjasama`
+LEFT JOIN `tbl_pengguna` ON `tbl_pengguna`.`id` = `tbl_kerjasama`.`id_pengguna`
+LEFT JOIN `tbl_umkm` ON `tbl_umkm`.`id` = `tbl_kerjasama`.`id_umkm`
+WHERE `tbl_kerjasama`.`id_umkm` = :tbl_kerjasama.id_umkm:
+AND `tbl_kerjasama`.`id_pengguna` = :tbl_kerjasama.id_pengguna:
+ORDER BY `nama_pengguna` ASC
+ LIMIT 30', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(667): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Umkm.php(603): App\Models\ServerSideModel->limitRows('tbl_kerjasama', 'tbl_pengguna.nama as nama_pengguna, tbl_umkm.nama as nama_umkm, tbl_kerjasama.*', [...], [...], [...], [...], [...])
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->kontrak_perjanjian_()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

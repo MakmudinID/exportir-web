@@ -91,13 +91,12 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="kurir">No. Resi Kurir</label><br>
-                                <input type="text" class="form-control" name="kurir" id="kurir">
+                                <label for="no_resi">No. Resi Kurir</label><br>
+                                <input type="text" class="form-control" name="no_resi" id="no_resi">
                             </div>
                             <div class="form-group">
                                 <label for="foto">Foto Bukti Kirim</label><br>
                                 <input type="file" class="form-control" name="foto" id="foto" accept="image/*" onchange="preview_image(event)">
-                                <input type="hidden" name="foto_" id="foto_">
                                 <input type="hidden" class="form-control" name="id_transaksi" value=""></input>
                             </div>
                             <div class="form-group" style="display:none" id="row-display">
@@ -105,12 +104,6 @@
                                 <div class="mt-2">
                                     <img id="output_image" class="img-thumbnail" width="200" />
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="keterangan">Keterangan</label><br>
-                                <textarea name="keterangan" id="keterangan" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>

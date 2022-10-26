@@ -130,7 +130,7 @@ class Umkm extends BaseController
         if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
-        $data['title'] = 'Pesanan Saya';
+        $data['title'] = 'Transaksi';
         $data['js'] = array("umkm-transaksi-detail.js?r=" . uniqid());
         $data['transaksi'] = $this->server_side->transaksi_in_kode_detail($kode_transaksi);
         $data['main_content']   = 'umkm/transaksi_detail';
@@ -151,8 +151,6 @@ class Umkm extends BaseController
             $end_date = "";
         }
 
-        $status = "SUDAH_DIBAYAR";
-
         if ($this->request->getPost('tgl_transaksi') <> "") {
             $start_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[0];
             $end_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[1];
@@ -162,7 +160,7 @@ class Umkm extends BaseController
         }
 
         if ($this->request->getPost('status') == 'ALL') {
-            $status = "";
+            $status = '';
         } else {
             $status = $this->request->getPost('status');
         }
@@ -187,7 +185,7 @@ class Umkm extends BaseController
                     <div class="align-self-center ml-2 update-status" data-id_transaksi="' . $field->id . '" role="button"><i class="fas fa-edit"></i></div>
                 </div>
                 ';
-            } else if ($field->status == 'SEDANG_DIKIRIM') {
+            } else if ($field->status == 'SUDAH_DIKIRIM') {
                 $row['status'] = '<span class="badge badge-primary">Sudah Dikirim</span>';
             } else if ($field->status == 'SELESAI') {
                 $row['status'] = '<span class="badge badge-success">Selesai</span>';
@@ -472,6 +470,52 @@ class Umkm extends BaseController
             $r['title'] = 'Maaf Gagal Menyimpan!';
             $r['icon'] = 'error';
             $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
+    public function update_kirim()
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+
+        $id = $this->request->getPost('id_transaksi');
+        $no_resi = $this->request->getPost('no_resi');
+        $foto = $this->request->getFile('foto');
+
+        if ($foto->getName() != '') {
+            $foto->move('../public/assets/photo-bukti-kirim/', $foto->getName());
+            $filepath = base_url() . '/assets/photo-bukti-kirim/' . $foto->getName();
+            $path = $foto->getName();
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif' || 'JPEG') {
+                $data['bukti_url'] = $filepath;
+            } else {
+                $r['result'] = false;
+                $r['title'] = 'Gagal!';
+                $r['icon'] = 'error';
+                $r['status'] = 'Format File Tidak Diijinkan!';
+            }
+        }
+
+        $data['status'] = 'SUDAH_DIKIRIM';
+        $data['no_resi'] = $no_resi;
+        $data['tanggal_kirim'] = date('Y-m-d H:i:s');
+        $data['edit_date'] = date('Y-m-d H:i:s');
+
+        $table = 'tbl_transaksi';
+
+        $result = $this->server_side->updateRows($id, $data, $table);
+
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }else{
+            $r['result'] = true;
         }
         echo json_encode($r);
         return;

@@ -21,66 +21,13 @@ jQuery(document).ready(function() {
         $('#modal-default').modal('show');
     });
 
-    $("#form-bukti").validate({
-        errorClass: "is-invalid",
-        // validClass: "is-valid",
-        rules: {
-            foto: {
-                required: true
-            },
-        },
-        submitHandler: function(form) {
-            let url;
-            url = base_url + '/umkm/update_bayar';
-
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: new FormData(document.getElementById("form-bukti")),
-                dataType: "JSON",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if (data.result != true) {
-                        Swal.fire({
-                            title: 'Gagal',
-                            html: "Gagal Unggah Dokumen",
-                            icon: 'error',
-                            timer: 3000,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            buttons: false,
-                        });
-                        window.location.reload();
-                    } else {
-                        Swal.fire({
-                            title: 'Berhasil',
-                            html: "Bukti Berhasil Diunggah!",
-                            icon: 'success',
-                            timer: 3000,
-                            showCancelButton: false,
-                            showConfirmButton: false
-                        });
-
-                        $('#modal-default').modal('hide');
-                        $('body').removeClass('modal-open');
-                        window.location.reload();
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error adding / update data');
-                }
-            });
-        }
-    });
-
     table = $('#table').DataTable({
         ajax: {
             url: base_url + "/umkm/transaksi_",
             type: "POST",
             data: function(data) {
                 data.tgl_transaksi = $('#date_transaction').val();
+                data.status = $('#status').val();
             }
         },
         lengthMenu: [10, 20, 30, 40, 50, 60, 80, 100],
@@ -109,6 +56,63 @@ jQuery(document).ready(function() {
                 className: "text-center"
             }
         ],
+    });
+
+    $("#form-bukti").validate({
+        errorClass: "is-invalid",
+        // validClass: "is-valid",
+        rules: {
+            no_resi: {
+                required: true
+            },
+            foto: {
+                required: true
+            },
+        },
+        submitHandler: function(form) {
+            let url;
+            url = base_url + '/umkm/update_kirim';
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: new FormData(document.getElementById("form-bukti")),
+                dataType: "JSON",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (data.result != true) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            html: "Gagal Unggah Bukti Kirim",
+                            icon: 'error',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            buttons: false,
+                        });
+                        table.ajax.reload();
+                    } else {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: "Bukti Kirim Berhasil Diunggah!",
+                            icon: 'success',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false
+                        });
+
+                        $('#modal-default').modal('hide');
+                        $('body').removeClass('modal-open');
+                        table.ajax.reload();
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        }
     });
 
     $('#btn-filter').click(function() { //button filter event click

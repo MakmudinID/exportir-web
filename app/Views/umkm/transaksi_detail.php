@@ -122,8 +122,8 @@ $this->server_side = new ServerSideModel(); ?>
                                         <span class="badge badge-warning">Perlu Disiapkan</span>
                                         <div class="align-self-center ml-2 update-status" data-id_transaksi="' . $transaksi->id . '" role="button"><i class="fas fa-edit"></i></div>
                                     </div>';
-                                } else if ($transaksi->status == 'SEDANG_DIKIRIM') {
-                                    $status = '<span class="badge badge-primary">Sudah Dikirim</span>';
+                                } else if ($transaksi->status == 'SUDAH_DIKIRIM') {
+                                    $status = '<span class="badge badge-primary">No. Resi Kurir: '.$transaksi->no_resi.'</span>';
                                 } else if ($transaksi->status == 'SELESAI') {
                                     $status = '<span class="badge badge-success">Selesai</span>';
                                 } else {
@@ -199,13 +199,12 @@ $this->server_side = new ServerSideModel(); ?>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="kurir">No. Resi Kurir</label><br>
-                                <input type="text" class="form-control" name="kurir" id="kurir">
+                                <label for="no_resi">No. Resi Kurir</label><br>
+                                <input type="text" class="form-control" name="no_resi" id="no_resi">
                             </div>
                             <div class="form-group">
                                 <label for="foto">Foto Bukti Kirim</label><br>
                                 <input type="file" class="form-control" name="foto" id="foto" accept="image/*" onchange="preview_image(event)">
-                                <input type="hidden" name="foto_" id="foto_">
                                 <input type="hidden" class="form-control" name="id_transaksi" value=""></input>
                             </div>
                             <div class="form-group" style="display:none" id="row-display">
@@ -213,12 +212,6 @@ $this->server_side = new ServerSideModel(); ?>
                                 <div class="mt-2">
                                     <img id="output_image" class="img-thumbnail" width="200" />
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="keterangan">Keterangan</label><br>
-                                <textarea name="keterangan" id="keterangan" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>

@@ -153,7 +153,7 @@ class TransaksiModel extends Model
 
         if ($status != '') {
             $sql .= " AND tbl_transaksi.status='$status' ";
-            $sql .= " AND tbl_transaksi_pembayaran.status == 'SUDAH_DIBAYAR' ";
+            $sql .= " AND tbl_transaksi_pembayaran.status = 'SUDAH_DIBAYAR' ";
         }else{
             $sql .= " AND tbl_transaksi.status != 'BELUM_DIBAYAR' ";
             $sql .= " AND tbl_transaksi_pembayaran.status != 'BELUM_DIBAYAR' ";
@@ -179,9 +179,6 @@ class TransaksiModel extends Model
         } else {
             $sql .= " ORDER BY tbl_transaksi.create_date DESC ";
         }
-
-        // echo $sql; 
-        // die;
 
         return $sql;
     }

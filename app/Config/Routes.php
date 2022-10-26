@@ -89,6 +89,8 @@ $routes->post('umkm/delete_produk', 'Umkm::delete_produk');
 $routes->get('umkm/kategori-produk', 'Umkm::kategori_produk');
 $routes->get('umkm/laporan-transaksi', 'Umkm::transaksi');
 
+$routes->post('umkm/update_kirim', 'Umkm::update_kirim');
+
 $routes->post('umkm/transaksi_', 'Umkm::transaksi_');
 $routes->get('umkm/transaksi/(:any)', 'Umkm::transaksi_detail/$1');
 
