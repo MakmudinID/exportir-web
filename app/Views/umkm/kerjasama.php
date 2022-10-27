@@ -41,9 +41,9 @@
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
                                         <option value="ALL">ALL</option>
-                                        <option value="BELUM_UPLOAD">Belum Unggah Perjanjian</option>
                                         <option value="SUDAH_UPLOAD">Menunggu Persetujuan</option>
                                         <option value="SUDAH_DISETUJUI">Kerjasama Disetujui</option>
+                                        <option value="DITOLAK">Kerjasama Ditolak</option>
                                     </select>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                                 <tr>
                                     <th>Tanggal Pengajuan</th>
                                     <th>No. Kerja Sama</th>
-                                    <th>UMKM</th>
+                                    <th>Reseller</th>
                                     <th>Kontrak</th>
                                     <th>Status</th>
                                     <th>Progress</th>
@@ -94,12 +94,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <a class="btn btn-success btn-sm" id="btn-unduh-kerjasama" style="width: 100%;">Unduh Dokumen Perjanjian Kerjasama</a>
+                    <a class="btn btn-success btn-sm" id="btn-unduh-kerjasama" style="width: 100%;" target="_blank">Unduh Dokumen Perjanjian Kerjasama</a>
                     <hr>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="foto">Unggah Dokumen PDF</label><br>
+                                <label for="foto">Unggah Dokumen PDF Persetujuan</label><br>
                                 <input type="file" class="form-control" name="dokumen" id="dokumen" accept="application/pdf">
                                 <input type="hidden" name="no_kerjasama" id="no_kerjasama">
                             </div>

@@ -329,6 +329,14 @@ class Reseller extends BaseController
                 <div class="d-flex justify-content-center">
                     <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
                 </div>';
+            } else if($field->status == 'DITOLAK'){
+                $url = $field->file_kerjasama;
+                $row['status'] = '<span class="badge badge-danger">Ditolak</span>';
+                $row['detail'] = '
+                <div class="d-flex justify-content-center">
+                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
+                    <a href="' . base_url('reseller/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
+                </div>';
             } else {
                 $url = $field->file_kerjasama;
 

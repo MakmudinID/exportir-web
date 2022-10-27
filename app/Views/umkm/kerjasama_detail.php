@@ -9,7 +9,7 @@ $this->server_side = new ServerSideModel(); ?>
         <div class="row mb-2">
             <div class="col-sm-7">
                 <div class="d-flex">
-                    <a href="<?= base_url('reseller/kerjasama') ?>" class="btn btn-secondary">Kembali</a>
+                    <a href="<?= base_url('umkm/kerjasama') ?>" class="btn btn-secondary">Kembali</a>
                     <h3 class="ml-3">No: <?= $kerjasama->no_kerjasama ?></h3>
                 </div>
             </div>
@@ -24,6 +24,27 @@ $this->server_side = new ServerSideModel(); ?>
 </section>
 <section class="content">
     <div class="container-fluid">
+        <?php if ($kerjasama->status == 'SUDAH_UPLOAD'){ ?>
+            <div class="alert alert-warning">
+                <div class="d-flex">
+                    <div class="fw-bold align-self-center">
+                        <i class="icon fas fa-info-circle"></i> Silakan Konfirmasi Pengajuan Kerjasama Ini
+                    </div>
+                    <div class="ml-auto">
+                        <button type="button" class="btn btn-primary update-konfirmasi" data-no_kerjasama="<?= $kerjasama->no_kerjasama ?>">Konfirmasi</button>
+                        <button type="button" class="btn btn-danger update-batal" data-no_kerjasama="<?= $kerjasama->no_kerjasama ?>">Batal Kerjasama</button>
+                    </div>
+                </div>
+            </div>
+        <?php }else if ($kerjasama->status == 'DITOLAK'){ ?>
+            <div class="alert alert-danger">
+                <div class="d-flex">
+                    <div class="fw-bold align-self-center">
+                        <i class="icon fas fa-info-circle"></i> Pengajuan kerjasama ini <B>DITOLAK</B>, karena: <?= $kerjasama->alasan_ditolak;?>
+                    </div>
+                </div>
+            </div>
+        <?php }; ?>
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-primary card-outline">
@@ -124,11 +145,8 @@ $this->server_side = new ServerSideModel(); ?>
                                         $badge = "badge-warning";
                                     } ?>
                                     <div class="d-flex justify-content-center">
-                                        <div class="badge <?= $badge ?>"><?= str_replace("_", " ", $pembayaran->status); ?></div>
-                                        <?php if ($pembayaran->status == "BELUM_DIBAYAR") : ?>
-                                            <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="<?= $pembayaran->id ?>" role="button"><i class="fas fa-upload text-danger"></i></div>
-                                        <?php else: ?>
-                                            <a href="<?=$pembayaran->bukti_url?>" class="ml-2" target="_blank"> Lihat <i class="fas fa-eye"></i></a>
+                                        <?php if ($pembayaran->status != "BELUM_DIBAYAR" && $pembayaran->status != "BATAL") : ?>
+                                            <a href="<?= $pembayaran->bukti_url ?>" class="ml-2" target="_blank"> Lihat <i class="fas fa-eye"></i></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -150,7 +168,24 @@ $this->server_side = new ServerSideModel(); ?>
                                     <div class="row">
                                         <label class="col-sm-4">Status Pesanan</label>
                                         <div class="col-sm-8">
-                                            <?= str_replace("_", " ", $pembayaran->status_transaksi); ?>
+                                            <?php
+                                            if ($pembayaran->status_transaksi == 'SEDANG_DIPROSES') {
+                                                $status = '
+                                                        <div class="d-flex">
+                                                            <span class="badge badge-warning">Perlu Disiapkan</span>
+                                                            <div class="align-self-center ml-2 update-status" data-id_transaksi="' . $pembayaran->id_transaksi . '" role="button"><i class="fas fa-edit"></i></div>
+                                                        </div>';
+                                            } else if ($pembayaran->status_transaksi == 'SUDAH_DIKIRIM') {
+                                                $status = '<span class="badge badge-primary">No. Resi Kurir: ' . $pembayaran->no_resi . '</span>';
+                                            } else if ($pembayaran->status_transaksi == 'SELESAI') {
+                                                $status = '<span class="badge badge-success">Selesai</span>';
+                                            } else if ($pembayaran->status_transaksi == 'BELUM_DIBAYAR') {
+                                                $status = '<span class="badge badge-danger">Belum Dibayar</span>';
+                                            } else {
+                                                $status = '<span class="badge badge-danger">Batal</span>';
+                                            }
+                                            ?>
+                                            <h5><?= $status ?></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -213,7 +248,7 @@ $this->server_side = new ServerSideModel(); ?>
                         <div class="row">
                             <div class="col-md-12 align-self-center">
                                 <div class="form-group">
-                                    <p><b>Catatan Pesanan:</b><br> <?= ($t->catatan_beli != '') ? $t->catatan_beli : strtoupper($t->kurir) . ' - ' . $t->service ?></p>
+                                    <p><b>Catatan Pesanan:</b><br> <?= ($t->catatan_beli != '') ? $t->catatan_beli : '-' ?></p>
                                 </div>
                             </div>
                         </div>
@@ -229,7 +264,7 @@ $this->server_side = new ServerSideModel(); ?>
         <div class="modal-content">
             <form method="post" id="form-bukti">
                 <div class="modal-header">
-                    <h5 class="modal-title">Unggah Bukti Bayar</h5>
+                    <h4 class="modal-title">Kirim Pesanan</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -238,10 +273,13 @@ $this->server_side = new ServerSideModel(); ?>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="foto">Foto</label><br>
+                                <label for="no_resi">No. Resi Kurir</label><br>
+                                <input type="text" class="form-control" name="no_resi" id="no_resi">
+                            </div>
+                            <div class="form-group">
+                                <label for="foto">Foto Bukti Kirim</label><br>
                                 <input type="file" class="form-control" name="foto" id="foto" accept="image/*" onchange="preview_image(event)">
-                                <input type="hidden" name="foto_" id="foto_">
-                                <input type="hidden" class="form-control" name="id_pembayaran"></input>
+                                <input type="hidden" class="form-control" name="id_transaksi" value=""></input>
                             </div>
                             <div class="form-group" style="display:none" id="row-display">
                                 <label for="output_image">Preview</label>
@@ -250,10 +288,36 @@ $this->server_side = new ServerSideModel(); ?>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-kerjasama">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="form-kerjasama">
+                <div class="modal-header">
+                    <h4 class="modal-title">Konfirmasi Pengajuan Kerjasama</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <a class="btn btn-success btn-sm" href="<?= $kerjasama->file_kerjasama ?>" target="_blank" id="btn-unduh-kerjasama" style="width: 100%;">Unduh Dokumen Perjanjian Kerjasama</a>
+                    <hr>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="keterangan">Keterangan</label><br>
-                                <textarea name="keterangan" id="keterangan" class="form-control"></textarea>
+                                <label for="foto">Unggah Dokumen PDF</label><br>
+                                <input type="file" class="form-control" name="dokumen" id="dokumen" accept="application/pdf">
+                                <input type="hidden" name="no_kerjasama" id="no_kerjasama">
                             </div>
                         </div>
                     </div>
@@ -261,6 +325,34 @@ $this->server_side = new ServerSideModel(); ?>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-batal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="form-batal">
+                <div class="modal-header">
+                    <h4 class="modal-title">Batal Kerjasama</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <h5>Anda yakin akan membatalkan kerjasama ini?</h5>
+                    <hr>
+                    <div class="form-group">
+                        <label for="alasan_dibatalkan">Alasana Dibatalkan</label>
+                        <textarea name="alasan_ditolak" class="form-control"></textarea>
+                    </div>
+                    <input type="hidden" name="no_kerjasama" id="no_kerjasama">
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-danger">Batalkan Kerjasama</button>
                 </div>
             </form>
         </div>

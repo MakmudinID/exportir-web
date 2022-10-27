@@ -83,11 +83,11 @@ $this->server_side = new ServerSideModel(); ?>
 											<a href="<?= base_url('/reseller/profil') ?>"><i class="fas fa-user"></i> Profil</a>
 											<a href="<?= base_url('/logout') ?>"><i class="fa fa-sign-out-alt"></i> Logout</a>
 										<?php } else if ($session->get("role") == "UMKM") { ?>
-											<a href="<?= base_url('/umkm/profil') ?>"><i class="fas fa-user"></i> <?= $session->get("nama") ?> </a>
+											<a href="<?= base_url('/umkm/profil') ?>"><i class="fas fa-user"></i> Profil</a>
 											<a href="<?= base_url('/logout') ?>"><i class="fa fa-sign-out-alt"></i> Logout</a>
 										<?php } else if ($session->get("role") == "SUPERADMIN") { ?>
 											<a class="shopping-cart" href="<?= base_url('/login') ?>"><i class="fas fa-shopping-cart"></i> <span class="badge badge-primary total-cart" style="margin-left:-10px;margin-right:20px">0</span></a>
-											<a href="<?= base_url('/admin/dashboard') ?>"><i class="fas fa-user"></i> <?= $session->get("nama") ?> </a>
+											<a href="<?= base_url('/admin/dashboard') ?>"><i class="fas fa-user"></i> Profil</a>
 											<a href="<?= base_url('/logout') ?>"><i class="fa fa-sign-out-alt"></i> Logout</a>
 										<?php } else { ?>
 											<a class="shopping-cart" href="<?= base_url('/login') ?>"><i class="fas fa-shopping-cart"></i> <span class="badge badge-primary total-cart" style="margin-left:-10px;margin-right:20px">0</span></a>

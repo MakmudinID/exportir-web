@@ -24,6 +24,15 @@ $this->server_side = new ServerSideModel(); ?>
 </section>
 <section class="content">
     <div class="container-fluid">
+        <?php if($kerjasama->status == 'DITOLAK') { ?>
+            <div class="alert alert-danger">
+                <div class="d-flex">
+                    <div class="fw-bold align-self-center">
+                        <i class="icon fas fa-info-circle"></i> Pengajuan kerjasama ini <B>DITOLAK</B>, karena: <?= $kerjasama->alasan_ditolak; ?>
+                    </div>
+                </div>
+            </div>
+        <?php }; ?>
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-primary card-outline">
@@ -125,11 +134,11 @@ $this->server_side = new ServerSideModel(); ?>
                                     } ?>
                                     <div class="d-flex justify-content-center">
                                         <div class="badge <?= $badge ?>"><?= str_replace("_", " ", $pembayaran->status); ?></div>
-                                        <?php if ($pembayaran->status == "BELUM_DIBAYAR") : ?>
+                                        <?php if ($pembayaran->status == "BELUM_DIBAYAR"){ ?>
                                             <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="<?= $pembayaran->id ?>" role="button"><i class="fas fa-upload text-danger"></i></div>
-                                        <?php else: ?>
-                                            <a href="<?=$pembayaran->bukti_url?>" class="ml-2" target="_blank"> Lihat <i class="fas fa-eye"></i></a>
-                                        <?php endif; ?>
+                                        <?php } else if($pembayaran->status == "SUDAH_DIBAYAR" || $pembayaran->status == "MENUNGGU_KONFIRMASI"){?>
+                                            <a href="<?= $pembayaran->bukti_url ?>" class="ml-2" target="_blank"> Lihat <i class="fas fa-eye"></i></a>
+                                        <?php }; ?>
                                     </div>
                                 </div>
                                 <div class="col-md-8">

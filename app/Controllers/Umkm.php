@@ -114,66 +114,174 @@ class Umkm extends BaseController
         return json_encode($r);
     }
 
+    public function kerjasama_()
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+
+        if ($this->request->getPost('tgl_transaksi') <> "") {
+            $start_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[0];
+            $end_date = explode(" - ", $this->request->getPost('tgl_transaksi'))[1];
+        } else {
+            $start_date = "";
+            $end_date = "";
+        }
+
+        if ($this->request->getPost('status') == 'ALL') {
+            $status = "";
+        } else {
+            $status = $this->request->getPost('status');
+        }
+
+        $list = $this->transaksi->limitRowsKerjasama($status, $start_date, $end_date);
+
+        $data = array();
+        $no = $this->request->getPost('start');
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row['tanggal_pengajuan'] = $field->create_date;
+            $row['no_kerjasama'] = $field->no_kerjasama;
+            $row['reseller'] = $field->reseller;
+            $progress = $this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama);
+
+            $row['progress'] = '
+                <div class="progress progress-sm active">
+                  <div class="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuenow="' . $progress . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $progress . '%">
+                    <span class="sr-only">' . $progress . '% Complete</span>
+                  </div>
+                </div>
+                <div class="align-self-center">' . $progress . '%</div>
+            ';
+            $row['kontrak'] = $field->lama_kerjasama . ' Bulan (' . $field->jumlah_barang . ' produk)';
+
+            if ($field->status == 'SUDAH_UPLOAD') {
+                $url = $field->file_kerjasama;
+
+                $row['status'] = '
+                <div class="d-flex justify-content-center">
+                    <div class="badge badge-warning">Menunggu Konfirmasi</div>
+                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="' . $field->no_kerjasama . '" data-url="' . $url . '" role="button"><i class="fas fa-upload text-danger"></i></div>
+                </div>
+                ';
+                $row['detail'] = '
+                <div class="d-flex justify-content-center">
+                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
+                    <a href="' . base_url('umkm/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
+                </div>';
+            } else if ($field->status == 'DITOLAK'){
+                $url = $field->file_kerjasama;
+                $row['status'] = '<span class="badge badge-danger">Ditolak</span>';
+                $row['detail'] = '
+                <div class="d-flex justify-content-center">
+                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
+                    <a href="' . base_url('umkm/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
+                </div>';
+            }else {
+                $url = $field->file_kerjasama;
+
+                $row['status'] = '<span class="badge badge-success">Disetujui</span>';
+                $row['detail'] = '
+                <div class="d-flex justify-content-center">
+                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
+                    <a href="' . base_url('umkm/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
+                </div>';
+            }
+
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $this->transaksi->countFilteredKerjasama($status, $start_date, $end_date),
+            "recordsFiltered" => $this->transaksi->countFilteredKerjasama($status, $start_date, $end_date),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+
     public function kerjasama()
     {
         if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
         $data['title'] = 'Kontrak Perjanjian';
-        $data['js'] = array("reseller-kerjasama.js?r=" . uniqid());
-        $data['main_content']   = 'reseller/kerjasama';
+        $data['js'] = array("umkm-kerjasama.js?r=" . uniqid());
+        $data['main_content']   = 'umkm/kerjasama';
         echo view('template/adminlte', $data);
     }
+
+    public function kerjasama_pdf_upload()
+    {
+        $dokumen = $this->request->getFile('dokumen');
+        $no_kerjasama = $this->request->getPost('no_kerjasama');
+        if ($dokumen->getName() != '') {
+            $dokumen->move('../public/assets/dokumen-kerjasama/', $dokumen->getName());
+            $filepath = base_url() . '/assets/dokumen-kerjasama/' . $dokumen->getName();
+            $path = $dokumen->getName();
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            if ($ext == 'pdf') {
+                $data['file_kerjasama'] = $filepath;
+                $data['status'] = 'SUDAH_DISETUJUI';
+
+                $table = 'tbl_transaksi_kerjasama';
+                $result = $this->server_side->updateRowsByField('no_kerjasama', $no_kerjasama, $data, $table);
+                $r['result'] = true;
+                if (!$result) {
+                    $r['result'] = false;
+                    $r['title'] = 'Maaf Gagal Menyimpan!';
+                    $r['icon'] = 'error';
+                    $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+                }
+                echo json_encode($r);
+                return;
+            } else {
+                $r['result'] = false;
+                $r['title'] = 'Gagal!';
+                $r['icon'] = 'error';
+                $r['status'] = 'Format File Tidak Diijinkan!';
+            }
+        } else {
+            echo 'ERROR';
+            die;
+        }
+    }
+
+    public function batal_kerjasama()
+    {
+        $no_kerjasama = $this->request->getPost('no_kerjasama');
+        $alasan_ditolak = $this->request->getPost('alasan_ditolak');
+
+        $result = $this->server_side->updateBatalKerjasama($no_kerjasama, $alasan_ditolak);
+        $r['result'] = true;
+        if ($result == 0) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Dibatalkan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Batalkan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
 
     public function kerjasama_detail($no_kerjasama)
     {
         if (session()->get('role') != 'UMKM') {
             return redirect()->route('logout');
         }
-        $data['title'] = 'Kerjasama Saya';
+        $data['title'] = 'Kontrak Perjanjian';
         $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
 
-        if($data['kerjasama']->status == 'BELUM_UPLOAD'){
-            return redirect()->route('reseller/kerjasama');
+        if ($data['kerjasama']->status == 'BELUM_UPLOAD') {
+            return redirect()->route('umkm/kerjasama');
         }
 
-        $data['js'] = array("reseller-kerjasama-detail.js?r=" . uniqid());
-        $data['main_content']   = 'reseller/kerjasama_detail';
+        $data['js'] = array("umkm-kerjasama-detail.js?r=" . uniqid());
+        $data['main_content']   = 'umkm/kerjasama_detail';
         echo view('template/adminlte', $data);
-    }
-
-    public function kerjasama_pdf($no_kerjasama)
-    {
-        if (session()->get('role') != 'UMKM') {
-            return redirect()->route('logout');
-        }
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - ' . $no_kerjasama);
-
-        $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
-
-        $html = view('reseller/kerjasama_pdf', $data);
-
-        $mpdf->WriteHTML($html);
-        $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('Dokumen Perjanjian Kerjasama - ' . $no_kerjasama . '.pdf', 'I'); // opens in browser
-    }
-
-    public function kerjasama_pdf_download($no_kerjasama)
-    {
-        if (session()->get('role') != 'UMKM') {
-            return redirect()->route('logout');
-        }
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - ' . $no_kerjasama);
-
-        $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
-
-        $html = view('reseller/kerjasama_pdf', $data);
-
-        $mpdf->WriteHTML($html);
-        $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('Dokumen Perjanjian Kerjasama - ' . $no_kerjasama . '.pdf', 'D'); // opens in browser
     }
 
     public function transaksi()
@@ -576,7 +684,7 @@ class Umkm extends BaseController
             $r['title'] = 'Maaf Gagal Menyimpan!';
             $r['icon'] = 'error';
             $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
-        }else{
+        } else {
             $r['result'] = true;
         }
         echo json_encode($r);

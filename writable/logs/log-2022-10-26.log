@@ -825,3 +825,55 @@ in SYSTEMPATH\Exceptions\FrameworkException.php on line 33.
 10 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
 11 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
 12 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-26 22:31:05 --> Undefined property: stdClass::$bukti_url
+in APPPATH\Views\umkm\kerjasama_detail.php on line 302.
+ 1 APPPATH\Views\umkm\kerjasama_detail.php(302): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$bukti_url', 'APPPATH\\Views\\umkm\\kerjasama_detail.php', 302)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\umkm\\kerjasama_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('umkm/kerjasama_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(104): view('umkm/kerjasama_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Umkm.php(222): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->kerjasama_detail('KJS221025-JMW13BV7')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-26 23:09:59 --> Call to a member function getNumRows() on bool
+in APPPATH\Controllers\Umkm.php on line 257.
+ 1 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->batal_kerjasama()
+ 2 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 3 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-26 23:10:06 --> Call to a member function getNumRows() on bool
+in APPPATH\Controllers\Umkm.php on line 257.
+ 1 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->batal_kerjasama()
+ 2 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 3 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-26 23:23:49 --> syntax error, unexpected token "if", expecting ":"
+in APPPATH\Views\umkm\kerjasama_detail.php on line 39.
+ 1 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('umkm/kerjasama_detail', [], true)
+ 3 APPPATH\Views\template\adminlte.php(104): view('umkm/kerjasama_detail')
+ 4 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 5 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 6 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 7 APPPATH\Controllers\Umkm.php(276): view('template/adminlte', [...])
+ 8 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->kerjasama_detail('KJS221025-JMW13BV7')
+ 9 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+10 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-26 23:28:27 --> Undefined variable $url
+in APPPATH\Controllers\Umkm.php on line 177.
+ 1 APPPATH\Controllers\Umkm.php(177): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $url', 'APPPATH\\Controllers\\Umkm.php', 177)
+ 2 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->kerjasama_()
+ 3 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 4 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

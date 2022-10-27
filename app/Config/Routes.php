@@ -97,6 +97,8 @@ $routes->post('umkm/create_kategori', 'Umkm::create_kategori');
 $routes->post('umkm/update_kategori', 'Umkm::update_kategori');
 $routes->post('umkm/delete_kategori', 'Umkm::delete_kategori');
 $routes->post('umkm/kerjasama_', 'Umkm::kerjasama_');
+$routes->post('umkm/pdf_upload', 'Umkm::kerjasama_pdf_upload');
+$routes->post('umkm/batal_kerjasama', 'Umkm::batal_kerjasama');
 $routes->get('umkm/kerjasama', 'Umkm::kerjasama');
 $routes->get('umkm/kerjasama/(:any)', 'Umkm::kerjasama_detail/$1');
 

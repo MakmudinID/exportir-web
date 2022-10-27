@@ -54,7 +54,7 @@ class TransaksiModel extends Model
         $column_order = array('tbl_transaksi_kerjasama.create_date', 'tbl_transaksi_kerjasama.no_kerjasama', 'tbl_umkm.nama', 'tbl_transaksi_kerjasama.lama_kerjasama', 'tbl_transaksi_kerjasama.status', null, null); //field yang ada di table user
         $column_search = array('tbl_transaksi_kerjasama.create_date', 'tbl_transaksi_kerjasama.no_kerjasama', 'tbl_umkm.nama', 'tbl_transaksi_kerjasama.lama_kerjasama');
 
-        $sql = "SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang
+        $sql = "SELECT tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, dtl.jumlah_barang, dtl.total_barang, tbl_transaksi.nama as reseller
         FROM tbl_transaksi_kerjasama 
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama
         JOIN tbl_transaksi ON tbl_transaksi.id_pembayaran = tbl_transaksi_pembayaran.id
@@ -69,8 +69,12 @@ class TransaksiModel extends Model
         AND tbl_transaksi.kerjasama = 'Y'
         ";
 
-        if ($role != 'SUPERADMIN') {
+        if ($role == 'RESELLER') {
             $sql .= " AND tbl_transaksi.id_pengguna = $id_pengguna  ";
+        }else if($role == 'UMKM'){
+            $id_umkm = session()->get('id_umkm');
+            $sql .= " AND tbl_transaksi.id_umkm = $id_umkm  ";
+            $sql .= " AND tbl_transaksi_kerjasama.status != 'BELUM_UPLOAD' ";
         }
 
         if ($start_date != '' && $end_date != '') {

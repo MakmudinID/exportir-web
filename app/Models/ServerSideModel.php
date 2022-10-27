@@ -17,7 +17,7 @@ class ServerSideModel extends Model
 
     public function getTransaksiPembayaran($no_kerjasama)
     {
-        $sql="SELECT tbl_transaksi_pembayaran.*, tbl_transaksi.status as status_transaksi, tbl_transaksi.tanggal_kirim
+        $sql="SELECT tbl_transaksi_pembayaran.*, tbl_transaksi.id as id_transaksi, tbl_transaksi.no_resi, tbl_transaksi.status as status_transaksi, tbl_transaksi.tanggal_kirim
         FROM tbl_transaksi_pembayaran
         JOIN tbl_transaksi ON tbl_transaksi.id_pembayaran = tbl_transaksi_pembayaran.id
         WHERE no_kerjasama = ? ";
@@ -614,6 +614,17 @@ class ServerSideModel extends Model
         } else {
             return false;
         }
+    }
+
+    public function updateBatalKerjasama($no_kerjasama, $alasan_ditolak)
+    {
+        $sql = "UPDATE tbl_transaksi, tbl_transaksi_pembayaran, tbl_transaksi_kerjasama 
+        SET tbl_transaksi.status='BATAL', tbl_transaksi_pembayaran.status='BATAL', tbl_transaksi_kerjasama.status='DITOLAK', tbl_transaksi_kerjasama.alasan_ditolak=? 
+        WHERE tbl_transaksi_kerjasama.no_kerjasama = tbl_transaksi_pembayaran.no_kerjasama 
+        AND tbl_transaksi_pembayaran.id=tbl_transaksi.id_pembayaran  
+        AND tbl_transaksi_pembayaran.no_kerjasama =? ";
+        $this->db->query($sql, array($alasan_ditolak, $no_kerjasama));
+        return true;
     }
 
     public function updateRowsByField($field, $val, $data, $table)

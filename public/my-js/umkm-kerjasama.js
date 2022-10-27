@@ -98,7 +98,7 @@ jQuery(document).ready(function() {
                 "data": 'tanggal_pengajuan',
             },
             { "data": "no_kerjasama" },
-            { "data": "umkm" },
+            { "data": "reseller" },
             { "data": "kontrak" },
             { "data": "status" },
             { "data": "progress" },
