@@ -903,6 +903,10 @@ class Admin extends BaseController
 
     public function update_status_transaksi()
     {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+
         $id = $this->request->getPost('id_pembayaran');
         $kode_transaksi = $this->request->getPost('kode_transaksi');
 
@@ -919,8 +923,58 @@ class Admin extends BaseController
         return redirect()->to('admin/transaksi/'.$kode_transaksi);
     }
 
+    public function update_kirim()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+
+        $id = $this->request->getPost('id_transaksi');
+        $no_resi = $this->request->getPost('no_resi');
+        $foto = $this->request->getFile('foto');
+
+        if ($foto->getName() != '') {
+            $foto->move('../public/assets/photo-bukti-kirim/', $foto->getName());
+            $filepath = base_url() . '/assets/photo-bukti-kirim/' . $foto->getName();
+            $path = $foto->getName();
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif' || 'JPEG') {
+                $data['bukti_url'] = $filepath;
+            } else {
+                $r['result'] = false;
+                $r['title'] = 'Gagal!';
+                $r['icon'] = 'error';
+                $r['status'] = 'Format File Tidak Diijinkan!';
+            }
+        }
+
+        $data['status'] = 'SUDAH_DIKIRIM';
+        $data['no_resi'] = $no_resi;
+        $data['tanggal_kirim'] = date('Y-m-d');
+        $data['edit_date'] = date('Y-m-d H:i:s');
+
+        $table = 'tbl_transaksi';
+
+        $result = $this->server_side->updateRows($id, $data, $table);
+
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        } else {
+            $r['result'] = true;
+        }
+        echo json_encode($r);
+        return;
+    }
+
     public function update_bayar()
     {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+
         $id = $this->request->getPost('id_pembayaran');
         $foto = $this->request->getFile('foto');
 
@@ -1124,13 +1178,16 @@ class Admin extends BaseController
 
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
-                    <div class="badge badge-danger">Belum Unggah Dokumen</div>
+                    <div class="badge badge-danger align-self-center">Belum Unggah Dokumen</div>
                     <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="'.$field->no_kerjasama.'" data-url="'.base_url('reseller/pdf_download/'.$field->no_kerjasama).'" role="button"><i class="fas fa-upload text-danger"></i></div>
                 </div>';
             }else if($field->status == 'SUDAH_UPLOAD'){
                 $url = $field->file_kerjasama;
 
-                $row['status'] = '<span class="badge badge-warning">Menunggu Konfirmasi</span>';
+                $row['status'] = '<span class="badge badge-warning align-self-center">Menunggu Konfirmasi</span>';
+            }else if($field->status == 'DITOLAK'){
+                $url = $field->file_kerjasama;
+                $row['status'] = '<span class="badge badge-danger align-self-center">Kerjasama Ditolak</span>';
             }else{
                 $url = $field->file_kerjasama;
 

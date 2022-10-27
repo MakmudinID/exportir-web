@@ -44,6 +44,7 @@
                                         <option value="BELUM_UPLOAD">Belum Unggah Perjanjian</option>
                                         <option value="SUDAH_UPLOAD">Menunggu Persetujuan</option>
                                         <option value="SUDAH_DISETUJUI">Kerjasama Disetujui</option>
+                                        <option value="DITOLAK">Kerjasama Ditolak</option>
                                     </select>
                                 </div>
                             </div>

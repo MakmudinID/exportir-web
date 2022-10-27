@@ -139,6 +139,9 @@ $routes->get('admin/umkm', 'Admin::umkm');
 $routes->post('admin/umkm_', 'Admin::umkm_');
 $routes->post('admin/create_umkm', 'Admin::create_umkm');
 $routes->post('admin/update_umkm', 'Admin::update_umkm');
+
+$routes->post('admin/update_kirim', 'Admin::update_kirim');
+
 $routes->post('admin/update_status_transaksi', 'Admin::update_status_transaksi');
 $routes->post('admin/delete_umkm', 'Admin::delete_umkm');
 $routes->get('admin/kategori-umkm', 'Admin::kategori_umkm');

@@ -3,7 +3,64 @@
 let editor, table, save_method; // use a global for the submit and return data rendering in the examples
 
 jQuery(document).ready(function() {
-    $("#form-bukti").validate({
+    $("#form-bukti-kirim").validate({
+        errorClass: "is-invalid",
+        // validClass: "is-valid",
+        rules: {
+            no_resi: {
+                required: true
+            },
+            foto: {
+                required: true
+            },
+        },
+        submitHandler: function(form) {
+            let url;
+            url = base_url + '/admin/update_kirim';
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: new FormData(document.getElementById("form-bukti-kirim")),
+                dataType: "JSON",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (data.result != true) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            html: "Gagal Unggah Bukti Kirim",
+                            icon: 'error',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            buttons: false,
+                        });
+                        window.location.reload();
+                    } else {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: "Bukti Kirim Berhasil Diunggah!",
+                            icon: 'success',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false
+                        });
+
+                        $('#modal-default').modal('hide');
+                        $('body').removeClass('modal-open');
+                        window.location.reload();
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        }
+    });
+
+    $("#form-bukti-bayar").validate({
         errorClass: "is-invalid",
         // validClass: "is-valid",
         rules: {
@@ -18,7 +75,7 @@ jQuery(document).ready(function() {
             $.ajax({
                 url: url,
                 type: "POST",
-                data: new FormData(document.getElementById("form-bukti")),
+                data: new FormData(document.getElementById("form-bukti-bayar")),
                 dataType: "JSON",
                 contentType: false,
                 cache: false,
@@ -59,7 +116,18 @@ jQuery(document).ready(function() {
 
     $(document).on('click', '.unggah-bukti-bayar', function() {
         $('[name="id_pembayaran"]').val($(this).data('id_pembayaran'));
-        $('#modal-default').modal('show');
+        $('#modal-bukti-bayar').modal('show');
+    });
+
+    $(document).on('click', '.verifikasi-bukti-bayar', function() {
+        $('[name="id_pembayaran"]').val($(this).data('id_pembayaran'));
+        $('#area-foto-bukti-bayar').html('<img src="' + $(this).data('bukti') + '" class="img-fluid">');
+        $('#modal-verifikasi').modal('show');
+    });
+
+    $(document).on('click', '.update-status', function() {
+        $('[name="id_transaksi"]').val($(this).data('id_transaksi'));
+        $('#modal-kirim').modal('show');
     });
 });
 
@@ -68,6 +136,16 @@ function preview_image(event) {
     var reader = new FileReader();
     reader.onload = function() {
         var output = document.getElementById('output_image');
+        output.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+function preview_image_(event) {
+    document.getElementById("row-display_").style.display = "block";
+    var reader = new FileReader();
+    reader.onload = function() {
+        var output = document.getElementById('output_image_');
         output.src = reader.result;
     }
     reader.readAsDataURL(event.target.files[0]);

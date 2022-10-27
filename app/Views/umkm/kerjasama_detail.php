@@ -170,13 +170,17 @@ $this->server_side = new ServerSideModel(); ?>
                                         <div class="col-sm-8">
                                             <?php
                                             if ($pembayaran->status_transaksi == 'SEDANG_DIPROSES') {
-                                                $status = '
-                                                        <div class="d-flex">
-                                                            <span class="badge badge-warning">Perlu Disiapkan</span>
-                                                            <div class="align-self-center ml-2 update-status" data-id_transaksi="' . $pembayaran->id_transaksi . '" role="button"><i class="fas fa-edit"></i></div>
-                                                        </div>';
+                                                if($pembayaran->status == 'SUDAH_DIBAYAR'){
+                                                    $status = '
+                                                    <div class="d-flex">
+                                                        <span class="badge badge-warning">Perlu Disiapkan</span>
+                                                        <div class="align-self-center ml-2 update-status" data-id_transaksi="' . $pembayaran->id_transaksi . '" role="button"><i class="fas fa-edit"></i></div>
+                                                    </div>';
+                                                }else{
+                                                    $status = '<span class="badge badge-warning">Perlu Disiapkan</span>';
+                                                }
                                             } else if ($pembayaran->status_transaksi == 'SUDAH_DIKIRIM') {
-                                                $status = '<span class="badge badge-primary">No. Resi Kurir: ' . $pembayaran->no_resi . '</span>';
+                                                $status = '<small><b>Sedang Dikirim</b></small> <span class="badge badge-secondary">No. Resi: ' . $pembayaran->no_resi . '</span>';
                                             } else if ($pembayaran->status_transaksi == 'SELESAI') {
                                                 $status = '<span class="badge badge-success">Selesai</span>';
                                             } else if ($pembayaran->status_transaksi == 'BELUM_DIBAYAR') {
@@ -262,7 +266,7 @@ $this->server_side = new ServerSideModel(); ?>
 <div class="modal fade" id="modal-default">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" id="form-bukti">
+            <form method="post" id="form-bukti-kirim">
                 <div class="modal-header">
                     <h4 class="modal-title">Kirim Pesanan</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

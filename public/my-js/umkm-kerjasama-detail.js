@@ -3,7 +3,7 @@
 let editor, table, save_method; // use a global for the submit and return data rendering in the examples
 
 jQuery(document).ready(function() {
-    $("#form-bukti").validate({
+    $("#form-bukti-kirim").validate({
         errorClass: "is-invalid",
         // validClass: "is-valid",
         rules: {
@@ -21,7 +21,7 @@ jQuery(document).ready(function() {
             $.ajax({
                 url: url,
                 type: "POST",
-                data: new FormData(document.getElementById("form-bukti")),
+                data: new FormData(document.getElementById("form-bukti-kirim")),
                 dataType: "JSON",
                 contentType: false,
                 cache: false,
