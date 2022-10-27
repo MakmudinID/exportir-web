@@ -114,6 +114,68 @@ class Umkm extends BaseController
         return json_encode($r);
     }
 
+    public function kerjasama()
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Kontrak Perjanjian';
+        $data['js'] = array("reseller-kerjasama.js?r=" . uniqid());
+        $data['main_content']   = 'reseller/kerjasama';
+        echo view('template/adminlte', $data);
+    }
+
+    public function kerjasama_detail($no_kerjasama)
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Kerjasama Saya';
+        $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
+
+        if($data['kerjasama']->status == 'BELUM_UPLOAD'){
+            return redirect()->route('reseller/kerjasama');
+        }
+
+        $data['js'] = array("reseller-kerjasama-detail.js?r=" . uniqid());
+        $data['main_content']   = 'reseller/kerjasama_detail';
+        echo view('template/adminlte', $data);
+    }
+
+    public function kerjasama_pdf($no_kerjasama)
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - ' . $no_kerjasama);
+
+        $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
+
+        $html = view('reseller/kerjasama_pdf', $data);
+
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output('Dokumen Perjanjian Kerjasama - ' . $no_kerjasama . '.pdf', 'I'); // opens in browser
+    }
+
+    public function kerjasama_pdf_download($no_kerjasama)
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - ' . $no_kerjasama);
+
+        $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
+
+        $html = view('reseller/kerjasama_pdf', $data);
+
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output('Dokumen Perjanjian Kerjasama - ' . $no_kerjasama . '.pdf', 'D'); // opens in browser
+    }
+
     public function transaksi()
     {
         if (session()->get('role') != 'UMKM') {
