@@ -10,6 +10,7 @@ function filter() {
             umkm: '',
             kategori: $('#kategori').val(),
             keyword: $('#keyword').val(),
+            sort_by: $('#sort_by').val(),
         },
         success: function(res) {
             $('#list-produk').html(res);
@@ -21,6 +22,10 @@ jQuery(document).ready(function() {
     filter();
 
     $(document).on('click', '.filter', function() {
+        filter();
+    });
+
+    $('#sort_by').on('change', function() {
         filter();
     });
 })

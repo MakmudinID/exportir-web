@@ -74,7 +74,14 @@ $this->server_side = new ServerSideModel(); ?>
 						<nav class="main-menu">
 							<ul>
 								<li <?=($title == 'Home') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('/') ?>">Home</a></li>
-								<li <?=($title == 'Produk') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('/list-produk') ?>">Produk</a></li>
+								<li <?=($title == 'Kategori') ? 'class="current-list-item"' : ''?>>
+									<a href="<?= base_url('/list-produk') ?>">Kategori</a>
+									<ul class="sub-menu">
+										<?php foreach($this->server_side->getKategoriUMKMreal() as $k):?>
+											<li><a href="<?= base_url('/kategori/'.$k->id)?>"><?= $k->nama;?></a></li>
+										<?php endforeach; ?>
+									</ul>
+								</li>
 								<li <?=($title == 'Berita') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('/list-berita') ?>">Berita</a></li>
 								<li>
 									<div class="header-icons">

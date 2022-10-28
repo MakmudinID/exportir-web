@@ -89,7 +89,7 @@ class Frontend extends BaseController
     {
         $data['js'] = array("user-list-produk.js?r=" . uniqid());
         $data['main_content']   = 'frontend/list-produk';
-        $data['title'] = 'Produk';
+        $data['title'] = 'Kategori';
         $data['umkm'] = $this->server_side->getUMKM();
         $data['kategori_produk'] = $this->server_side->getKategoriProduk();
         echo view('template/fruitkha', $data);
@@ -100,8 +100,9 @@ class Frontend extends BaseController
         $umkm = $this->request->getPost('umkm');
         $kategori = $this->request->getPost('kategori');
         $keyword = $this->request->getPost('keyword');
+        $sort_by = $this->request->getPost('sort_by');
 
-        $produk = $this->server_side->getProdukByUMKMfilter($umkm, $kategori, $keyword);
+        $produk = $this->server_side->getProdukByUMKMfilter($umkm, $kategori, $keyword, $sort_by);
         $html = '';
 
         foreach ($produk as $p) {

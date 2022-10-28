@@ -240,7 +240,7 @@ class ServerSideModel extends Model
         return $q->getResult();
     }
 
-    public function getProdukByUMKMfilter($umkm, $kategori, $keyword)
+    public function getProdukByUMKMfilter($umkm, $kategori, $keyword, $sort_by)
     {
         $sql = "SELECT tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
         FROM tbl_produk_umkm 
@@ -259,6 +259,13 @@ class ServerSideModel extends Model
         
         if($keyword != ''){
             $sql.="AND tbl_produk_umkm.nama LIKE '%$keyword%' ";
+        }
+
+        if($sort_by == 'TERBARU'){
+            $sql.="ORDER BY tbl_produk_umkm.id DESC ";
+        }else{
+            //terlaris
+            $sql.="ORDER BY tbl_produk_umkm.id ASC ";
         }
 
         $q = $this->db->query($sql);
@@ -336,7 +343,7 @@ class ServerSideModel extends Model
                 join tbl_kategori_produk on tbl_kategori_produk.id = tbl_produk_umkm.id_kategori 
                 join tbl_umkm on tbl_umkm.id = tbl_produk_umkm.id_umkm 
                 join tbl_city on tbl_city.city_id = tbl_umkm.city_id
-                where tbl_produk_umkm.status = 'ACTIVE' and tbl_kategori_produk.id = $kategori order by rand() limit 3";
+                where tbl_produk_umkm.status = 'ACTIVE' and tbl_kategori_produk.id = $kategori order by rand() limit 4";
         $q = $this->db->query($sql);
         return $q->getResult();
     }
