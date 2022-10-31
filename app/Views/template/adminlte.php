@@ -89,7 +89,11 @@ $this->server_side = new ServerSideModel();
                             <li class="nav-header"><?= strtoupper($h->title) ?></li>
                             <?php foreach ($this->server_side->getMenu($h->id_menu_title) as $m) : ?>
                                 <li class="nav-item">
-                                    <a class="nav-link <?= ($m->title == $title) ? 'active' : '' ?>" href="<?= base_url($m->url) ?>"><i class="<?= $m->icon ?>"></i> <?= $m->title ?></a>
+                                    <a class="nav-link <?= ($m->title == $title) ? 'active' : '' ?>" href="<?= base_url($m->url) ?>"><i class="<?= $m->icon ?>"></i>
+                                        <p>
+                                            <?= $m->title ?>
+                                        </p>
+                                    </a>
                                 </li>
                             <?php endforeach; ?>
                         <?php endforeach; ?>

@@ -54,10 +54,11 @@ class ServerSideModel extends Model
     }
 
     public function pembayaran($kode_bayar){
-        $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.bukti_url, tbl_transaksi_pembayaran.total_tagihan, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+        $sql="SELECT tbl_transaksi.*, tbl_metode_bayar.nama as metode_bayar, tbl_metode_bayar.nomor_rekening, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.bukti_url, tbl_transaksi_pembayaran.total_tagihan, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
         JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
         JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
         WHERE tbl_transaksi_pembayaran.kode_bayar=?
@@ -187,6 +188,16 @@ class ServerSideModel extends Model
             return $q->foto;
         } else {
             return base_url('/assets/admin/img/avatar.png');
+        }
+    }
+
+    public function getNama($id)
+    {
+        $q = $this->db->query("SELECT tbl_pengguna.nama FROM tbl_pengguna where tbl_pengguna.id = ?", array($id))->getRow();
+        if ($q->foto != NULL) {
+            return $q->nama;
+        } else {
+            return 'NULL';
         }
     }
 

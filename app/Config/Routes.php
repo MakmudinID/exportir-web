@@ -120,6 +120,8 @@ $routes->post('reseller/kerjasama_', 'Reseller::kerjasama_');
 $routes->get('reseller/transaksi/(:any)', 'Reseller::transaksi_detail/$1');
 $routes->post('reseller/transaksi_', 'Reseller::transaksi_');
 $routes->get('reseller/detail-berita/(:any)', 'Reseller::detail_berita/$1');
+$routes->get('reseller/chatting', 'Reseller::chatting');
+$routes->post('reseller/chatting_', 'Reseller::chatting_');
 
 //ADMIN BackOffice
 $routes->get('login', 'Login::index');

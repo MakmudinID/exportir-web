@@ -134,6 +134,49 @@ class Reseller extends BaseController
         echo view('template/adminlte', $data);
     }
 
+    public function chatting()
+    {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Chatting';
+        $data['js'] = array("reseller-chatting.js?r=" . uniqid());
+        $data['main_content']   = 'reseller/chatting';
+        echo view('template/adminlte', $data);
+    }
+
+    public function chatting_()
+    {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+
+        $list = $this->transaksi->limitRowsChatting();
+        
+        $data = array();
+        $no = $this->request->getPost('start');
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row['tanggal'] = $this->server_side->formatTanggal($field->create_date);
+            $row['kode_transaksi'] = $field->kode_transaksi;
+            $row['pengirim'] = $this->server_side->getNama($field->id_pengirim);
+            $row['penerima'] = $this->server_side->getNama($field->id_penerima);
+            $row['topik'] = $field->topik;
+            $row['detail'] = '<a href="' . base_url('reseller/chatting/' . $field->kode_transaksi) . '" class="p-1"><i class="fas fa-search-plus"></i></a>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $this->transaksi->countFilteredChatting(),
+            "recordsFiltered" => $this->transaksi->countFilteredChatting(),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+
     public function kerjasama_detail($no_kerjasama)
     {
         if (session()->get('role') != 'RESELLER') {

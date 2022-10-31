@@ -124,6 +124,62 @@ class TransaksiModel extends Model
         return $query->getNumRows();
     }
 
+    public function countFilteredChatting()
+    {
+        $sql = $this->selectFieldChatting();
+        $query = $this->db->query($sql);
+        return $query->getNumRows();
+    }
+
+    //CHATTING
+    public function limitRowstChatting()
+    {
+        $sql = $this->selectFieldChatting();
+        if ($_POST['length'] != -1) {
+            $sql .= "limit " . $_POST['start'] . "," . $_POST['length'];
+        }
+
+        // echo $sql; die;
+
+        $query = $this->db->query($sql);
+        return $query->getResult();
+    }
+
+    protected function selectFieldChatting()
+    {
+        $id_pengguna= session()->get('id');
+
+        $column_order = array('create_date', 'kode_transaksi', 'id_pengirim', 'id_penerima', 'topik', null); //field yang ada di table user
+        $column_search = array('kode_transaksi');
+
+        $sql = "SELECT tbl_chat.*
+        FROM tbl_chat
+        WHERE id_penerima IN ($id_pengguna)
+        OR id_pengirim IN ($id_pengguna)";
+
+        $i = 0;
+        if (isset($_POST['search']['value'])) {
+            $sql .= " AND ( ";
+            foreach ($column_search as $item) {
+                if ($i === 0) {
+                    $sql .= " " . $item . " like '%" . $_POST['search']['value'] . "%' ";
+                } else {
+                    $sql .= "or " . $item . " like '%" . $_POST['search']['value'] . "%' ";
+                }
+                $i++;
+            }
+            $sql .= " ) ";
+        }
+
+        if (isset($_POST['order'])) {
+            $sql .= " ORDER BY " . $column_order[$_POST['order']['0']['column']] . " " . $_POST['order']['0']['dir'] . " ";
+        } else {
+            $sql .= " ORDER BY tbl_chat.create_date DESC ";
+        }
+
+        return $sql;
+    }
+
     //TRANSAKSI
     public function limitRowstTransaksiUMKM($status, $start_date, $end_date)
     {
