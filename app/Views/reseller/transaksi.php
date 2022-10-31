@@ -60,6 +60,7 @@
                                 <tr>
                                     <th>Tanggal Transaksi</th>
                                     <th>Kode Bayar</th>
+                                    <th>Metode Bayar</th>
                                     <th>Total Tagihan</th>
                                     <th>Batas Bayar</th>
                                     <th>Status</th>

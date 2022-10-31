@@ -356,8 +356,8 @@ class Admin extends BaseController
         $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
         $data['email']  = htmlspecialchars($this->request->getPost('email'), ENT_QUOTES);
         $data['no_hp']  = htmlspecialchars($this->request->getPost('no_hp'), ENT_QUOTES);
-        
-        if($this->request->getPost('password') != ''){
+
+        if ($this->request->getPost('password') != '') {
             $options = [
                 'cost' => 10,
             ];
@@ -478,6 +478,144 @@ class Admin extends BaseController
         );
         //output dalam format JSON
         echo json_encode($output);
+    }
+
+    public function metode_bayar()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+
+        $data['title'] = 'Metode Bayar';
+        $data['propinsi'] = $this->server_side->getPropinsi();
+        $data['kota'] = $this->server_side->getKotaAll();
+        $data['js'] = array("admin-metode-bayar.js?r=" . uniqid());
+        $data['main_content']   = 'admin/setting/metode-bayar';
+        echo view('template/adminlte', $data);
+    }
+
+    public function metode_bayar_()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+
+        $table = 'tbl_metode_bayar';
+        $select = '*';
+        $join = NULL;
+        $where = array();
+        $column_order = array(NULL, 'nama', 'nomor_rekening', 'status', NULL);
+        $column_search = array('nama', 'nomor_rekening');
+        $order = array('nama' => 'asc');
+
+        $list = $this->server_side->limitRows($table, $select, $where, $column_order, $column_search, $order, $join);
+        $data = array();
+        $no = $this->request->getPost('start');
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row['no'] = $no;
+            $row['nama'] = $field->nama;
+            $row['nomor_rekening'] = $field->nomor_rekening;
+            $row['status'] = $field->status;
+            $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-nama="' . $field->nama . '" data-nomor_rekening="' . $field->nomor_rekening . '" data-status="' . $field->status . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '" data-nomor_rekening="' . $field->nomor_rekening . '" data-status="' . $field->status . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
+      </div>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $this->server_side->countAll($table, $select, $where, $column_order, $column_search, $order, $join),
+            "recordsFiltered" => $this->server_side->countFiltered($table, $select, $where, $column_order, $column_search, $order, $join),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+
+    public function create_metode_bayar()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+
+        $data['nama']  = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
+        $data['nomor_rekening']  = htmlspecialchars($this->request->getPost('nomor_rekening'), ENT_QUOTES);
+        $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+        $data['create_user'] = session()->get('nama');
+        $data['create_date'] = date('Y-m-d H:i:s');
+
+        $r['result'] = true;
+        $table = 'tbl_metode_bayar';
+        $result = $this->server_side->createRows($data, $table);
+
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
+    public function update_metode_bayar()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+        $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
+
+        $data['nama']  = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
+        $data['nomor_rekening']  = htmlspecialchars($this->request->getPost('nomor_rekening'), ENT_QUOTES);
+        $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+        $data['create_user'] = session()->get('nama');
+        $data['create_date'] = date('Y-m-d H:i:s');
+
+        $r['result'] = true;
+
+        $table = 'tbl_metode_bayar';
+        $result = $this->server_side->updateRows($id, $data, $table);
+
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
+    public function delete_metode_bayar()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+        $table = 'tbl_transaksi_pembayaran';
+        $id_ = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
+
+        //check 
+        $check = $this->db->query("select * from tbl_transaksi_pembayaran where id_metode_bayar=?", array($id_))->getNumRows();
+        if ($check > 0) {
+            $r['title'] = 'Maaf!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
+            echo json_encode($r);
+        } else {
+            if ($this->server_side->deleteRows($id_, 'tbl_metode_bayar')) {
+                $r['title'] = 'Sukses!';
+                $r['icon'] = 'success';
+                $r['status'] = 'Berhasil di Hapus!';
+            } else {
+                $r['title'] = 'Maaf!';
+                $r['icon'] = 'error';
+                $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
+            }
+            echo json_encode($r);            
+        }
     }
 
     public function berita()
@@ -912,15 +1050,15 @@ class Admin extends BaseController
 
         $tbl_transaksi['status'] = $this->request->getPost('status_transaksi');
         $tbl_transaksi['no_resi'] = $this->request->getPost('no_resi_transaksi');
-        
+
         $table_transaksi = 'tbl_transaksi';
         $this->server_side->updateRowsByField('id_pembayaran', $id, $tbl_transaksi, $table_transaksi);
 
         $table_transaksi_pembayaran = 'tbl_transaksi_pembayaran';
         $tbl_transaksi_pembayaran['status'] = $this->request->getPost('status_bayar');
         $this->server_side->updateRowsByField('id', $id, $tbl_transaksi_pembayaran, $table_transaksi_pembayaran);
-        
-        return redirect()->to('admin/transaksi/'.$kode_transaksi);
+
+        return redirect()->to('admin/transaksi/' . $kode_transaksi);
     }
 
     public function update_kirim()
@@ -1019,6 +1157,41 @@ class Admin extends BaseController
         return;
     }
 
+    public function konfirmasi_bayar()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+
+        $id = $this->request->getPost('id_pembayaran');
+        $konfirmasi = $this->request->getPost('konfirmasi');
+        $catatan_konfirmasi = $this->request->getPost('catatan_konfirmasi');
+
+        if ($konfirmasi == 'LUNAS') {
+            $data['status'] = 'SUDAH_DIBAYAR';
+            $data['keterangan'] = htmlspecialchars($catatan_konfirmasi);
+            $data['edit_user'] = session()->get('nama');
+            $data['edit_date'] = date('Y-m-d H:i:s');
+
+            $table = 'tbl_transaksi_pembayaran';
+
+            $this->server_side->updateRows($id, $data, $table);
+            $result = $this->server_side->updateKonfirmasiBayar($id, 'LUNAS');
+        } else {
+            $result = $this->server_side->updateKonfirmasiBayar($id, 'TIDAK_LUNAS');
+        }
+
+        $r['result'] = true;
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
     public function transaksi()
     {
         if (session()->get('role') != 'SUPERADMIN') {
@@ -1030,14 +1203,16 @@ class Admin extends BaseController
         echo view('template/adminlte', $data);
     }
 
-    public function transaksi_detail($kode_transaksi)
+    public function transaksi_detail($kode_bayar)
     {
         if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
-        $data['title'] = 'Pesanan Saya';
+        $data['title'] = 'Transaksi Penjualan';
         $data['js'] = array("admin-transaksi-detail.js?r=" . uniqid());
-        $data['transaksi'] = $this->server_side->transaksi_in_kode_detail($kode_transaksi);
+        $data['pembayaran'] = $this->server_side->pembayaran($kode_bayar);
+        // var_dump($data['pembayaran']); die;
+        $data['transaksi'] = $this->server_side->transaksi_in_kodebayar($kode_bayar);
         $data['main_content']   = 'admin/transaksi_detail';
         echo view('template/adminlte', $data);
     }
@@ -1056,10 +1231,10 @@ class Admin extends BaseController
             $end_date = "";
         }
 
-        if($this->request->getPost('status') == 'ALL'){
-            $status="";
-        }else{
-            $status=$this->request->getPost('status');
+        if ($this->request->getPost('status') == 'ALL') {
+            $status = "";
+        } else {
+            $status = $this->request->getPost('status');
         }
 
         if ($this->request->getPost('tgl_transaksi') <> "") {
@@ -1070,12 +1245,6 @@ class Admin extends BaseController
             $end_date = "";
         }
 
-        if($this->request->getPost('status') == 'ALL'){
-            $status="";
-        }else{
-            $status=$this->request->getPost('status');
-        }
-
         $list = $this->transaksi->limitRowstTransaksi($status, $start_date, $end_date);
 
         $data = array();
@@ -1083,28 +1252,34 @@ class Admin extends BaseController
         foreach ($list as $field) {
             $no++;
             $row = array();
-            $row['tanggal_transaksi'] = $field->create_date;
-            $row['no_transaksi'] = $field->kode_transaksi;
-            $row['umkm'] = $field->nama_umkm;
-            $row['total_tagihan'] = 'Rp '.number_format($field->jumlah+$field->ongkir, 0,',','.');
 
-            if($field->status == 'BELUM_DIBAYAR'){
+            $row['tanggal_transaksi'] = $field->create_date;
+            $row['batas_bayar'] = $field->batas_bayar;
+
+            $row['kode_bayar'] = $field->kode_bayar;
+            $row['total_tagihan'] = 'Rp ' . number_format($field->total_tagihan, 0, ',', '.');
+
+            if ($field->status == 'BELUM_DIBAYAR') {
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
-                    <div class="badge badge-danger">Belum Dibayar</div>
-                    <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="'.$field->id_pembayaran.'" role="button"><i class="fas fa-upload text-danger"></i></div>
+                    <div class="badge badge-danger align-self-center">Belum Dibayar</div>
+                    <div class="align-self-center ml-2 unggah-bukti-bayar" data-id_pembayaran="' . $field->id . '" role="button"><i class="fas fa-upload text-danger"></i></div>
                 </div>';
-            }else if($field->status == 'SEDANG_DIPROSES'){
-                $row['status'] = '<span class="badge badge-warning">Sedang Diproses</span>';
-            }else if($field->status == 'SUDAH_DIKIRIM'){
-                $row['status'] = '<span class="badge badge-primary">Sudah Dikirim</span>';
-            }else{
-                $row['status'] = '<span class="badge badge-success">Selesai</span>';
+            } else if ($field->status == 'MENUNGGU_KONFIRMASI') {
+                $row['status'] = '
+                <div class="d-flex justify-content-center">
+                    <div class="badge badge-warning align-self-center">Menunggu Konfirmasi</div>
+                    <div class="align-self-center ml-2 konfirmasi-bukti-bayar" data-id_pembayaran="' . $field->id . '" data-bukti_url="' . $field->bukti_url . '" data-keterangan="' . $field->keterangan . '" role="button"><i class="fas fa-edit"></i></div>
+                </div>';
+            } else if ($field->status == 'SUDAH_DIBAYAR') {
+                $row['status'] = '<span class="badge badge-success">Lunas</span>';
+            } else {
+                $row['status'] = '<span class="badge badge-danger">Batal</span>';
             }
 
             $row['detail'] = '
             <div class="d-flex justify-content-center">
-                <a href="'.base_url('admin/transaksi/'.$field->kode_transaksi).'" class="p-1"><i class="fas fa-search-plus"></i></a>
+                <a href="' . base_url('admin/transaksi/' . $field->kode_bayar) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
             </div>';
             $data[] = $row;
         }
@@ -1145,10 +1320,10 @@ class Admin extends BaseController
             $end_date = "";
         }
 
-        if($this->request->getPost('status') == 'ALL'){
-            $status="";
-        }else{
-            $status=$this->request->getPost('status');
+        if ($this->request->getPost('status') == 'ALL') {
+            $status = "";
+        } else {
+            $status = $this->request->getPost('status');
         }
 
         $list = $this->transaksi->limitRowsKerjasama($status, $start_date, $end_date);
@@ -1163,32 +1338,32 @@ class Admin extends BaseController
             $row['umkm'] = $field->nama_umkm;
             $progress = $this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama);
 
-            $row['progress'] ='
+            $row['progress'] = '
                 <div class="progress progress-sm active">
-                  <div class="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuenow="'.$progress.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$progress.'%">
-                    <span class="sr-only">'.$progress.'% Complete</span>
+                  <div class="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuenow="' . $progress . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $progress . '%">
+                    <span class="sr-only">' . $progress . '% Complete</span>
                   </div>
                 </div>
-                <div class="align-self-center">'.$progress.'%</div>
+                <div class="align-self-center">' . $progress . '%</div>
             ';
-            $row['kontrak'] = $field->lama_kerjasama.' Bulan';
+            $row['kontrak'] = $field->lama_kerjasama . ' Bulan';
 
-            if($field->status == 'BELUM_UPLOAD'){
-                $url = base_url('reseller/pdf/'.$field->no_kerjasama);
+            if ($field->status == 'BELUM_UPLOAD') {
+                $url = base_url('reseller/pdf/' . $field->no_kerjasama);
 
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
                     <div class="badge badge-danger align-self-center">Belum Unggah Dokumen</div>
-                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="'.$field->no_kerjasama.'" data-url="'.base_url('reseller/pdf_download/'.$field->no_kerjasama).'" role="button"><i class="fas fa-upload text-danger"></i></div>
+                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="' . $field->no_kerjasama . '" data-url="' . base_url('reseller/pdf_download/' . $field->no_kerjasama) . '" role="button"><i class="fas fa-upload text-danger"></i></div>
                 </div>';
-            }else if($field->status == 'SUDAH_UPLOAD'){
+            } else if ($field->status == 'SUDAH_UPLOAD') {
                 $url = $field->file_kerjasama;
 
                 $row['status'] = '<span class="badge badge-warning align-self-center">Menunggu Konfirmasi</span>';
-            }else if($field->status == 'DITOLAK'){
+            } else if ($field->status == 'DITOLAK') {
                 $url = $field->file_kerjasama;
                 $row['status'] = '<span class="badge badge-danger align-self-center">Kerjasama Ditolak</span>';
-            }else{
+            } else {
                 $url = $field->file_kerjasama;
 
                 $row['status'] = '<span class="badge badge-success">Disetujui</span>';
@@ -1196,8 +1371,8 @@ class Admin extends BaseController
 
             $row['detail'] = '
             <div class="d-flex justify-content-center">
-                <a href="'.$url.'" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
-                <a href="'.base_url('admin/kerjasama/'.$field->no_kerjasama).'" class="p-1"><i class="fas fa-search-plus"></i></a>
+                <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
+                <a href="' . base_url('admin/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
             </div>';
             $data[] = $row;
         }
@@ -1227,28 +1402,28 @@ class Admin extends BaseController
     public function kerjasama_pdf($no_kerjasama)
     {
         $mpdf = new \Mpdf\Mpdf();
-        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - '.$no_kerjasama);
-        
+        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - ' . $no_kerjasama);
+
         $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
-        
+
         $html = view('reseller/kerjasama_pdf', $data);
 
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('Dokumen Perjanjian Kerjasama.pdf','I'); // opens in browser
+        $mpdf->Output('Dokumen Perjanjian Kerjasama.pdf', 'I'); // opens in browser
     }
 
     public function kerjasama_pdf_download($no_kerjasama)
     {
         $mpdf = new \Mpdf\Mpdf();
-        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - '.$no_kerjasama);
-        
+        $mpdf->SetTitle('Surat Perjanjian Kerja Sama Usaha - ' . $no_kerjasama);
+
         $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
-        
+
         $html = view('reseller/kerjasama_pdf', $data);
 
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('arjun.pdf','D'); // opens in browser
+        $mpdf->Output('arjun.pdf', 'D'); // opens in browser
     }
 }

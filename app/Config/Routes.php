@@ -137,6 +137,13 @@ $routes->post('admin/update_user', 'Admin::update_user');
 $routes->post('admin/delete_user', 'Admin::delete_user');
 $routes->get('admin/umkm', 'Admin::umkm');
 $routes->post('admin/umkm_', 'Admin::umkm_');
+
+$routes->get('admin/metode-bayar', 'Admin::metode_bayar');
+$routes->post('admin/metode_bayar_', 'Admin::metode_bayar_');
+$routes->post('admin/create_metode_bayar', 'Admin::create_metode_bayar');
+$routes->post('admin/update_metode_bayar', 'Admin::update_metode_bayar');
+$routes->post('admin/delete_metode_bayar', 'Admin::delete_metode_bayar');
+
 $routes->post('admin/create_umkm', 'Admin::create_umkm');
 $routes->post('admin/update_umkm', 'Admin::update_umkm');
 
@@ -153,6 +160,8 @@ $routes->get('admin/berita_kategori', 'Admin::berita_kategori');
 $routes->post('admin/berita_kategori_', 'Admin::berita_kategori_');
 $routes->post('admin/create_berita_kategori', 'Admin::create_berita_kategori');
 $routes->post('admin/update_berita_kategori', 'Admin::update_berita_kategori');
+$routes->post('admin/update_bayar', 'Admin::update_bayar');
+$routes->post('admin/konfirmasi_bayar', 'Admin::konfirmasi_bayar');
 $routes->post('admin/delete_berita_kategori', 'Admin::delete_berita_kategori');
 $routes->get('admin/berita', 'Admin::berita');
 $routes->post('admin/berita_', 'Admin::berita_');

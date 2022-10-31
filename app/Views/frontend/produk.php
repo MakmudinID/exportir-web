@@ -31,7 +31,7 @@
 							Rp <?= number_format($produk->harga, 0, ',', '.') ?>/<?= $produk->satuan ?>
 						</p>
 						<p><strong>Kategori: </strong> <?= $produk->nama_kategori ?></p>
-						<p><?= $produk->deskripsi ?></p>
+						<p><?= html_entity_decode($produk->deskripsi) ?></p>
 						<div class="d-flex">
 							<div class="single-product-form">
 								<input type="number" placeholder="0" name="qty" id="qty" class="form-control">

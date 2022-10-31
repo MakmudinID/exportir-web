@@ -145,9 +145,10 @@ class TransaksiModel extends Model
         $column_order = array('create_date', 'kode_transaksi', 'nama', null, null, null); //field yang ada di table user
         $column_search = array('kode_transaksi', 'nama');
 
-        $sql = "SELECT tbl_transaksi.*
+        $sql = "SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
         FROM tbl_transaksi 
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
         WHERE kerjasama = 'T'
         AND id_umkm = $id_umkm ";
 
@@ -208,8 +209,9 @@ class TransaksiModel extends Model
         $column_order = array('create_date', 'kode_bayar', 'total_tagihan', 'status', null); //field yang ada di table user
         $column_search = array('kode_bayar');
 
-        $sql = "SELECT *
+        $sql = "SELECT tbl_transaksi_pembayaran.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
         FROM tbl_transaksi_pembayaran 
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
         WHERE no_kerjasama IS NULL ";
 
         if ($role != 'SUPERADMIN') {

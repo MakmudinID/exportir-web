@@ -777,6 +777,8 @@ class Frontend extends BaseController
         $transaksi_list = rtrim($this->request->getPost('id_transaksi'), ',');
         $data['title'] = 'Checkout';
         $data['id_transaksi'] = $transaksi_list;
+        
+        $data['metode_bayar'] = $this->db->query("select * from tbl_metode_bayar where status=?", array('Active'))->getResult();
         $data['transaksi']  = $this->server_side->transaksi_in($transaksi_list);
         $data['pemesan']  = $this->server_side->transaksi_in_limit($transaksi_list);
         $data['js'] = array("checkout.js?r=" . uniqid());
@@ -803,6 +805,7 @@ class Frontend extends BaseController
         $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 2 days'));
         $tbl_transaksi_pembayaran['total_tagihan'] = $this->server_side->jumlah_total_bayar($transaksi_list);
         $tbl_transaksi_pembayaran['status'] = 'BELUM_DIBAYAR';
+        $tbl_transaksi_pembayaran['id_metode_bayar'] = $this->request->getPost('metode_bayar');
         $tbl_transaksi_pembayaran['create_user'] = session()->get('nama');
 
         $id_pembayaran = $this->server_side->createRowsReturnID($tbl_transaksi_pembayaran, 'tbl_transaksi_pembayaran');

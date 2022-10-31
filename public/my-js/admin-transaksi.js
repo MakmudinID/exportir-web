@@ -21,6 +21,19 @@ jQuery(document).ready(function() {
         $('#modal-default').modal('show');
     });
 
+    $(document).on('click', '.konfirmasi-bukti-bayar', function() {
+        $('[name="id_pembayaran"]').val($(this).data('id_pembayaran'));
+        $('#bukti-bayar').html('<img src="' + $(this).data('bukti_url') + '" class="img-fluid">');
+        let keterangan;
+        if ($(this).data('keterangan') != '') {
+            keterangan = $(this).data('keterangan');
+        } else {
+            keterangan = '-';
+        }
+        $('#catatan').text(keterangan);
+        $('#modal-konfirmasi').modal('show');
+    });
+
     $("#form-bukti").validate({
         errorClass: "is-invalid",
         // validClass: "is-valid",
@@ -75,6 +88,60 @@ jQuery(document).ready(function() {
         }
     });
 
+    $("#form-konfirmasi").validate({
+        errorClass: "is-invalid",
+        // validClass: "is-valid",
+        rules: {
+            keterangan: {
+                required: true
+            },
+        },
+        submitHandler: function(form) {
+            let url;
+            url = base_url + '/admin/konfirmasi_bayar';
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: new FormData(document.getElementById("form-konfirmasi")),
+                dataType: "JSON",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (data.result != true) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            html: "Gagal Konfirmasi Pembayaran",
+                            icon: 'error',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            buttons: false,
+                        });
+                        window.location.reload();
+                    } else {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: "Konfirmasi Bayar Berhasil Disimpan",
+                            icon: 'success',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false
+                        });
+
+                        $('#modal-default').modal('hide');
+                        $('body').removeClass('modal-open');
+                        window.location.reload();
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        }
+    });
+
     table = $('#table').DataTable({
         ajax: {
             url: base_url + "/admin/transaksi_",
@@ -93,9 +160,9 @@ jQuery(document).ready(function() {
         columns: [{
                 "data": 'tanggal_transaksi',
             },
-            { "data": "no_transaksi" },
-            { "data": "umkm" },
+            { "data": "kode_bayar" },
             { "data": "total_tagihan" },
+            { "data": "batas_bayar" },
             { "data": "status" },
             { "data": "detail" },
         ],

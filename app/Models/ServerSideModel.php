@@ -60,11 +60,10 @@ class ServerSideModel extends Model
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
         JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
-        WHERE tbl_transaksi.id_pengguna =?
-        AND tbl_transaksi_pembayaran.kode_bayar=?
+        WHERE tbl_transaksi_pembayaran.kode_bayar=?
         LIMIT 1";
 
-        return $this->db->query($sql, array(session()->get('id'), $kode_bayar))->getRow();
+        return $this->db->query($sql, array($kode_bayar))->getRow();
     }
 
     public function transaksi_in_kodebayar($kode_bayar){
@@ -72,10 +71,9 @@ class ServerSideModel extends Model
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
-        WHERE tbl_transaksi_pembayaran.kode_bayar=?
-        AND tbl_transaksi.id_pengguna=?";
+        WHERE tbl_transaksi_pembayaran.kode_bayar=?";
 
-        return $this->db->query($sql, array($kode_bayar, session()->get('id')))->getResult();
+        return $this->db->query($sql, array($kode_bayar))->getResult();
     }
 
     public function transaksi_in_kode($kode_transaksi){

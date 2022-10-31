@@ -64,12 +64,6 @@ class Reseller extends BaseController
             $end_date = "";
         }
 
-        if ($this->request->getPost('status') == 'ALL') {
-            $status = "";
-        } else {
-            $status = $this->request->getPost('status');
-        }
-
         $list = $this->transaksi->limitRowstTransaksi($status, $start_date, $end_date);
 
         $data = array();
@@ -82,6 +76,7 @@ class Reseller extends BaseController
             $row['batas_bayar'] = $field->batas_bayar;
 
             $row['kode_bayar'] = $field->kode_bayar;
+            $row['metode_bayar'] = $field->nama_metode_bayar.': '.$field->nomor_rekening ;
             $row['total_tagihan'] = 'Rp ' . number_format($field->total_tagihan, 0, ',', '.');
 
             if ($field->status == 'BELUM_DIBAYAR') {

@@ -39,9 +39,8 @@
                                 <select name="status" id="status" class="form-control">
                                     <option value="ALL">ALL</option>
                                     <option value="BELUM_DIBAYAR">Belum Dibayar</option>
-                                    <option value="SEDANG_DIPROSES">Sedang Diproses</option>
-                                    <option value="SUDAH_DIKIRIM">Sudah Dikirim</option>
-                                    <option value="SELESAI">Sudah Sampai</option>
+                                    <option value="MENUNGGU_KONFIRMASI">Menunggu Konfirmasi</option>
+                                    <option value="SUDAH_DIBAYAR">Lunas</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -60,9 +59,9 @@
                             <thead>
                                 <tr>
                                     <th>Tanggal Transaksi</th>
-                                    <th>No. Transaksi</th>
-                                    <th>UMKM</th>
+                                    <th>Kode Bayar</th>
                                     <th>Total Tagihan</th>
+                                    <th>Batas Bayar</th>
                                     <th>Status</th>
                                     <th>Detail</th>
                                 </tr>
@@ -113,6 +112,62 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-konfirmasi">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="form-konfirmasi">
+                <div class="modal-header">
+                    <h4 class="modal-title">Konfirmasi Bukti Bayar</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="foto">Foto</label><br>
+                                <div id="bukti-bayar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="catatan">Catatan</label><br>
+                                <div id="catatan"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="konfirmasi">Konfirmasi</label><br>
+                                <select name="konfirmasi" id="konfirmasi" class="form-control">
+                                    <option value="LUNAS">Bayar Sesuai</option>
+                                    <option value="TIDAK_LUNAS">Bayar Tidak Sesuai</option>
+                                </select>
+                                <input type="hidden" name="id_pembayaran" value="id_pembayaran">
+                            </div> 
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="catatan_konfirmasi">Catatan Konfirmasi</label><br>
+                                <textarea name="catatan_konfirmasi" id="catatan_konfirmasi" class="form-control"></textarea>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
