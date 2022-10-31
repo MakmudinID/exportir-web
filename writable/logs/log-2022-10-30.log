@@ -48,3 +48,89 @@ in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
  8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
  9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
 10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-30 21:40:47 --> You must set the database table to be used with your query.
+in SYSTEMPATH\Database\BaseConnection.php on line 874.
+ 1 SYSTEMPATH\Model.php(586): CodeIgniter\Database\BaseConnection->table(null)
+ 2 SYSTEMPATH\Model.php(763): CodeIgniter\Model->builder()
+ 3 APPPATH\Controllers\Admin.php(1179): CodeIgniter\Model->__call('updateKonfirmasiBayar', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->konfirmasi_bayar()
+ 5 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-10-30 21:41:33 --> You must set the database table to be used with your query.
+in SYSTEMPATH\Database\BaseConnection.php on line 874.
+ 1 SYSTEMPATH\Model.php(586): CodeIgniter\Database\BaseConnection->table(null)
+ 2 SYSTEMPATH\Model.php(763): CodeIgniter\Model->builder()
+ 3 APPPATH\Controllers\Admin.php(1179): CodeIgniter\Model->__call('updateKonfirmasiBayar', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->konfirmasi_bayar()
+ 5 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-30 21:46:44 --> Column 'nama' in where clause is ambiguous
+CRITICAL - 2022-10-30 21:46:44 --> Column 'nama' in where clause is ambiguous
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'MENUNGGU_KONFIRMASI\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'MENUNGGU_KONFIRMASI\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'MENUNGGU_KONFIRMASI\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 4 APPPATH\Models\TransaksiModel.php(137): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'MENUNGGU_KONFIRMASI\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 5 APPPATH\Controllers\Umkm.php(338): App\Models\TransaksiModel->limitRowstTransaksiUMKM('ROOTPATH\\public', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-10-30 21:48:14 --> Column 'nama' in where clause is ambiguous
+CRITICAL - 2022-10-30 21:48:14 --> Column 'nama' in where clause is ambiguous
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'MENUNGGU_KONFIRMASI\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'MENUNGGU_KONFIRMASI\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'MENUNGGU_KONFIRMASI\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 4 APPPATH\Models\TransaksiModel.php(137): CodeIgniter\Database\BaseConnection->query('SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
+        FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
+        WHERE kerjasama = \'T\'
+        AND id_umkm = 1  AND (tbl_transaksi.create_date BETWEEN \'2022-10-01 00:00:00\' AND \'2022-10-31 23:59:59\')  AND tbl_transaksi.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'BELUM_DIBAYAR\'  AND tbl_transaksi_pembayaran.status != \'MENUNGGU_KONFIRMASI\'  AND (  kode_transaksi like \'%%\' or nama like \'%%\'  )  ORDER BY tbl_transaksi.create_date DESC limit 0,30')
+ 5 APPPATH\Controllers\Umkm.php(338): App\Models\TransaksiModel->limitRowstTransaksiUMKM('ROOTPATH\\public', '2022-10-01 00:00:00', '2022-10-31 23:59:59')
+ 6 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_()
+ 7 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+ 8 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

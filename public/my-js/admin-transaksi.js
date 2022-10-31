@@ -34,114 +34,6 @@ jQuery(document).ready(function() {
         $('#modal-konfirmasi').modal('show');
     });
 
-    $("#form-bukti").validate({
-        errorClass: "is-invalid",
-        // validClass: "is-valid",
-        rules: {
-            foto: {
-                required: true
-            },
-        },
-        submitHandler: function(form) {
-            let url;
-            url = base_url + '/admin/update_bayar';
-
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: new FormData(document.getElementById("form-bukti")),
-                dataType: "JSON",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if (data.result != true) {
-                        Swal.fire({
-                            title: 'Gagal',
-                            html: "Gagal Unggah Dokumen",
-                            icon: 'error',
-                            timer: 3000,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            buttons: false,
-                        });
-                        window.location.reload();
-                    } else {
-                        Swal.fire({
-                            title: 'Berhasil',
-                            html: "Bukti Berhasil Diunggah!",
-                            icon: 'success',
-                            timer: 3000,
-                            showCancelButton: false,
-                            showConfirmButton: false
-                        });
-
-                        $('#modal-default').modal('hide');
-                        $('body').removeClass('modal-open');
-                        window.location.reload();
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error adding / update data');
-                }
-            });
-        }
-    });
-
-    $("#form-konfirmasi").validate({
-        errorClass: "is-invalid",
-        // validClass: "is-valid",
-        rules: {
-            keterangan: {
-                required: true
-            },
-        },
-        submitHandler: function(form) {
-            let url;
-            url = base_url + '/admin/konfirmasi_bayar';
-
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: new FormData(document.getElementById("form-konfirmasi")),
-                dataType: "JSON",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if (data.result != true) {
-                        Swal.fire({
-                            title: 'Gagal',
-                            html: "Gagal Konfirmasi Pembayaran",
-                            icon: 'error',
-                            timer: 3000,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            buttons: false,
-                        });
-                        window.location.reload();
-                    } else {
-                        Swal.fire({
-                            title: 'Berhasil',
-                            html: "Konfirmasi Bayar Berhasil Disimpan",
-                            icon: 'success',
-                            timer: 3000,
-                            showCancelButton: false,
-                            showConfirmButton: false
-                        });
-
-                        $('#modal-default').modal('hide');
-                        $('body').removeClass('modal-open');
-                        window.location.reload();
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error adding / update data');
-                }
-            });
-        }
-    });
-
     table = $('#table').DataTable({
         ajax: {
             url: base_url + "/admin/transaksi_",
@@ -176,6 +68,114 @@ jQuery(document).ready(function() {
 
     $('#btn-filter').click(function() { //button filter event click
         table.ajax.reload(); //just reload table
+    });
+
+    $("#form-bukti").validate({
+        errorClass: "is-invalid",
+        // validClass: "is-valid",
+        rules: {
+            foto: {
+                required: true
+            },
+        },
+        submitHandler: function(form) {
+            let url;
+            url = base_url + '/admin/update_bayar';
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: new FormData(document.getElementById("form-bukti")),
+                dataType: "JSON",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (data.result != true) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            html: "Gagal Unggah Dokumen",
+                            icon: 'error',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            buttons: false,
+                        });
+                        table.ajax.reload(); //just reload table
+                    } else {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: "Bukti Berhasil Diunggah!",
+                            icon: 'success',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false
+                        });
+
+                        $('#modal-default').modal('hide');
+                        $('body').removeClass('modal-open');
+                        table.ajax.reload(); //just reload table
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        }
+    });
+
+    $("#form-konfirmasi").validate({
+        errorClass: "is-invalid",
+        // validClass: "is-valid",
+        rules: {
+            konfirmasi: {
+                required: true
+            },
+        },
+        submitHandler: function(form) {
+            let url;
+            url = base_url + '/admin/konfirmasi_bayar';
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: new FormData(document.getElementById("form-konfirmasi")),
+                dataType: "JSON",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (data.result != true) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            html: "Gagal Konfirmasi Pembayaran",
+                            icon: 'error',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            buttons: false,
+                        });
+                        table.ajax.reload(); //just reload table
+                    } else {
+                        Swal.fire({
+                            title: 'Berhasil',
+                            html: "Konfirmasi Bayar Berhasil Disimpan",
+                            icon: 'success',
+                            timer: 3000,
+                            showCancelButton: false,
+                            showConfirmButton: false
+                        });
+
+                        $('#modal-default').modal('hide');
+                        $('body').removeClass('modal-open');
+                        table.ajax.reload(); //just reload table
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        }
     });
 });
 

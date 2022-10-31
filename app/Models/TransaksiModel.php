@@ -142,10 +142,10 @@ class TransaksiModel extends Model
     {
         $id_umkm = session()->get('id_umkm');
 
-        $column_order = array('create_date', 'kode_transaksi', 'nama', null, null, null); //field yang ada di table user
-        $column_search = array('kode_transaksi', 'nama');
+        $column_order = array('create_date', 'kode_transaksi', 'tbl_transaksi.nama', null, null, null); //field yang ada di table user
+        $column_search = array('kode_transaksi', 'tbl_transaksi.nama');
 
-        $sql = "SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
+        $sql = "SELECT tbl_transaksi.*, tbl_metode_bayar.nama as nama_metode_bayar, tbl_metode_bayar.nomor_rekening 
         FROM tbl_transaksi 
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
         JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
