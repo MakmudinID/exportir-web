@@ -9,7 +9,7 @@
 							<h4 class="text-white">Website ini di buat untuk dapat memberikan kemudahan dan membantu UMKM dalam memperluas dan meningkatkan bisnis serta membangun kerjasama dengan beberapa reseller dan importin lokal secara terpercaya dan mudah.</h4>
 							<?php if(session()->get('id') == ''): ?>
 							<div class="hero-btns">
-								<a href="contact.html" class="boxed-btn">Ke Halaman Login <i class="fa fa-arrow-right"></i></a>
+								<a href="<?=base_url('login')?>" class="boxed-btn">Ke Halaman Login <i class="fa fa-arrow-right"></i></a>
 							</div>
 							<?php endif; ?>
 						</div>
@@ -52,7 +52,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<a href="<?= base_url('list-produk') ?>" class="boxed-btn btn-sm">Lihat Lebih Lengkap</a>
+					<a href="<?= base_url('list-produk') ?>" class="boxed-btn btn-sm">Lihat Produk Lebih Lengkap</a>
 				</div>
 			</div>
 		</div>
@@ -151,9 +151,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="row mb-100">
+	<div class="row mb-5">
 		<div class="col-lg-12 text-center">
-			<a href="<?= base_url('/list-berita') ?>" class="boxed-btn">Lihat Lebih Lengkap</a>
+			<a href="<?= base_url('/list-berita') ?>" class="boxed-btn">Lihat Berita Lebih Lengkap</a>
 		</div>
 	</div>
 	<!-- end latest news -->

@@ -1,3 +1,8 @@
+<?php
+use App\Models\ServerSideModel;
+$this->server_side = new ServerSideModel();
+?>
+
 <!-- breadcrumb-section -->
 <div class="breadcrumb-section breadcrumb-bg">
     <div class="container">
@@ -42,7 +47,7 @@
                                             </div>
                                             <div class="content">
                                                 <h3>Produk</h3>
-                                                <p>10</p>
+                                                <p><?= $jumlah_produk;?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -53,7 +58,7 @@
                                             </div>
                                             <div class="content">
                                                 <h3>Bergabung</h3>
-                                                <p>24 Hari lalu</p>
+                                                <p><?= $this->server_side->formatTanggal($umkm->create_date, 'no');?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -64,7 +69,7 @@
                                             </div>
                                             <div class="content">
                                                 <h3>Aktif</h3>
-                                                <p>60 menit lalu</p>
+                                                <p><?= $this->server_side->formatTanggal($umkm->logout_date);?></p>
                                             </div>
                                         </div>
                                     </div>

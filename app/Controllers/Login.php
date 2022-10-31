@@ -190,6 +190,9 @@ class Login extends BaseController
 
     public function logout()
     {
+        $data['logout_date'] = date('Y-m-d H:i:s');
+        $this->server_side->updateRows(session()->get('id'), $data, 'tbl_pengguna');
+
         session()->destroy();
         return redirect()->route('login');
     }

@@ -75,7 +75,7 @@ $this->server_side = new ServerSideModel(); ?>
 							<ul>
 								<li <?=($title == 'Home') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('/') ?>">Home</a></li>
 								<li <?=($title == 'Kategori') ? 'class="current-list-item"' : ''?>>
-									<a href="<?= base_url('/list-produk') ?>">Kategori</a>
+									<a href="javascript:void(0)">Kategori</a>
 									<ul class="sub-menu">
 										<?php foreach($this->server_side->getKategoriUMKMreal() as $k):?>
 											<li><a href="<?= base_url('/kategori/'.$k->id)?>"><?= $k->nama;?></a></li>

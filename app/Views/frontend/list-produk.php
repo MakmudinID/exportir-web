@@ -22,16 +22,8 @@
                                         <div class="col-md-4 align-self-center">
                                             <input type="text" name="keyword" class="form-control" placeholder="Cari Produk" id="keyword">
                                         </div>
-                                        <div class="col-md-4 align-self-center">
-                                            <select id="kategori" class="form-control">
-                                                <option value="">- Semua Kategori -</option>
-                                                <?php foreach ($kategori_produk as $kp) { ?>
-                                                    <option value="<?= $kp->id ?>"><?= $kp->nama ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
                                         <div class="col-md-3 align-self-center">
-                                            <button type="button" class="btn btn-primary filter" style="width: 100%;">Terapkan</button>
+                                            <button type="button" class="btn btn-primary filter" style="width: 100%;">Cari</button>
                                         </div>
                                     </div>
                                 </form>

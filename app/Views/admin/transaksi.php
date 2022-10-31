@@ -152,6 +152,7 @@
                             <div class="form-group">
                                 <label for="konfirmasi">Konfirmasi</label><br>
                                 <select name="konfirmasi" id="konfirmasi" class="form-control">
+                                    <option value=""></option>
                                     <option value="LUNAS">Bayar Sesuai</option>
                                     <option value="TIDAK_LUNAS">Bayar Tidak Sesuai</option>
                                 </select>

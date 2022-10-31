@@ -166,7 +166,7 @@ jQuery(document).ready(function() {
                             showConfirmButton: false
                         });
 
-                        $('#modal-default').modal('hide');
+                        $('#modal-konfirmasi').modal('hide');
                         $('body').removeClass('modal-open');
                         table.ajax.reload(); //just reload table
                     }

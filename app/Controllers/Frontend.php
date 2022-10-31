@@ -98,15 +98,15 @@ class Frontend extends BaseController
     public function list_produk_by_umkm()
     {
         $umkm = $this->request->getPost('umkm');
-        $kategori = $this->request->getPost('kategori');
+        // $kategori = $this->request->getPost('kategori');
         $keyword = $this->request->getPost('keyword');
         $sort_by = $this->request->getPost('sort_by');
 
-        $produk = $this->server_side->getProdukByUMKMfilter($umkm, $kategori, $keyword, $sort_by);
+        $produk = $this->server_side->getProdukByUMKMfilter($umkm, $keyword, $sort_by);
         $html = '';
 
         foreach ($produk as $p) {
-            $html .= '<div class="col-lg-3 col-md-3 abt-textcol-6 text-center">
+            $html .= '<div class="col-lg-3 col-md-3 align-self-center abt-textcol-6 text-center">
             <div class="single-product-item">
                 <div class="product-image">
                     <a href="' . base_url('/produk/' . $p->id) . '"><img src="' . $p->foto . '" alt="' . $p->nama . '"></a>
@@ -140,7 +140,7 @@ class Frontend extends BaseController
         $html = '';
 
         foreach ($produk as $p) {
-            $html .= '<div class="col-lg-3 col-md-3 abt-textcol-6 text-center">
+            $html .= '<div class="col-lg-3 align-self-center col-md-3 abt-textcol-6 text-center">
             <div class="single-product-item">
                 <div class="product-image">
                     <a href="' . base_url('/produk/' . $p->id) . '"><img src="' . $p->foto . '" alt="' . $p->nama . '"></a>
@@ -387,6 +387,7 @@ class Frontend extends BaseController
         }
         $data['umkm'] = $this->server_side->getUMKMbySlug($slug);
         $data['produk'] = $this->server_side->getProdukByUMKM($slug);
+        $data['jumlah_produk'] = count($data['produk']);
         $data['produk_kategori'] = $this->server_side->getKategoriByUMKM($slug);
         $data['js'] = array("umkm.js?r=" . uniqid());
         $data['main_content']   = 'frontend/umkm';

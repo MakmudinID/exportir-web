@@ -238,7 +238,7 @@ class ServerSideModel extends Model
         return $q->getResult();
     }
 
-    public function getProdukByUMKMfilter($umkm, $kategori, $keyword, $sort_by)
+    public function getProdukByUMKMfilter($umkm, $keyword, $sort_by)
     {
         $sql = "SELECT tbl_kategori_produk.nama as kategori, tbl_produk_umkm.*, tbl_city.city_name, tbl_umkm.nama as nama_toko, tbl_umkm.slug
         FROM tbl_produk_umkm 
@@ -249,10 +249,6 @@ class ServerSideModel extends Model
         
         if($umkm != ''){
             $sql.="AND tbl_umkm.id=$umkm ";
-        }
-
-        if($kategori != ''){
-            $sql.="AND tbl_produk_umkm.id_kategori=$kategori ";
         }
         
         if($keyword != ''){
@@ -426,7 +422,7 @@ class ServerSideModel extends Model
 
     public function getUMKMbySlug($slug)
     {
-        $q = $this->db->query("SELECT * FROM tbl_umkm where slug=?", array($slug));
+        $q = $this->db->query("SELECT tbl_umkm.*, tbl_pengguna.logout_date FROM tbl_umkm JOIN tbl_pengguna ON tbl_pengguna.id = tbl_umkm.id_pengguna where slug=?", array($slug));
         return $q->getRow();
     }
 

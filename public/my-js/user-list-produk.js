@@ -8,7 +8,7 @@ function filter() {
         method: 'POST',
         data: {
             umkm: '',
-            kategori: $('#kategori').val(),
+            // kategori: $('#kategori').val(),
             keyword: $('#keyword').val(),
             sort_by: $('#sort_by').val(),
         },
