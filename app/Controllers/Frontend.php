@@ -322,7 +322,7 @@ class Frontend extends BaseController
                     if ($i == 2) {
                         $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($data->create_date . ' + 1 month'));
                         $date_ = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 1 month'));
-                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_. ' + 3 days'));
+                        $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_ . ' + 3 days'));
                     } else if ($i == 3) {
                         $tbl_transaksi['create_date'] = date('Y-m-d H:i:s', strtotime($data->create_date . ' + 2 month'));
                         $date_ = date('Y-m-d', strtotime($data->tanggal_kirim . ' + 2 month'));
@@ -383,7 +383,17 @@ class Frontend extends BaseController
         $data['kode_transaksi'] = $this->server_side->getKodeTransaksibySlug($slug);
         $data['url'] = base_url('kerjasama/umkm/' . $data['kode_transaksi']);
         if (!$data['kode_transaksi']) {
-            $data['url'] = base_url('kerjasama');
+            $alert = '
+                <div id="pesan-error"">
+                    <div class="alert alert-info alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-info-circle"></i> Anda belum dapat mengajukan kerjasama pada UMKM ini!</h5>
+                        Silakan tambahkan produk ke keranjang terlebih dahulu.
+                    </div>
+                </div>';
+
+            $data['message'] = $alert;
+            $data['url'] = base_url('profil-umkm/' . $slug);
         }
         $data['umkm'] = $this->server_side->getUMKMbySlug($slug);
         $data['produk'] = $this->server_side->getProdukByUMKM($slug);
@@ -778,7 +788,7 @@ class Frontend extends BaseController
         $transaksi_list = rtrim($this->request->getPost('id_transaksi'), ',');
         $data['title'] = 'Checkout';
         $data['id_transaksi'] = $transaksi_list;
-        
+
         $data['metode_bayar'] = $this->db->query("select * from tbl_metode_bayar where status=?", array('Active'))->getResult();
         $data['transaksi']  = $this->server_side->transaksi_in($transaksi_list);
         $data['pemesan']  = $this->server_side->transaksi_in_limit($transaksi_list);

@@ -52,6 +52,12 @@ $this->server_side = new ServerSideModel(); ?>
                                 <?= $transaksi->alamat . ', ' . $transaksi->nama_kota . ', ' . $transaksi->nama_propinsi; ?>
                             </div>
                         </div>
+                        <div class="row">
+                            <label class="col-sm-4">Nomor Resi (<?= strtoupper($transaksi->kurir) ?>)</label>
+                            <div class="col-sm-8">
+                                <?= ($transaksi->no_resi != '') ? $transaksi->no_resi : '-'; ?>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="row">
@@ -72,6 +78,12 @@ $this->server_side = new ServerSideModel(); ?>
                                     <?= $transaksi->batas_bayar; ?>
                                 </div>
                             <?php endif; ?>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4">Metode Bayar</label>
+                            <div class="col-sm-8">
+                                <?= $transaksi->metode_bayar; ?> (<?= $transaksi->nomor_rekening; ?>)
+                            </div>
                         </div>
                         <div class="row">
                             <label class="col-sm-4">Status Pembayaran</label>
@@ -112,6 +124,7 @@ $this->server_side = new ServerSideModel(); ?>
                         <b>DAFTAR PESANAN</b>
                     </div>
                     <div class="card-body">
+                        <b>Nomor Transaksi: <a href="<?= base_url('/transaksi/nomor/' . $t->kode_transaksi) ?>"><?= $t->kode_transaksi; ?></a></b>
                         <div class="d-flex mb-2">
                             <div class="align-self-center"><b>Produk dari UMKM: <a href="<?= base_url('profil-umkm/' . $transaksi->slug) ?>"><?= $transaksi->nama_toko; ?></a></b></div>
                             <div class="ml-auto align-self-center">
@@ -123,7 +136,7 @@ $this->server_side = new ServerSideModel(); ?>
                                         <div class="align-self-center ml-2 update-status" data-id_transaksi="' . $transaksi->id . '" role="button"><i class="fas fa-edit"></i></div>
                                     </div>';
                                 } else if ($transaksi->status == 'SUDAH_DIKIRIM') {
-                                    $status = '<span class="badge badge-primary">No. Resi Kurir: '.$transaksi->no_resi.'</span>';
+                                    $status = '<span class="badge badge-primary">No. Resi Kurir: ' . $transaksi->no_resi . '</span>';
                                 } else if ($transaksi->status == 'SELESAI') {
                                     $status = '<span class="badge badge-success">Selesai</span>';
                                 } else {

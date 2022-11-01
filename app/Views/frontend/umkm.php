@@ -19,6 +19,9 @@ $this->server_side = new ServerSideModel();
 <!-- end breadcrumb section -->
 <div class="single-product mt-40 mb-40">
     <div class="container">
+        <?php if(isset($message)){
+            echo $message;
+        } ?>
         <div class="row">
             <div class="col-md-4 align-self-center mb-2">
                 <div class="card">

@@ -1175,10 +1175,10 @@ class Admin extends BaseController
 
             $table = 'tbl_transaksi_pembayaran';
 
-            $this->server_side->updateRows($id, $data, $table);
-            $result = $this->server_side->updateKonfirmasiBayar($id, 'LUNAS');
+            $result = $this->server_side->updateRows($id, $data, $table);
         } else {
-            $result = $this->server_side->updateKonfirmasiBayar($id, 'TIDAK_LUNAS');
+            $keterangan = htmlspecialchars($catatan_konfirmasi);
+            $result = $this->server_side->updateBatalTransaksi($id, $keterangan);
         }
 
         $r['result'] = true;

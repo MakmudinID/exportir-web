@@ -121,6 +121,8 @@ $routes->get('reseller/transaksi/(:any)', 'Reseller::transaksi_detail/$1');
 $routes->post('reseller/transaksi_', 'Reseller::transaksi_');
 $routes->get('reseller/detail-berita/(:any)', 'Reseller::detail_berita/$1');
 $routes->get('reseller/chatting', 'Reseller::chatting');
+$routes->post('reseller/kirim-chatting', 'Reseller::kirim_chatting');
+$routes->get('reseller/chatting/(:any)', 'Reseller::chatting_detail/$1');
 $routes->post('reseller/chatting_', 'Reseller::chatting_');
 
 //ADMIN BackOffice

@@ -141,8 +141,52 @@ class Reseller extends BaseController
         }
         $data['title'] = 'Chatting';
         $data['js'] = array("reseller-chatting.js?r=" . uniqid());
+        $data['nomor_transaksi'] = $this->transaksi->nomorTransaksi();
         $data['main_content']   = 'reseller/chatting';
         echo view('template/adminlte', $data);
+    }
+
+    public function chatting_detail($kode_transaksi)
+    {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Chatting';
+        $data['js'] = array("reseller-chatting-detail.js?r=" . uniqid());
+        $data['nomor_transaksi'] = $this->transaksi->nomorTransaksi();
+        $data['main_content']   = 'reseller/chatting-detail';
+        echo view('template/adminlte', $data);
+    }
+
+    public function kirim_chatting()
+    {
+        if (session()->get('role') != 'RESELLER') {
+            return redirect()->route('logout');
+        }
+
+        $kode_transaksi = $this->request->getPost('transaksi');
+        //get id_umkm
+        $id_umkm = $this->server_side->getIdPenggunaUMKM($kode_transaksi);
+
+        //create chat content
+        $data_chat['id_pengirim'] = session()->get('id'); 
+        $data_chat['id_penerima'] = $id_umkm; 
+        $data_chat['kode_transaksi'] = $kode_transaksi; 
+        $data_chat['topik'] = $this->request->getPost('topik'); 
+
+        $result = $this->server_side->createRows($data_chat, 'tbl_chat');
+
+        $r['result'] = true;
+        $r['url'] = base_url('reseller/chatting/'.$kode_transaksi);
+
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
     }
 
     public function chatting_()
@@ -151,6 +195,8 @@ class Reseller extends BaseController
             return redirect()->route('logout');
         }
 
+        // echo 'hello'; 
+        // die;
         $list = $this->transaksi->limitRowsChatting();
         
         $data = array();

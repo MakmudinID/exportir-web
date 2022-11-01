@@ -17,7 +17,7 @@ class ServerSideModel extends Model
 
     public function getTransaksiPembayaran($no_kerjasama)
     {
-        $sql="SELECT tbl_transaksi_pembayaran.*, tbl_transaksi.id as id_transaksi, tbl_transaksi.no_resi, tbl_transaksi.status as status_transaksi, tbl_transaksi.tanggal_kirim
+        $sql = "SELECT tbl_transaksi_pembayaran.*, tbl_transaksi.id as id_transaksi, tbl_transaksi.no_resi, tbl_transaksi.status as status_transaksi, tbl_transaksi.tanggal_kirim
         FROM tbl_transaksi_pembayaran
         JOIN tbl_transaksi ON tbl_transaksi.id_pembayaran = tbl_transaksi_pembayaran.id
         WHERE no_kerjasama = ? ";
@@ -27,7 +27,7 @@ class ServerSideModel extends Model
 
     public function getKerjasama($no_kerjasama)
     {
-        $sql="SELECT tbl_transaksi.kode_transaksi, tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota, tbl_umkm.alamat as alamat_umkm, tbl_umkm.no_telepon as telepon_umkm
+        $sql = "SELECT tbl_transaksi.kode_transaksi, tbl_transaksi_kerjasama.*, tbl_umkm.nama as nama_umkm, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota, tbl_umkm.alamat as alamat_umkm, tbl_umkm.no_telepon as telepon_umkm
         FROM tbl_transaksi_kerjasama
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.no_kerjasama = tbl_transaksi_kerjasama.no_kerjasama
         JOIN tbl_transaksi ON tbl_transaksi.id_pembayaran = tbl_transaksi_pembayaran.id
@@ -40,8 +40,9 @@ class ServerSideModel extends Model
         return $this->db->query($sql, array($no_kerjasama))->getRow();
     }
 
-    public function transaksi_in($list){
-        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+    public function transaksi_in($list)
+    {
+        $sql = "SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
@@ -53,8 +54,9 @@ class ServerSideModel extends Model
         return $this->db->query($sql, array(session()->get('id')))->getResult();
     }
 
-    public function pembayaran($kode_bayar){
-        $sql="SELECT tbl_transaksi.*, tbl_metode_bayar.nama as metode_bayar, tbl_metode_bayar.nomor_rekening, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.bukti_url, tbl_transaksi_pembayaran.total_tagihan, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+    public function pembayaran($kode_bayar)
+    {
+        $sql = "SELECT tbl_transaksi.*, tbl_metode_bayar.nama as metode_bayar, tbl_metode_bayar.nomor_rekening, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.bukti_url, tbl_transaksi_pembayaran.total_tagihan, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
@@ -67,8 +69,9 @@ class ServerSideModel extends Model
         return $this->db->query($sql, array($kode_bayar))->getRow();
     }
 
-    public function transaksi_in_kodebayar($kode_bayar){
-        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.nama as slug
+    public function transaksi_in_kodebayar($kode_bayar)
+    {
+        $sql = "SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.nama as slug
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
@@ -77,8 +80,9 @@ class ServerSideModel extends Model
         return $this->db->query($sql, array($kode_bayar))->getResult();
     }
 
-    public function transaksi_in_kode($kode_transaksi){
-        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+    public function transaksi_in_kode($kode_transaksi)
+    {
+        $sql = "SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
@@ -90,21 +94,24 @@ class ServerSideModel extends Model
         return $this->db->query($sql, array(session()->get('id'), $kode_transaksi))->getResult();
     }
 
-    public function transaksi_in_kode_detail($kode_transaksi){
-        $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.total_tagihan, tbl_transaksi_pembayaran.tanggal_bayar, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.keterangan as keterangan_bayar, tbl_transaksi_pembayaran.bukti_url as bukti_bayar, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.slug, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+    public function transaksi_in_kode_detail($kode_transaksi)
+    {
+
+        $sql = "SELECT tbl_transaksi.*, tbl_metode_bayar.nama as metode_bayar, tbl_metode_bayar.nomor_rekening, tbl_transaksi_pembayaran.total_tagihan, tbl_transaksi_pembayaran.tanggal_bayar, tbl_transaksi_pembayaran.status as status_bayar, tbl_transaksi_pembayaran.keterangan as keterangan_bayar, tbl_transaksi_pembayaran.bukti_url as bukti_bayar, tbl_transaksi_pembayaran.batas_bayar, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_toko, tbl_umkm.slug, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran
+        JOIN tbl_metode_bayar ON tbl_metode_bayar.id = tbl_transaksi_pembayaran.id_metode_bayar
         JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
         JOIN tbl_city ON tbl_city.city_id = tbl_transaksi.city_id
         WHERE tbl_transaksi.kode_transaksi=?
         LIMIT 1 ";
         return $this->db->query($sql, array($kode_transaksi))->getRow();
-        
     }
 
-    public function transaksi_in_limit($list){
-        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
+    public function transaksi_in_limit($list)
+    {
+        $sql = "SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.city_id as kota_pengirim, tbl_propinsi.province as nama_propinsi, tbl_city.city_name as nama_kota
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         JOIN tbl_propinsi ON tbl_propinsi.province_id = tbl_transaksi.province_id
@@ -117,8 +124,9 @@ class ServerSideModel extends Model
         return $this->db->query($sql, array(session()->get('id')))->getRow();
     }
 
-    public function transaksi(){
-        $sql="SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.slug as slug_url
+    public function transaksi()
+    {
+        $sql = "SELECT tbl_transaksi.*, tbl_umkm.nama as nama_toko, tbl_umkm.slug as slug_url
         FROM tbl_transaksi
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm
         WHERE tbl_transaksi.id_pengguna = ?
@@ -127,8 +135,9 @@ class ServerSideModel extends Model
         return $this->db->query($sql, array(session()->get('id')))->getResult();
     }
 
-    public function transaksi_detail($id_transaksi){
-        $sql="SELECT tbl_transaksi_detail.*, tbl_produk_umkm.harga as harga_produk, tbl_produk_umkm.harga_min as harga_min, tbl_produk_umkm.nama, tbl_produk_umkm.foto, tbl_produk_umkm.satuan, tbl_produk_umkm.qty as max_qty, tbl_produk_umkm.qty_min as min_qty_kerjasama
+    public function transaksi_detail($id_transaksi)
+    {
+        $sql = "SELECT tbl_transaksi_detail.*, tbl_produk_umkm.harga as harga_produk, tbl_produk_umkm.harga_min as harga_min, tbl_produk_umkm.nama, tbl_produk_umkm.foto, tbl_produk_umkm.satuan, tbl_produk_umkm.qty as max_qty, tbl_produk_umkm.qty_min as min_qty_kerjasama
         FROM `tbl_transaksi_detail`
         JOIN tbl_produk_umkm ON tbl_produk_umkm.id = tbl_transaksi_detail.id_barang
         WHERE tbl_transaksi_detail.id_transaksi = ?";
@@ -136,8 +145,9 @@ class ServerSideModel extends Model
         return $this->db->query($sql, array($id_transaksi))->getResult();
     }
 
-    public function count_cart(){
-        $sql="SELECT count(id_transaksi) as jumlah 
+    public function count_cart()
+    {
+        $sql = "SELECT count(id_transaksi) as jumlah 
         FROM tbl_transaksi 
         JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
         WHERE tbl_transaksi.id_pengguna = ?
@@ -147,8 +157,9 @@ class ServerSideModel extends Model
         return $jumlah;
     }
 
-    public function count_cart_by($kode_transaksi){
-        $sql="SELECT count(id_transaksi) as jumlah 
+    public function count_cart_by($kode_transaksi)
+    {
+        $sql = "SELECT count(id_transaksi) as jumlah 
         FROM tbl_transaksi 
         JOIN tbl_transaksi_detail ON tbl_transaksi_detail.id_transaksi = tbl_transaksi.id
         WHERE tbl_transaksi.kode_transaksi=? ";
@@ -162,7 +173,7 @@ class ServerSideModel extends Model
         $q = $this->db->query("SELECT SUM(subtotal) as jumlah_transaksi FROM `tbl_transaksi_detail` WHERE id_transaksi=? GROUP BY id_transaksi", array($id_transaksi))->getRow();
         return $q->jumlah_transaksi;
     }
-    
+
     public function jumlah_barang($id_transaksi)
     {
         $q = $this->db->query("SELECT * FROM `tbl_transaksi_detail` WHERE id_transaksi=? ", array($id_transaksi))->getNumRows();
@@ -194,7 +205,7 @@ class ServerSideModel extends Model
     public function getNama($id)
     {
         $q = $this->db->query("SELECT tbl_pengguna.nama FROM tbl_pengguna where tbl_pengguna.id = ?", array($id))->getRow();
-        if ($q->foto != NULL) {
+        if ($q->nama != NULL) {
             return $q->nama;
         } else {
             return 'NULL';
@@ -257,20 +268,20 @@ class ServerSideModel extends Model
         JOIN tbl_umkm ON tbl_umkm.id = tbl_produk_umkm.id_umkm 
         JOIN tbl_city on tbl_city.city_id = tbl_umkm.city_id
         WHERE tbl_produk_umkm.status = 'ACTIVE' ";
-        
-        if($umkm != ''){
-            $sql.="AND tbl_umkm.id=$umkm ";
-        }
-        
-        if($keyword != ''){
-            $sql.="AND tbl_produk_umkm.nama LIKE '%$keyword%' ";
+
+        if ($umkm != '') {
+            $sql .= "AND tbl_umkm.id=$umkm ";
         }
 
-        if($sort_by == 'TERBARU'){
-            $sql.="ORDER BY tbl_produk_umkm.id DESC ";
-        }else{
+        if ($keyword != '') {
+            $sql .= "AND tbl_produk_umkm.nama LIKE '%$keyword%' ";
+        }
+
+        if ($sort_by == 'TERBARU') {
+            $sql .= "ORDER BY tbl_produk_umkm.id DESC ";
+        } else {
             //terlaris
-            $sql.="ORDER BY tbl_produk_umkm.id ASC ";
+            $sql .= "ORDER BY tbl_produk_umkm.id ASC ";
         }
 
         $q = $this->db->query($sql);
@@ -285,10 +296,10 @@ class ServerSideModel extends Model
         WHERE tbl_transaksi.status = 'CART'
         AND tbl_transaksi.id_pengguna =? 
         AND tbl_umkm.slug=?", array(session()->get('id'), $slug));
-        
-        if($q->getNumRows() > 0){
+
+        if ($q->getNumRows() > 0) {
             return $q->getRow()->kode_transaksi;
-        }else{
+        } else {
             return false;
         }
     }
@@ -301,10 +312,10 @@ class ServerSideModel extends Model
         WHERE tbl_transaksi.status = 'CART'
         AND tbl_transaksi.id_pengguna =? 
         AND tbl_umkm.id=?", array(session()->get('id'), $id));
-        
-        if($q->getNumRows() > 0){
+
+        if ($q->getNumRows() > 0) {
             return $q->getRow()->kode_transaksi;
-        }else{
+        } else {
             return false;
         }
     }
@@ -358,7 +369,7 @@ class ServerSideModel extends Model
         $q = $this->db->query("SELECT tbl_kategori_umkm.id, tbl_kategori_umkm.nama FROM tbl_kategori_umkm where tbl_kategori_umkm.status = 'ACTIVE'");
         return $q->getResult();
     }
-    
+
     public function getKategoriUMKMreal()
     {
         $q = $this->db->query("SELECT tbl_kategori_umkm.id, tbl_kategori_umkm.nama 
@@ -409,7 +420,7 @@ class ServerSideModel extends Model
         if ($kategori != '') {
             $sql .= "and tbl_berita_kategori.id = $kategori ";
         }
-        
+
         if ($keyword != '') {
             $sql .= "and tbl_berita.judul like '%$keyword%' ";
         }
@@ -488,6 +499,11 @@ class ServerSideModel extends Model
         return $query->getResult();
     }
 
+    public function getIdPenggunaUMKM($kode_transaksi)
+    {
+        return $this->db->query("SELECT tbl_pengguna.id FROM tbl_transaksi JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm JOIN tbl_pengguna ON tbl_pengguna.id = tbl_umkm.id_pengguna WHERE kode_transaksi=?", array($kode_transaksi))->getRow()->id;
+    }
+
     public function verify($email, $password)
     {
         $builder =  $this->db->table('tbl_pengguna');
@@ -498,7 +514,7 @@ class ServerSideModel extends Model
         $row = $builder->get()->getRow();
 
         if ($num == 1 && password_verify($password, $row->password)) {
-            if($row->role == 'UMKM'){
+            if ($row->role == 'UMKM') {
                 $id_umkm = $this->db->table('tbl_umkm')->getWhere(['id_pengguna' => $row->id])->getRow()->id;
                 $data = [
                     'id'  => $row->id,
@@ -509,7 +525,7 @@ class ServerSideModel extends Model
                     'role' => $row->role,
                 ];
                 return $data;
-            }else{
+            } else {
                 $data = [
                     'id'  => $row->id,
                     'nama' => $row->nama,
@@ -626,6 +642,18 @@ class ServerSideModel extends Model
         } else {
             return false;
         }
+    }
+
+    public function updateBatalTransaksi($id_pembayaran, $keterangan)
+    {
+        $sql = "UPDATE tbl_transaksi, tbl_transaksi_pembayaran 
+        SET tbl_transaksi.status='BATAL', 
+        tbl_transaksi_pembayaran.status='BATAL', 
+        tbl_transaksi_pembayaran.keterangan= ?
+        WHERE tbl_transaksi_pembayaran.id=tbl_transaksi.id_pembayaran  
+        AND tbl_transaksi_pembayaran.id =? ";
+        $this->db->query($sql, array($keterangan, $id_pembayaran));
+        return true;
     }
 
     public function updateBatalKerjasama($no_kerjasama, $alasan_ditolak)

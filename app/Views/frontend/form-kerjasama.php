@@ -21,7 +21,7 @@ $this->server_side = new ServerSideModel();
 <!-- end breadcrumb section -->
 <div class="single-product mt-40 mb-40">
     <div class="container">
-        <form id="form-kerjasama" action="<?=base_url('kerjasama_pengajuan')?>" method="POST">
+        <form id="form-kerjasama" action="<?= base_url('kerjasama_pengajuan') ?>" method="POST">
             <div class="row justify-content-center">
                 <div class="col-lg-9">
                     <div class="section-title text-center">
@@ -118,11 +118,14 @@ $this->server_side = new ServerSideModel();
                                 $jumlah_berat = $this->server_side->jumlah_berat($t->id);
                             ?>
                                 <div class="row">
-                                    <div class="col-md-12 align-self-center">
+                                    <div class="col-md-8 align-self-center">
                                         <div class="form-group">
                                             <p><b>Catatan Pesanan:</b></p>
                                             <?= ($t->catatan_beli != '') ? $t->catatan_beli : '-' ?>
                                         </div>
+                                    </div>
+                                    <div class="col-md-4 align-self-center">
+                                        <a class="btn btn-warning" style="width:100%" href="<?= base_url('kerjasama') ?>">Edit Pesanan</a>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -149,16 +152,16 @@ $this->server_side = new ServerSideModel();
                                 <table class="table table-sm">
                                     <tbody>
                                         <?php foreach ($this->server_side->transaksi_detail($t->id) as $td) : ?>
-                                            <?php 
-                                                if($td->qty >= $td->min_qty_kerjasama){
-                                                    $subtotal = $td->harga_min * $td->qty;
-                                                    $qty = $td->qty;
-                                                }else{
-                                                    $qty = 10;
-                                                    $subtotal = $td->harga_min * $qty;
-                                                }    
+                                            <?php
+                                            if ($td->qty >= $td->min_qty_kerjasama) {
+                                                $subtotal = $td->harga_min * $td->qty;
+                                                $qty = $td->qty;
+                                            } else {
+                                                $qty = 10;
+                                                $subtotal = $td->harga_min * $qty;
+                                            }
 
-                                                $cart_ = '<tr>
+                                            $cart_ = '<tr>
                                                             <td class="product-image" width="60%">
                                                                 <div class="d-flex">
                                                                     <div class="p-2 align-self-center">
@@ -166,16 +169,16 @@ $this->server_side = new ServerSideModel();
                                                                     </div>
                                                                     <div class="p-2 align-self-center">
                                                                         <b>' . $td->nama . '</b>
-                                                                        <p class="text-warning">Minimal order pengajuan kerjasama <b>'.$td->min_qty_kerjasama.' '.$td->satuan.'</b></p>
+                                                                        <p class="text-warning">Minimal order pengajuan kerjasama <b>' . $td->min_qty_kerjasama . ' ' . $td->satuan . '</b></p>
                                                                     </div>
                                                                 </div>
                                                             </td>
-                                                            <td style="vertical-align:middle" class="text-center"><b>' . $qty . ' '.$td->satuan.'</b></td>
+                                                            <td style="vertical-align:middle" class="text-center"><b>' . $qty . ' ' . $td->satuan . '</b></td>
                                                             <td style="vertical-align:middle" class="text-right">
                                                                 <b>Rp ' . number_format($subtotal, 0, ',', '.') . '</b>
                                                             </td>
                                                         </tr>';
-                                                echo $cart_;
+                                            echo $cart_;
                                             ?>
                                         <?php $total += $subtotal;
                                         endforeach; ?>

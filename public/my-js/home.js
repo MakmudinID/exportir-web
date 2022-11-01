@@ -35,6 +35,7 @@ function add_cart(id, id_umkm, img, produk, qty, harga, weight) {
                     showConfirmButton: false,
                 });
                 $("a.url-kerjasama").attr("href", res.url);
+                $("#pesan-error").hide();
             }
         }
     })

@@ -51,7 +51,7 @@
 <div class="modal fade" id="modal-default">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id='form-kategori'>
+            <form id='form-chat'>
                 <div class="modal-header">
                     <h4 class="modal-title">Kirim Chat</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -64,10 +64,12 @@
                         <input type="text" class="form-control" id="topik" name="topik" placeholder="Masukkan topik">
                     </div>
                     <div class="form-group">
-                        <label for="transaksi">Transaksi Terakhir</label>
+                        <label for="transaksi">Nomor Transaksi Terakhir</label>
                         <select class="form-control" id="transaksi" name="transaksi">
-                            <option value="ACTIVE">ACTIVE</option>
-                            <option value="INACTIVE">INACTIVE</option>
+                            <option value="">-Pilih nomor transaksi Terakhir-</option>
+                            <?php foreach($nomor_transaksi as $t): ?>
+                                <option value="<?=$t->kode_transaksi?>"><?= $t->kode_transaksi;?> | <?= $t->nama_umkm;?> | <?= str_replace("_", " ", $t->status); ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                 </div>

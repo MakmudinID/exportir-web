@@ -55,7 +55,7 @@ $this->server_side = new ServerSideModel(); ?>
                         <div class="row">
                             <label class="col-sm-4">Nomor Resi (<?= strtoupper($pembayaran->kurir)?>)</label>
                             <div class="col-sm-8">
-                                <?= $pembayaran->no_resi; ?>
+                                <?= ($pembayaran->no_resi != '') ? $pembayaran->no_resi : '-'; ?>
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@ $this->server_side = new ServerSideModel(); ?>
                     </div>
                     <div class="card-body">
                         <?php foreach ($transaksi as $t) : ?>
-                            <b>Nomor Transaksi: <a href="<?= base_url('transaksi/detail' . $t->kode_transaksi) ?>"><?= $t->kode_transaksi;?></a></b>
+                            <b>Nomor Transaksi: <a href="<?= base_url('/transaksi/nomor/' . $t->kode_transaksi) ?>"><?= $t->kode_transaksi;?></a></b>
                             <div class="d-flex mb-2">
                                 <div class="align-self-center"><b>Produk dari UMKM: <a href="<?= base_url('profil-umkm/' . $t->slug) ?>"><?= $t->nama_toko; ?></a></b></div>
                                 <div class="ml-auto text-center align-self-center">

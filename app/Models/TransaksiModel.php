@@ -131,8 +131,17 @@ class TransaksiModel extends Model
         return $query->getNumRows();
     }
 
+    public function nomorTransaksi()
+    {
+        $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_umkm FROM tbl_transaksi 
+        JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran  
+        JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm  
+        WHERE tbl_transaksi.status IN ('BELUM_DIBAYAR', 'SEDANG_DIPROSES', 'SUDAH_DIKIRIM') AND tbl_transaksi.id_pengguna=?";
+        return $this->db->query($sql, array(session()->get('id')))->getResult();
+    }
+
     //CHATTING
-    public function limitRowstChatting()
+    public function limitRowsChatting()
     {
         $sql = $this->selectFieldChatting();
         if ($_POST['length'] != -1) {

@@ -7,21 +7,21 @@ jQuery(document).ready(function() {
         errorClass: "is-invalid",
         // validClass: "is-valid",
         rules: {
-            no_kerjasama: {
+            topik: {
                 required: true
             },
-            dokumen: {
+            transaksi: {
                 required: true
             }
         },
         submitHandler: function(form) {
             let url;
-            url = base_url + '/reseller/pdf_upload';
+            url = base_url + '/reseller/kirim-chatting';
 
             $.ajax({
                 url: url,
                 type: "POST",
-                data: new FormData(document.getElementById("form-dokumen")),
+                data: new FormData(document.getElementById("form-chat")),
                 dataType: "JSON",
                 contentType: false,
                 cache: false,
@@ -39,18 +39,7 @@ jQuery(document).ready(function() {
                         });
                         table.ajax.reload();
                     } else {
-                        Swal.fire({
-                            title: 'Berhasil',
-                            html: "Dokumen Berhasil Diunggah!",
-                            icon: 'success',
-                            timer: 3000,
-                            showCancelButton: false,
-                            showConfirmButton: false
-                        });
-
-                        $('#modal-default').modal('hide');
-                        $('body').removeClass('modal-open');
-                        table.ajax.reload();
+                        window.location.href = data.url;
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
