@@ -26,7 +26,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="card-body table-responsive">
                         <table id="table" class="table table-bordered table-hover table-sm">
                             <thead>
@@ -35,6 +35,7 @@
                                     <th>Foto</th>
                                     <th>Nama Barang</th>
                                     <th>Harga</th>
+                                    <th>Harga Kerjasama</th>
                                     <th>Kategori</th>
                                     <th>Stok</th>
                                     <th></th>
@@ -74,12 +75,12 @@
                                 <label for="id_kategori">Kategori</label>
                                 <select class="form-control" name="id_kategori" id="id_kategori">
                                     <option value="">- Pilih Kategori -</option>
-                                    <?php foreach($kategori as $val){ ?>
+                                    <?php foreach ($kategori as $val) { ?>
                                         <option value="<?= $val->id ?>"><?= $val->nama ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
-                        </div>                       
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -92,24 +93,30 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="harga">Harga</label>
-                                <input type="number" class="form-control" id="harga" name="harga" >
-                            </div>    
+                                <label for="harga">Harga Normal</label>
+                                <input type="number" class="form-control" id="harga" name="harga">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="harga_kerjasama">Harga Kerjasama</label>
+                                <input type="number" class="form-control" id="harga_kerjasama" name="harga_kerjasama">
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="qty">Stok</label>
-                                <input type="number" class="form-control" id="qty" name="qty" >
-                            </div>    
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="qty_min">Min. Pemesanan (Non Kerjasama)</label>
-                                <input type="number" class="form-control" id="qty_min" name="qty_min" >
-                            </div>  
+                                <input type="number" class="form-control" id="qty" name="qty">
+                            </div>
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="qty_min">Min. Jumlah Pesan (Kerjasama)</label>
+                                <input type="number" class="form-control" id="qty_min" name="qty_min">
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="satuan">Satuan</label>
@@ -122,6 +129,8 @@
                                 <input type="number" name="weight" id="weight" class="form-control">
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="status">status</label>
@@ -129,18 +138,16 @@
                                     <option value="ACTIVE"> ACTIVE</option>
                                     <option value="INACTIVE"> INACTIVE</option>
                                 </select>
-                            </div>     
+                            </div>
                         </div>
-                    </div>      
-                    <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="foto">Foto</label><br>
                                 <input type="file" class="form-control" name="foto" id="foto" accept="image/*" onchange="preview_image(event)">
                                 <input type="hidden" name="foto_" id="foto_">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group" style="display:none" id="row-display">
                                 <label for="output_image">Preview</label>
                                 <div class="mt-2">
@@ -148,7 +155,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>

@@ -119,32 +119,21 @@
 
         <table style="width: 100%;">
             <tr>
-                <td colspan="2" align="center">
+                <td colspan="3" align="center">
                     Jakarta, <?= date('d-m-Y');?>
                 </td>
             </tr>
             <tr>
                 <td align="center">
                     <b>Pihak Pertama</b>
-                    <br>
-                    <br>
-                    <br>
-                    materai
-                    <br>
-                    <br>
-                    <br>
-                    ...................
+                    <p><u><?= $kerjasama->nama;?></u></p>
+                </td>
+                <td align="center" valign="middle" width="100px">
+                    <br><img src="<?=$foto?>" width="100px">
                 </td>
                 <td align="center">
                     <b>Pihak Kedua</b>
-                    <br>
-                    <br>
-                    <br>
-                    materai
-                    <br>
-                    <br>
-                    <br>
-                    ...................
+                    <p><u><?= $kerjasama->nama_umkm;?></u></p>
                 </td>
             </tr>
         </table>

@@ -142,7 +142,7 @@ class Umkm extends BaseController
             $no++;
             $row = array();
             $row['tanggal_pengajuan'] = $field->create_date;
-            $row['no_kerjasama'] = $field->no_kerjasama;
+            $row['no_kerjasama'] = '<a target="_blank" href="' . base_url('reseller/pdf/' . $field->no_kerjasama) . '">' . $field->no_kerjasama . '</a>';
             $row['reseller'] = $field->reseller;
             $progress = $this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama);
 
@@ -156,35 +156,31 @@ class Umkm extends BaseController
             ';
             $row['kontrak'] = $field->lama_kerjasama . ' Bulan (' . $field->jumlah_barang . ' produk)';
 
-            if ($field->status == 'SUDAH_UPLOAD') {
+            if ($field->status == 'MENUNGGU_PERSETUJUAN') {
                 $url = $field->file_kerjasama;
-
                 $row['status'] = '
                 <div class="d-flex justify-content-center">
-                    <div class="badge badge-warning">Menunggu Konfirmasi</div>
-                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="' . $field->no_kerjasama . '" data-url="' . $url . '" role="button"><i class="fas fa-upload text-danger"></i></div>
+                    <div class="badge badge-warning">Menunggu Persetujuan</div>
+                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="' . $field->no_kerjasama . '" data-url="' . $url . '" role="button"><i class="fas fa-edit"></i></div>
                 </div>
                 ';
                 $row['detail'] = '
                 <div class="d-flex justify-content-center">
-                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
                     <a href="' . base_url('umkm/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
                 </div>';
-            } else if ($field->status == 'DITOLAK'){
+            } else if ($field->status == 'DITOLAK') {
                 $url = $field->file_kerjasama;
                 $row['status'] = '<span class="badge badge-danger">Ditolak</span>';
                 $row['detail'] = '
                 <div class="d-flex justify-content-center">
-                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
                     <a href="' . base_url('umkm/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
                 </div>';
-            }else {
+            } else {
                 $url = $field->file_kerjasama;
 
                 $row['status'] = '<span class="badge badge-success">Disetujui</span>';
                 $row['detail'] = '
                 <div class="d-flex justify-content-center">
-                    <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
                     <a href="' . base_url('umkm/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
                 </div>';
             }
@@ -213,39 +209,204 @@ class Umkm extends BaseController
         echo view('template/adminlte', $data);
     }
 
-    public function kerjasama_pdf_upload()
+    public function chatting()
     {
-        $dokumen = $this->request->getFile('dokumen');
-        $no_kerjasama = $this->request->getPost('no_kerjasama');
-        if ($dokumen->getName() != '') {
-            $dokumen->move('../public/assets/dokumen-kerjasama/', $dokumen->getName());
-            $filepath = base_url() . '/assets/dokumen-kerjasama/' . $dokumen->getName();
-            $path = $dokumen->getName();
-            $ext = pathinfo($path, PATHINFO_EXTENSION);
-            if ($ext == 'pdf') {
-                $data['file_kerjasama'] = $filepath;
-                $data['status'] = 'SUDAH_DISETUJUI';
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Chatting';
+        $data['js'] = array("umkm-chatting.js?r=" . uniqid());
+        $data['nomor_transaksi'] = $this->transaksi->nomorTransaksi();
+        $data['main_content']   = 'umkm/chatting';
+        echo view('template/adminlte', $data);
+    }
 
-                $table = 'tbl_transaksi_kerjasama';
-                $result = $this->server_side->updateRowsByField('no_kerjasama', $no_kerjasama, $data, $table);
-                $r['result'] = true;
-                if (!$result) {
-                    $r['result'] = false;
-                    $r['title'] = 'Maaf Gagal Menyimpan!';
-                    $r['icon'] = 'error';
-                    $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
-                }
-                echo json_encode($r);
-                return;
+    public function chatting_()
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+
+        $list = $this->transaksi->limitRowsChatting();
+
+        $data = array();
+        $no = $this->request->getPost('start');
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row['tanggal'] = $this->server_side->formatTanggal($field->create_date);
+            $row['kode_transaksi'] = $field->kode_transaksi;
+            $row['pengirim'] = $this->server_side->getNama($field->id_pengirim);
+            $row['penerima'] = $this->server_side->getNama($field->id_penerima);
+            $row['topik'] = $field->topik;
+            $row['detail'] = '<a href="' . base_url('umkm/chatting/' . $field->kode_transaksi) . '" class="p-1"><i class="fas fa-search-plus"></i></a>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $this->transaksi->countFilteredChatting(),
+            "recordsFiltered" => $this->transaksi->countFilteredChatting(),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+
+    public function chatting_detail($kode_transaksi)
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Chatting';
+        $data['kode_transaksi'] = $kode_transaksi;
+    
+        $tbl_chat = $this->db->query('select id_pengirim from tbl_chat where kode_transaksi=?', array($kode_transaksi))->getRow();
+        $data['id_pengirim'] = $tbl_chat->id_pengirim;
+
+        $data['js'] = array("umkm-chatting-detail.js?r=" . uniqid());
+        $data['nomor_transaksi'] = $this->transaksi->nomorTransaksi();
+        $data['main_content']   = 'umkm/chatting-detail';
+        echo view('template/adminlte', $data);
+    }
+
+    public function kirim_chatting()
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+
+        $kode_transaksi = $this->request->getPost('transaksi');
+        //get id_umkm
+        $id_umkm = $this->server_side->getIdPenggunaUMKM($kode_transaksi);
+
+        //create chat content
+        $data_chat['id_pengirim'] = session()->get('id');
+        $data_chat['id_penerima'] = $id_umkm;
+        $data_chat['kode_transaksi'] = $kode_transaksi;
+        $data_chat['topik'] = $this->request->getPost('topik');
+
+        $result = $this->server_side->createRows($data_chat, 'tbl_chat');
+
+        $r['result'] = true;
+        $r['url'] = base_url('umkm/chatting/' . $kode_transaksi);
+
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
+    public function historiObrolan()
+    {
+        $kode_transaksi = $this->request->getPost('kode_transaksi');
+        $list_chat = $this->db->query('SELECT tbl_chat_message.*, tbl_chat.id_pengirim, tbl_chat.id_penerima FROM tbl_chat_message JOIN tbl_chat ON tbl_chat.id = tbl_chat_message.id_chat WHERE tbl_chat.kode_transaksi=?', array($kode_transaksi))->getResult();;
+        $message = '';
+        foreach ($list_chat as $l) {
+            if ($l->status == 'PENGIRIM') {
+                $message .= '
+                <div class="direct-chat-msg">
+                    <div class="direct-chat-infos clearfix">
+                        <span class="direct-chat-timestamp">' . $this->server_side->formatTanggal($l->create_date) . '</span>
+                    </div>
+                    <img class="direct-chat-img" src="' . $this->server_side->getFotoBy($l->id_pengirim) . '" alt="Message User Image">
+                    <div class="direct-chat-text float-left" style="width: fit-content !important; margin-right: 2px !important;">
+                        ' . $l->pesan . '
+                    </div>
+                </div>';
             } else {
-                $r['result'] = false;
-                $r['title'] = 'Gagal!';
-                $r['icon'] = 'error';
-                $r['status'] = 'Format File Tidak Diijinkan!';
+                $message .= '
+                <div class="direct-chat-msg right">
+                    <div class="direct-chat-infos clearfix">
+                        <span class="direct-chat-timestamp float-right">' . $this->server_side->formatTanggal($l->create_date) . '</span>
+                    </div>
+                    <img class="direct-chat-img" src="' . $this->server_side->getFotoBy($l->id_penerima) . '" alt="Message User Image">
+                    <div class="direct-chat-text float-right" style="width: fit-content !important; margin-right: 2px !important;">
+                    ' . $l->pesan . '
+                    </div>
+                </div>';
             }
+        }
+        echo $message;
+    }
+
+    public function kirim_chatting_isi()
+    {
+
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+
+        $kode_transaksi = $this->request->getPost('kode_transaksi');
+        $pesan = $this->request->getPost('pesan');
+
+        $tbl_chat = $this->db->query('select * from tbl_chat where kode_transaksi=?', array($kode_transaksi))->getRow();
+
+        //create chat content
+        $data_chat_message['id_chat'] = $tbl_chat->id;
+        $data_chat_message['pesan'] = $pesan;
+
+        if($tbl_chat->id_pengirim == session()->get('id')){
+            $status = 'PENGIRIM';
+        }else{
+            $status = 'PENERIMA';
+        }
+
+        $data_chat_message['status'] = $status;
+        $data_chat_message['create_date'] = date('Y-m-d H:i:s');
+
+        $result = $this->server_side->createRows($data_chat_message, 'tbl_chat_message');
+
+        $r['result'] = true;
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
+    public function konfirmasi_kerjasama()
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+
+        $status_kerjasama = $this->request->getPost('status_kerjasama');
+        $no_kerjasama = $this->request->getPost('no_kerjasama');
+
+        if ($status_kerjasama == 'SUDAH_DISETUJUI') {
+            $data['status'] = $status_kerjasama;
+            $table = 'tbl_transaksi_kerjasama';
+            $result = $this->server_side->updateRowsByField('no_kerjasama', $no_kerjasama, $data, $table);
+            $r['result'] = true;
+            if (!$result) {
+                $r['result'] = false;
+                $r['title'] = 'Maaf Gagal Menyimpan!';
+                $r['icon'] = 'error';
+                $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+            }
+            echo json_encode($r);
+            return;
         } else {
-            echo 'ERROR';
-            die;
+            $alasan_ditolak = $this->request->getPost('alasan_ditolak');
+
+            $result = $this->server_side->updateBatalKerjasama($no_kerjasama, $alasan_ditolak);
+            $r['result'] = true;
+            if ($result == 0) {
+                $r['result'] = false;
+                $r['title'] = 'Maaf Gagal Dibatalkan!';
+                $r['icon'] = 'error';
+                $r['status'] = '<br><b>Tidak dapat di Batalkan! <br> Silakan hubungi Administrator.</b>';
+            }
+            echo json_encode($r);
+            return;
         }
     }
 
@@ -274,11 +435,6 @@ class Umkm extends BaseController
         }
         $data['title'] = 'Kontrak Perjanjian';
         $data['kerjasama'] = $this->server_side->getKerjasama($no_kerjasama);
-
-        if ($data['kerjasama']->status == 'BELUM_UPLOAD') {
-            return redirect()->route('umkm/kerjasama');
-        }
-
         $data['js'] = array("umkm-kerjasama-detail.js?r=" . uniqid());
         $data['main_content']   = 'umkm/kerjasama_detail';
         echo view('template/adminlte', $data);
@@ -423,11 +579,12 @@ class Umkm extends BaseController
             $row['no'] = $no;
             $row['foto'] = '<img src="' . $field->foto . '" class="img-fluid">';
             $row['nama'] = $field->nama;
-            $row['harga'] = number_format($field->harga);
+            $row['harga'] = 'Rp ' . number_format($field->harga, 0, ',', '.');
+            $row['harga_kerjasama'] = 'Rp ' . number_format($field->harga_min, 0, ',', '.');
             $row['kategori'] = $field->nama_kategori;
             $row['qty'] = $field->qty . " " . $field->satuan;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-harga="' . $field->harga . '" data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="' . $field->qty . '" data-qty_min="' . $field->qty_min . '" data-satuan="' . $field->satuan . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-harga="' . $field->harga . '" data-harga_kerjasama="' . $field->harga_min . '"  data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="' . $field->qty . '" data-qty_min="' . $field->qty_min . '" data-satuan="' . $field->satuan . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
             </div>';
             $data[] = $row;
@@ -456,6 +613,7 @@ class Umkm extends BaseController
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['qty']  = htmlspecialchars($this->request->getPost('qty'), ENT_QUOTES);
         $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
+        $data['harga_min']  = htmlspecialchars($this->request->getPost('harga_kerjasama'), ENT_QUOTES);
         $data['harga']  = htmlspecialchars($this->request->getPost('harga'), ENT_QUOTES);
         $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
         $data['weight']  = htmlspecialchars($this->request->getPost('weight'), ENT_QUOTES);
@@ -508,6 +666,7 @@ class Umkm extends BaseController
         $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
         $data['qty']  = htmlspecialchars($this->request->getPost('qty'), ENT_QUOTES);
         $data['harga']  = htmlspecialchars($this->request->getPost('harga'), ENT_QUOTES);
+        $data['harga_min']  = htmlspecialchars($this->request->getPost('harga_kerjasama'), ENT_QUOTES);
         $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
         $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
         $data['weight']  = htmlspecialchars($this->request->getPost('weight'), ENT_QUOTES);

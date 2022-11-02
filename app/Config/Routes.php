@@ -97,10 +97,16 @@ $routes->post('umkm/create_kategori', 'Umkm::create_kategori');
 $routes->post('umkm/update_kategori', 'Umkm::update_kategori');
 $routes->post('umkm/delete_kategori', 'Umkm::delete_kategori');
 $routes->post('umkm/kerjasama_', 'Umkm::kerjasama_');
-$routes->post('umkm/pdf_upload', 'Umkm::kerjasama_pdf_upload');
+$routes->post('umkm/konfirmasi_kerjasama', 'Umkm::konfirmasi_kerjasama');
 $routes->post('umkm/batal_kerjasama', 'Umkm::batal_kerjasama');
 $routes->get('umkm/kerjasama', 'Umkm::kerjasama');
 $routes->get('umkm/kerjasama/(:any)', 'Umkm::kerjasama_detail/$1');
+$routes->get('umkm/chatting', 'Umkm::chatting');
+$routes->post('umkm/kirim-chatting', 'Umkm::kirim_chatting');
+$routes->post('umkm/kirim-chatting-isi', 'Umkm::kirim_chatting_isi');
+$routes->get('umkm/chatting/(:any)', 'Umkm::chatting_detail/$1');
+$routes->post('umkm/chatting_', 'Umkm::chatting_');
+$routes->post('umkm/historiObrolan', 'Umkm::historiObrolan');
 
 
 //reseller backoffice
@@ -116,13 +122,16 @@ $routes->get('reseller/pdf/(:any)', 'Reseller::kerjasama_pdf/$1');
 $routes->get('reseller/pdf_download/(:any)', 'Reseller::kerjasama_pdf_download/$1');
 $routes->post('reseller/pdf_upload', 'Reseller::kerjasama_pdf_upload');
 $routes->post('reseller/update_bayar', 'Reseller::update_bayar');
+$routes->post('reseller/update_selesai', 'Reseller::update_selesai');
 $routes->post('reseller/kerjasama_', 'Reseller::kerjasama_');
 $routes->get('reseller/transaksi/(:any)', 'Reseller::transaksi_detail/$1');
 $routes->post('reseller/transaksi_', 'Reseller::transaksi_');
 $routes->get('reseller/detail-berita/(:any)', 'Reseller::detail_berita/$1');
 $routes->get('reseller/chatting', 'Reseller::chatting');
 $routes->post('reseller/kirim-chatting', 'Reseller::kirim_chatting');
+$routes->post('reseller/kirim-chatting-isi', 'Reseller::kirim_chatting_isi');
 $routes->get('reseller/chatting/(:any)', 'Reseller::chatting_detail/$1');
+$routes->post('reseller/historiObrolan', 'Reseller::historiObrolan');
 $routes->post('reseller/chatting_', 'Reseller::chatting_');
 
 //ADMIN BackOffice
@@ -142,6 +151,8 @@ $routes->post('admin/delete_user', 'Admin::delete_user');
 $routes->get('admin/umkm', 'Admin::umkm');
 $routes->post('admin/umkm_', 'Admin::umkm_');
 
+$routes->post('admin/konfirmasi_kerjasama', 'Admin::konfirmasi_kerjasama');
+
 $routes->get('admin/metode-bayar', 'Admin::metode_bayar');
 $routes->post('admin/metode_bayar_', 'Admin::metode_bayar_');
 $routes->post('admin/create_metode_bayar', 'Admin::create_metode_bayar');
@@ -150,6 +161,7 @@ $routes->post('admin/delete_metode_bayar', 'Admin::delete_metode_bayar');
 
 $routes->post('admin/create_umkm', 'Admin::create_umkm');
 $routes->post('admin/update_umkm', 'Admin::update_umkm');
+$routes->post('admin/update_selesai', 'Admin::update_selesai');
 
 $routes->post('admin/update_kirim', 'Admin::update_kirim');
 

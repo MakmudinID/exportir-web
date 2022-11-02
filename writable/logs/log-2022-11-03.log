@@ -1,0 +1,116 @@
+CRITICAL - 2022-11-03 02:17:49 --> Undefined variable $t
+in APPPATH\Views\umkm\transaksi_detail.php on line 127.
+ 1 APPPATH\Views\umkm\transaksi_detail.php(127): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $t', 'APPPATH\\Views\\umkm\\transaksi_detail.php', 127)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\umkm\\transaksi_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('umkm/transaksi_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(117): view('umkm/transaksi_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Umkm.php(463): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Umkm->transaksi_detail('TR221102-W7L4L6MM')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Umkm))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-11-03 02:43:50 --> Unknown column 'edit_user' in 'field list'
+CRITICAL - 2022-11-03 02:43:50 --> Unknown column 'edit_user' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('UPDATE `tbl_transaksi` SET `status` = \'SELESAI\', `edit_user` = \'makmudin@reseller.id\', `edit_date` = \'2022-11-03 02:43:50\'
+WHERE `id` = \'4\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `tbl_transaksi` SET `status` = \'SELESAI\', `edit_user` = \'makmudin@reseller.id\', `edit_date` = \'2022-11-03 02:43:50\'
+WHERE `id` = \'4\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `tbl_transaksi` SET `status` = \'SELESAI\', `edit_user` = \'makmudin@reseller.id\', `edit_date` = \'2022-11-03 02:43:50\'
+WHERE `id` = \'4\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2046): CodeIgniter\Database\BaseConnection->query('UPDATE `tbl_transaksi` SET `status` = :status:, `edit_user` = :edit_user:, `edit_date` = :edit_date:
+WHERE `id` = :id:', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(683): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 APPPATH\Controllers\Reseller.php(410): App\Models\ServerSideModel->updateRows('4', [...], 'tbl_transaksi')
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->update_selesai()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+ERROR - 2022-11-03 02:44:00 --> Unknown column 'edit_user' in 'field list'
+CRITICAL - 2022-11-03 02:44:00 --> Unknown column 'edit_user' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('UPDATE `tbl_transaksi` SET `status` = \'SELESAI\', `edit_user` = \'makmudin@reseller.id\', `edit_date` = \'2022-11-03 02:44:00\'
+WHERE `id` = \'4\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `tbl_transaksi` SET `status` = \'SELESAI\', `edit_user` = \'makmudin@reseller.id\', `edit_date` = \'2022-11-03 02:44:00\'
+WHERE `id` = \'4\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `tbl_transaksi` SET `status` = \'SELESAI\', `edit_user` = \'makmudin@reseller.id\', `edit_date` = \'2022-11-03 02:44:00\'
+WHERE `id` = \'4\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2046): CodeIgniter\Database\BaseConnection->query('UPDATE `tbl_transaksi` SET `status` = :status:, `edit_user` = :edit_user:, `edit_date` = :edit_date:
+WHERE `id` = :id:', [...], false)
+ 5 APPPATH\Models\ServerSideModel.php(683): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 APPPATH\Controllers\Reseller.php(410): App\Models\ServerSideModel->updateRows('4', [...], 'tbl_transaksi')
+ 7 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Reseller->update_selesai()
+ 8 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Reseller))
+ 9 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-11-03 03:35:13 --> Attempt to read property "no_kerjasama" on null
+in APPPATH\Views\admin\kerjasama_detail.php on line 14.
+ 1 APPPATH\Views\admin\kerjasama_detail.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "no_kerjasama" on null', 'APPPATH\\Views\\admin\\kerjasama_detail.php', 14)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\admin\\kerjasama_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('admin/kerjasama_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(117): view('admin/kerjasama_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Admin.php(1452): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->kerjasama_detail('undefined')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-11-03 03:35:30 --> Attempt to read property "no_kerjasama" on null
+in APPPATH\Views\admin\kerjasama_detail.php on line 14.
+ 1 APPPATH\Views\admin\kerjasama_detail.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "no_kerjasama" on null', 'APPPATH\\Views\\admin\\kerjasama_detail.php', 14)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\admin\\kerjasama_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('admin/kerjasama_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(117): view('admin/kerjasama_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Admin.php(1452): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->kerjasama_detail('undefined')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-11-03 03:35:39 --> Attempt to read property "no_kerjasama" on null
+in APPPATH\Views\admin\kerjasama_detail.php on line 14.
+ 1 APPPATH\Views\admin\kerjasama_detail.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "no_kerjasama" on null', 'APPPATH\\Views\\admin\\kerjasama_detail.php', 14)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\admin\\kerjasama_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('admin/kerjasama_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(117): view('admin/kerjasama_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Admin.php(1452): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->kerjasama_detail('undefined')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')
+CRITICAL - 2022-11-03 03:35:50 --> Attempt to read property "no_kerjasama" on null
+in APPPATH\Views\admin\kerjasama_detail.php on line 14.
+ 1 APPPATH\Views\admin\kerjasama_detail.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "no_kerjasama" on null', 'APPPATH\\Views\\admin\\kerjasama_detail.php', 14)
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\admin\\kerjasama_detail.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('admin/kerjasama_detail', [], true)
+ 5 APPPATH\Views\template\adminlte.php(117): view('admin/kerjasama_detail')
+ 6 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\template\\adminlte.php')
+ 7 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1135): CodeIgniter\View\View->render('template/adminlte', [], true)
+ 9 APPPATH\Controllers\Admin.php(1452): view('template/adminlte', [...])
+10 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Admin->kerjasama_detail('undefined')
+11 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+12 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(43): require_once('FCPATH\\index.php')

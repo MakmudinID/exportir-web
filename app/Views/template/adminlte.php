@@ -26,6 +26,7 @@ $this->server_side = new ServerSideModel();
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/summernote/summernote-bs4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/emojionearea.css">
     <link rel="stylesheet" href="<?= base_url() ?>/assets/admin/css/adminlte.min.css">
     <style>
         tr.group,
@@ -77,10 +78,18 @@ $this->server_side = new ServerSideModel();
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="<?= $this->server_side->getFoto() ?>" class="img-circle elevation-2" alt="User Image">
+                        <?php if (session()->get('role') == 'RESELLER' || session()->get('role') == 'SUPERADMIN') { ?>
+                            <img src="<?= $this->server_side->getFoto() ?>" class="img-circle elevation-2" alt="User Image">
+                        <?php } else { ?>
+                            <img src="<?= $this->server_side->getFotoUMKM() ?>" class="img-circle elevation-2" alt="User Image">
+                        <?php }; ?>
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block"><?= session()->get('nama'); ?></a>
+                        <?php if (session()->get('role') == 'RESELLER' || session()->get('role') == 'SUPERADMIN') { ?>
+                            <a href="#" class="d-block"><?= session()->get('nama'); ?></a>
+                        <?php } else { ?>
+                            <a href="#" class="d-block"><?= session()->get('nama_umkm'); ?></a>
+                        <?php } ?>
                     </div>
                 </div>
                 <nav class="mt-2">
@@ -155,6 +164,7 @@ $this->server_side = new ServerSideModel();
     <!-- SweetAlert2 -->
     <script src="<?= base_url() ?>/assets/admin/plugins/summernote/summernote-bs4.min.js"></script>
     <script src="<?= base_url() ?>/assets/admin/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="<?= base_url() ?>/dist/emojionearea.js"></script>
     <script>
         let base_url = "<?= base_url() ?>";
     </script>

@@ -74,7 +74,6 @@ class TransaksiModel extends Model
         }else if($role == 'UMKM'){
             $id_umkm = session()->get('id_umkm');
             $sql .= " AND tbl_transaksi.id_umkm = $id_umkm  ";
-            $sql .= " AND tbl_transaksi_kerjasama.status != 'BELUM_UPLOAD' ";
         }
 
         if ($start_date != '' && $end_date != '') {
@@ -133,11 +132,18 @@ class TransaksiModel extends Model
 
     public function nomorTransaksi()
     {
+        if(session()->get('role') == 'UMKM'){
+            $id_umkm = session()->get('id_umkm');
+            $and = " AND tbl_transaksi.id_umkm=$id_umkm";
+        }else if(session()->get('role') == 'RESELLER'){
+            $id_pengguna = session()->get('id');
+            $and = " AND tbl_transaksi.id_pengguna=$id_pengguna";
+        }
         $sql="SELECT tbl_transaksi.*, tbl_transaksi_pembayaran.kode_bayar, tbl_umkm.nama as nama_umkm FROM tbl_transaksi 
         JOIN tbl_transaksi_pembayaran ON tbl_transaksi_pembayaran.id = tbl_transaksi.id_pembayaran  
         JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm  
-        WHERE tbl_transaksi.status IN ('BELUM_DIBAYAR', 'SEDANG_DIPROSES', 'SUDAH_DIKIRIM') AND tbl_transaksi.id_pengguna=?";
-        return $this->db->query($sql, array(session()->get('id')))->getResult();
+        WHERE tbl_transaksi.status IN ('BELUM_DIBAYAR', 'SEDANG_DIPROSES', 'SUDAH_DIKIRIM') $and";
+        return $this->db->query($sql)->getResult();
     }
 
     //CHATTING

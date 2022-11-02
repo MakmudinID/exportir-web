@@ -10,7 +10,9 @@ $this->server_side = new ServerSideModel(); ?>
             <div class="col-sm-7">
                 <div class="d-flex">
                     <a href="<?= base_url('umkm/kerjasama') ?>" class="btn btn-secondary">Kembali</a>
-                    <h3 class="ml-3">No: <?= $kerjasama->no_kerjasama ?></h3>
+                    <h3 class="ml-3">
+                        <a href="<?= base_url('reseller/pdf/' . $kerjasama->no_kerjasama) ?>" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i> No: <?= $kerjasama->no_kerjasama ?></a>
+                    </h3>
                 </div>
             </div>
             <div class="col-sm-5">
@@ -24,27 +26,35 @@ $this->server_side = new ServerSideModel(); ?>
 </section>
 <section class="content">
     <div class="container-fluid">
-        <?php if ($kerjasama->status == 'SUDAH_UPLOAD'){ ?>
+        <?php if ($kerjasama->status == 'MENUNGGU_PERSETUJUAN') { ?>
             <div class="alert alert-warning">
                 <div class="d-flex">
                     <div class="fw-bold align-self-center">
                         <i class="icon fas fa-info-circle"></i> Silakan Konfirmasi Pengajuan Kerjasama Ini
                     </div>
                     <div class="ml-auto">
-                        <button type="button" class="btn btn-primary update-konfirmasi" data-no_kerjasama="<?= $kerjasama->no_kerjasama ?>">Konfirmasi</button>
-                        <button type="button" class="btn btn-danger update-batal" data-no_kerjasama="<?= $kerjasama->no_kerjasama ?>">Batal Kerjasama</button>
+                        <button type="button" class="btn btn-primary update-konfirmasi" data-no_kerjasama="<?= $kerjasama->no_kerjasama ?>">Menyetujui</button>
+                        <button type="button" class="btn btn-danger update-batal" data-no_kerjasama="<?= $kerjasama->no_kerjasama ?>">Tidak Menyetujui</button>
                     </div>
                 </div>
             </div>
-        <?php }else if ($kerjasama->status == 'DITOLAK'){ ?>
+        <?php } else if ($kerjasama->status == 'DITOLAK') { ?>
             <div class="alert alert-danger">
                 <div class="d-flex">
                     <div class="fw-bold align-self-center">
-                        <i class="icon fas fa-info-circle"></i> Pengajuan kerjasama ini <B>DITOLAK</B>, karena: <?= $kerjasama->alasan_ditolak;?>
+                        <i class="icon fas fa-info-circle"></i> Pengajuan kerjasama ini <B>DITOLAK</B>, karena: <?= $kerjasama->alasan_ditolak; ?>
                     </div>
                 </div>
             </div>
-        <?php }; ?>
+        <?php } else if ($kerjasama->status == 'SUDAH_DISETUJUI') { ?>
+            <div class="alert alert-success">
+                <div class="d-flex">
+                    <div class="fw-bold align-self-center">
+                        <i class="icon fas fa-info-circle"></i> SELAMAT! Pengajuan kerjasama anda telah disetujui
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-primary card-outline">
@@ -128,12 +138,13 @@ $this->server_side = new ServerSideModel(); ?>
         <div class="row justify-content-center">
             <?php foreach ($this->server_side->getTransaksiPembayaran($kerjasama->no_kerjasama) as $pembayaran) : ?>
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card card-warning card-outline">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4 align-self-center">
                                     <div class="text-center">
-                                        <b>Transaksi Bulan Ke-<?= $pembayaran->bayar_bulan_ke; ?></b>
+                                        <h4>Transaksi Bulan Ke-<?= $pembayaran->bayar_bulan_ke; ?></h4>
+                                        <a href="javascript(void:0)">No. <?= $pembayaran->kode_transaksi; ?></a>
                                     </div>
                                     <?php if ($pembayaran->status == "BELUM_DIBAYAR") {
                                         $badge = "badge-danger";
@@ -153,6 +164,18 @@ $this->server_side = new ServerSideModel(); ?>
                                 <div class="col-md-8">
                                     <?php if ($pembayaran->status == "BELUM_DIBAYAR" || $pembayaran->status == "BATAL") : ?>
                                         <div class="row">
+                                            <label class="col-sm-4">Kode Bayar</label>
+                                            <div class="col-sm-8">
+                                                <?= $pembayaran->kode_bayar ?>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-sm-4">Metode Bayar</label>
+                                            <div class="col-sm-8">
+                                                <?= $pembayaran->metode_bayar; ?> (<?= $pembayaran->nomor_rekening; ?>)
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <label class="col-sm-4">Batas Bayar</label>
                                             <div class="col-sm-8">
                                                 <?= $this->server_side->formatTanggal($pembayaran->batas_bayar) ?>
@@ -170,26 +193,78 @@ $this->server_side = new ServerSideModel(); ?>
                                         <div class="col-sm-8">
                                             <?php
                                             if ($pembayaran->status_transaksi == 'SEDANG_DIPROSES') {
-                                                if($pembayaran->status == 'SUDAH_DIBAYAR'){
+                                                if ($pembayaran->status == 'SUDAH_DIBAYAR') {
                                                     $status = '
                                                     <div class="d-flex">
-                                                        <span class="badge badge-warning">Perlu Disiapkan</span>
+                                                        <span class="badge badge-warning">PERLU DISIAPKAN</span>
                                                         <div class="align-self-center ml-2 update-status" data-id_transaksi="' . $pembayaran->id_transaksi . '" role="button"><i class="fas fa-edit"></i></div>
                                                     </div>';
-                                                }else{
-                                                    $status = '<span class="badge badge-warning">Perlu Disiapkan</span>';
+                                                } else {
+                                                    $status = '<span class="badge badge-warning">PERLU DISIAPKAN</span>';
                                                 }
                                             } else if ($pembayaran->status_transaksi == 'SUDAH_DIKIRIM') {
-                                                $status = '<small><b>Sedang Dikirim</b></small> <span class="badge badge-secondary">No. Resi: ' . $pembayaran->no_resi . '</span>';
+                                                $status = '<span class="badge badge-secondary">SUDAH DIKIRIM | Nomor Resi: ' . $pembayaran->no_resi . '</span>';
                                             } else if ($pembayaran->status_transaksi == 'SELESAI') {
-                                                $status = '<span class="badge badge-success">Selesai</span>';
+                                                $status = '<span class="badge badge-success">SELESAI</span>';
                                             } else if ($pembayaran->status_transaksi == 'BELUM_DIBAYAR') {
-                                                $status = '<span class="badge badge-danger">Belum Dibayar</span>';
+                                                $status = '<span class="badge badge-danger">BELUM DIBAYAR</span>';
                                             } else {
-                                                $status = '<span class="badge badge-danger">Batal</span>';
+                                                $status = '<span class="badge badge-danger">BATAL</span>';
                                             }
                                             ?>
                                             <h5><?= $status ?></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <?php
+                                $total = 0;
+                                ?>
+                                <table class="table table-sm" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" colspan="2">
+                                                PRODUK
+                                            </th>
+                                            <th class="text-center">QTY</th>
+                                            <th class="text-center">HARGA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $total = 0;
+                                        foreach ($this->server_side->transaksi_detail($pembayaran->id_transaksi) as $td) : ?>
+                                            <tr>
+                                                <td width="8%" style="vertical-align:middle">
+                                                    <img src="<?= $td->foto ?>" alt="" class="img-fluid">
+                                                </td>
+                                                <td style="vertical-align:middle">
+                                                    <?= $td->nama ?>
+                                                </td>
+                                                <td style="vertical-align:middle" class="text-center" width="8%"><?= $td->qty . ' ' . $td->satuan ?></td>
+                                                <td style="vertical-align:middle" class="text-right" width="20%">Rp <?= number_format($td->subtotal, 0, ',', '.') ?></td>
+                                            </tr>
+                                        <?php $total += $td->subtotal;
+                                        endforeach; ?>
+                                        <tr>
+                                            <td colspan="3" style="vertical-align:middle" class="text-right"><b>Sub Total</b></td>
+                                            <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($total, 0, ',', '.') ?></b></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="vertical-align:middle" class="text-right"><b>Kurir (<?= strtoupper($pembayaran->kurir) ?>)</b></td>
+                                            <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($pembayaran->ongkir, 0, ',', '.') ?></b></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="vertical-align:middle" class="text-right"><b>Total</b></td>
+                                            <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($pembayaran->total_tagihan, 0, ',', '.') ?></b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-12 align-self-center">
+                                        <div class="form-group">
+                                            <p><b>Catatan Pesanan:</b> <?= ($pembayaran->catatan_beli != '') ? $pembayaran->catatan_beli : '-' ?></p>
                                         </div>
                                     </div>
                                 </div>
@@ -198,67 +273,6 @@ $this->server_side = new ServerSideModel(); ?>
                     </div>
                 </div>
             <?php endforeach; ?>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card card-warning card-outline">
-                    <div class="card-header text-center">
-                        <b>DAFTAR PRODUK</b>
-                    </div>
-                    <div class="card-body">
-                        <?php
-                        $total = 0;
-                        $t = $this->server_side->transaksi_in_kode_detail($kerjasama->kode_transaksi) ?>
-                        <table class="table table-sm" width="100%">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" colspan="2">
-                                        PRODUK
-                                    </th>
-                                    <th class="text-center">QTY</th>
-                                    <th class="text-center">HARGA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $total = 0;
-                                foreach ($this->server_side->transaksi_detail($t->id) as $td) : ?>
-                                    <tr>
-                                        <td width="8%" style="vertical-align:middle">
-                                            <img src="<?= $td->foto ?>" alt="" class="img-fluid">
-                                        </td>
-                                        <td style="vertical-align:middle">
-                                            <?= $td->nama ?>
-                                        </td>
-                                        <td style="vertical-align:middle" class="text-center" width="8%"><?= $td->qty . ' ' . $td->satuan ?></td>
-                                        <td style="vertical-align:middle" class="text-right" width="20%">Rp <?= number_format($td->subtotal, 0, ',', '.') ?></td>
-                                    </tr>
-                                <?php $total += $td->subtotal;
-                                endforeach; ?>
-                                <tr>
-                                    <td colspan="3" style="vertical-align:middle" class="text-right"><b>Sub Total</b></td>
-                                    <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($total, 0, ',', '.') ?></b></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" style="vertical-align:middle" class="text-right"><b>Kurir (<?= strtoupper($t->kurir) ?>)</b></td>
-                                    <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($t->ongkir, 0, ',', '.') ?></b></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" style="vertical-align:middle" class="text-right"><b>Total</b></td>
-                                    <td style="vertical-align:middle" class="text-right"><b>Rp <?= number_format($total + $t->ongkir, 0, ',', '.') ?></b></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-12 align-self-center">
-                                <div class="form-group">
-                                    <p><b>Catatan Pesanan:</b><br> <?= ($t->catatan_beli != '') ? $t->catatan_beli : '-' ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>

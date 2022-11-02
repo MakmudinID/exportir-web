@@ -66,6 +66,27 @@ class Admin extends BaseController
         echo view('template/adminlte', $data);
     }
 
+    public function update_selesai()
+    {
+        $id = $this->request->getPost('id_transaksi');
+        $data['status'] = 'SELESAI';
+        $data['edit_date'] = date('Y-m-d H:i:s');
+
+        $table = 'tbl_transaksi';
+
+        $result = $this->server_side->updateRows($id, $data, $table);
+        $r['result'] = true;
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
+    
     public function umkm_()
     {
         if (session()->get('role') != 'SUPERADMIN') {
@@ -259,7 +280,7 @@ class Admin extends BaseController
         );
         $where = array();
         $column_order = array(NULL, 'tbl_produk_umkm.nama', null, 'tbl_produk_umkm.nama', 'nama_kategori', 'tbl_produk_umkm.qty');
-        $column_search = array('tbl_produk_umkm.nama');
+        $column_search = array('tbl_produk_umkm.nama', 'tbl_umkm.nama');
         $order = array('tbl_produk_umkm.id' => 'desc');
 
         $list = $this->server_side->limitRows($table, $select, $where, $column_order, $column_search, $order, $join);
@@ -614,7 +635,7 @@ class Admin extends BaseController
                 $r['icon'] = 'error';
                 $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
             }
-            echo json_encode($r);            
+            echo json_encode($r);
         }
     }
 
@@ -1306,6 +1327,44 @@ class Admin extends BaseController
         echo view('template/adminlte', $data);
     }
 
+    public function konfirmasi_kerjasama()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+
+        $status_kerjasama = $this->request->getPost('status_kerjasama');
+        $no_kerjasama = $this->request->getPost('no_kerjasama');
+
+        if($status_kerjasama == 'SUDAH_DISETUJUI'){
+            $data['status'] = $status_kerjasama;
+            $table = 'tbl_transaksi_kerjasama';
+            $result = $this->server_side->updateRowsByField('no_kerjasama', $no_kerjasama, $data, $table);
+            $r['result'] = true;
+            if (!$result) {
+                $r['result'] = false;
+                $r['title'] = 'Maaf Gagal Menyimpan!';
+                $r['icon'] = 'error';
+                $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+            }
+            echo json_encode($r);
+            return;
+        }else{
+            $alasan_ditolak = $this->request->getPost('alasan_ditolak');
+
+            $result = $this->server_side->updateBatalKerjasama($no_kerjasama, $alasan_ditolak);
+            $r['result'] = true;
+            if ($result == 0) {
+                $r['result'] = false;
+                $r['title'] = 'Maaf Gagal Dibatalkan!';
+                $r['icon'] = 'error';
+                $r['status'] = '<br><b>Tidak dapat di Batalkan! <br> Silakan hubungi Administrator.</b>';
+            }
+            echo json_encode($r);
+            return;
+        }
+    }
+
     public function kerjasama_()
     {
         if (session()->get('role') != 'SUPERADMIN') {
@@ -1334,7 +1393,7 @@ class Admin extends BaseController
             $no++;
             $row = array();
             $row['tanggal_pengajuan'] = $field->create_date;
-            $row['no_kerjasama'] = $field->no_kerjasama;
+            $row['no_kerjasama'] = '<a target="_blank" href="' . base_url('reseller/pdf/' . $field->no_kerjasama) . '">' . $field->no_kerjasama . '</a>';
             $row['umkm'] = $field->nama_umkm;
             $progress = $this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama);
 
@@ -1348,18 +1407,13 @@ class Admin extends BaseController
             ';
             $row['kontrak'] = $field->lama_kerjasama . ' Bulan';
 
-            if ($field->status == 'BELUM_UPLOAD') {
-                $url = base_url('reseller/pdf/' . $field->no_kerjasama);
-
-                $row['status'] = '
-                <div class="d-flex justify-content-center">
-                    <div class="badge badge-danger align-self-center">Belum Unggah Dokumen</div>
-                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="' . $field->no_kerjasama . '" data-url="' . base_url('reseller/pdf_download/' . $field->no_kerjasama) . '" role="button"><i class="fas fa-upload text-danger"></i></div>
-                </div>';
-            } else if ($field->status == 'SUDAH_UPLOAD') {
+            if ($field->status == 'MENUNGGU_PERSETUJUAN') {
                 $url = $field->file_kerjasama;
 
-                $row['status'] = '<span class="badge badge-warning align-self-center">Menunggu Konfirmasi</span>';
+                $row['status'] = '<div class="d-flex justify-content-center">
+                                    <div class="badge badge-warning">Menunggu Persetujuan</div>
+                                    <div class="align-self-center ml-2 unggah-perjanjian" data-no_kerjasama="' . $field->no_kerjasama . '" data-url="' . $url . '" role="button"><i class="fas fa-edit"></i></div>
+                                </div>';
             } else if ($field->status == 'DITOLAK') {
                 $url = $field->file_kerjasama;
                 $row['status'] = '<span class="badge badge-danger align-self-center">Kerjasama Ditolak</span>';
@@ -1371,7 +1425,6 @@ class Admin extends BaseController
 
             $row['detail'] = '
             <div class="d-flex justify-content-center">
-                <a href="' . $url . '" target="_blank" class="p-1"><i class="fas fa-file-pdf"></i></a>
                 <a href="' . base_url('admin/kerjasama/' . $field->no_kerjasama) . '" class="p-1"><i class="fas fa-search-plus"></i></a>
             </div>';
             $data[] = $row;

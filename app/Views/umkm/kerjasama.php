@@ -41,7 +41,7 @@
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
                                         <option value="ALL">ALL</option>
-                                        <option value="SUDAH_UPLOAD">Menunggu Persetujuan</option>
+                                        <option value="MENUNGGU_PERSETUJUAN">Menunggu Persetujuan</option>
                                         <option value="SUDAH_DISETUJUI">Kerjasama Disetujui</option>
                                         <option value="DITOLAK">Kerjasama Ditolak</option>
                                     </select>
@@ -88,21 +88,25 @@
         <div class="modal-content">
             <form method="post" id="form-dokumen">
                 <div class="modal-header">
-                    <h4 class="modal-title">Unggah Dokumen</h4>
+                    <h4 class="modal-title">Persetujuan Kerjasama</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <a class="btn btn-success btn-sm" id="btn-unduh-kerjasama" style="width: 100%;" target="_blank">Unduh Dokumen Perjanjian Kerjasama</a>
-                    <hr>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="foto">Unggah Dokumen PDF Persetujuan</label><br>
-                                <input type="file" class="form-control" name="dokumen" id="dokumen" accept="application/pdf">
-                                <input type="hidden" name="no_kerjasama" id="no_kerjasama">
-                            </div>
+                            <select name="status_kerjasama" id="status_kerjasama" class="form-control">
+                                <option value=""></option>
+                                <option value="SUDAH_DISETUJUI">Menyetujui</option>
+                                <option value="DITOLAK">Tidak Menyetujui</option>
+                            </select>
+                            <input type="hidden" name="no_kerjasama" id="no_kerjasama">
+                        </div>
+                    </div>
+                    <div class="row mt-2" id="ditolak-area" style="display: none;">
+                        <div class="col-md-12">
+                            <textarea name="alasan_ditolak" placeholder="Masukkan alasan ditolak" id="alasan_ditolak" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>

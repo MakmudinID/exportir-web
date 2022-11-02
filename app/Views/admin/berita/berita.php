@@ -103,8 +103,6 @@
                             <label for="slug">Flag</label>
                             <select class="form-control" name="flag" id="flag">
                                 <option value="BLOG">BLOG</option>
-                                <option value="INFO UMKM">INFO UMKM</option>
-                                <option value="INFO RESELLER">INFO RESELLER</option>
                             </select>
                         </div>
                     </div>

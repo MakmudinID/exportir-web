@@ -11,29 +11,38 @@
     </div>
 </div>
 
-<!-- products -->
-<div class="product-section mt-5 mb-2">
+<div class="product-section mt-40 mb-2">
     <div class="container">
-        <div class="row justify-content-center">
-            <?php foreach ($produk_umkm as $p) : ?>
-                <div class="col-lg-3 col-md-3 col-6 text-center">
-                    <div class="single-product-item">
-                        <div class="product-image">
-                            <a href="<?= base_url('/produk/' . $p->id) ?>"><img src="<?= $p->foto ?>" alt="<?= $p->nama ?>"></a>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-filters">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="form-filter">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-4 align-self-center">
+                                        <input type="text" name="keyword" class="form-control" placeholder="Cari Produk" id="keyword">
+                                        <input type="hidden" name="kategori" id="kategori" value="<?=$kategori->id?>">
+                                    </div>
+                                    <div class="col-md-3 align-self-center">
+                                        <button type="button" class="btn btn-primary filter" style="width: 100%;">Cari</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <label style="font-size:17px">
-                            <a href="<?= base_url('/produk/' . $p->id) ?>">
-                                <b><?= $p->nama; ?></b>
-                            </a>
-                        </label>
-                        <p class="product-price"> Rp <?= number_format($p->harga, 0, ',', '.'); ?> </p>
-                        <a data-id="<?= $p->id ?>" data-img="<?= $p->foto ?>" data-produk="<?= $p->nama ?>" data-qty="1" data-harga="<?= $p->harga ?>" data-weight="<?= $p->weight ?>" data-umkm="<?= $p->id_umkm ?>" class="cart-btn add-cart btn-sm"><i class="fas fa-shopping-cart"></i> Masukkan Keranjang</a>
-                        <hr>
-                        <span><b><a href="<?= base_url('profil-umkm/' . $p->slug) ?>"><?= $p->nama_toko; ?></a></b></span><br>
-                        <span><i class="fas fa-city mr-1"></i> <?= $p->city_name; ?></span>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            </div>
         </div>
+        <div class="d-flex justify-content-center mb-3">
+            <div class="p-2 align-self-center"><i class="fas fa-sort"></i> <b>Urutkan</b></div>
+            <div class="p-2">
+                <select name="sort_by" id="sort_by" class="form-control">
+                    <option value="TERBARU">Terbaru</option>
+                    <option value="TERLARIS">Terlaris</option>
+                </select>
+            </div>
+        </div>
+        <div class="row" id="list-produk"></div>
     </div>
 </div>

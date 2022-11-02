@@ -135,6 +135,9 @@
                     <br>
                     ...................
                 </td>
+                <td>
+                    <!-- <img src="<?=$foto?>" width="50px"> -->
+                </td>
                 <td align="center">
                     <b>Pihak Kedua</b>
                     <br>

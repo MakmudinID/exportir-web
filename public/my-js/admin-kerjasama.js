@@ -17,9 +17,16 @@ jQuery(document).ready(function() {
     $('#date_transaction').val(moment(today).format('YYYY-MM-DD HH:mm:ss') + " - " + moment(endDate).format('YYYY-MM-DD HH:mm:ss'));
 
     $(document).on('click', '.unggah-perjanjian', function() {
-        document.getElementById("btn-unduh-kerjasama").href = $(this).data('url');
         $('[name="no_kerjasama"]').val($(this).data('no_kerjasama'));
         $('#modal-default').modal('show');
+    });
+
+    $('#status_kerjasama').on('change', function() {
+        if ($(this).val() == 'DITOLAK') {
+            $('#ditolak-area').show();
+        } else {
+            $('#ditolak-area').hide();
+        }
     });
 
     $("#form-dokumen").validate({
@@ -29,13 +36,22 @@ jQuery(document).ready(function() {
             no_kerjasama: {
                 required: true
             },
-            dokumen: {
+            status_kerjasama: {
                 required: true
+            },
+            alasan_ditolak: {
+                required: function() {
+                    if ($('#status_kerjasama').val() == 'DITOLAK') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
             }
         },
         submitHandler: function(form) {
             let url;
-            url = base_url + '/admin/pdf_upload';
+            url = base_url + '/admin/konfirmasi_kerjasama';
 
             $.ajax({
                 url: url,
@@ -49,7 +65,7 @@ jQuery(document).ready(function() {
                     if (data.result != true) {
                         Swal.fire({
                             title: 'Gagal',
-                            html: "Gagal Unggah Dokumen",
+                            html: "Gagal Konfirmasi Kerjasama",
                             icon: 'error',
                             timer: 3000,
                             showCancelButton: false,
@@ -60,7 +76,7 @@ jQuery(document).ready(function() {
                     } else {
                         Swal.fire({
                             title: 'Berhasil',
-                            html: "Dokumen Berhasil Diunggah!",
+                            html: "Konfirmasi Kerjasama Berhasil Disimpan!",
                             icon: 'success',
                             timer: 3000,
                             showCancelButton: false,

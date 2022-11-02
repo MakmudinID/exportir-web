@@ -122,7 +122,25 @@ $this->server_side = new ServerSideModel(); ?>
                             <div class="d-flex mb-2">
                                 <div class="align-self-center"><b>Produk dari UMKM: <a href="<?= base_url('profil-umkm/' . $t->slug) ?>"><?= $t->nama_toko; ?></a></b></div>
                                 <div class="ml-auto align-self-center">
-                                    <h5><span class="badge badge-primary"><?= str_replace("_", " ", $t->status); ?></span></h5>
+                                    <?php
+                                    if ($t->status == 'SEDANG_DIPROSES') {
+                                        $status = '
+                                    <div class="d-flex">
+                                        <span class="badge badge-warning">SEDANG DIPROSES</span>
+                                    </div>';
+                                    } else if ($t->status == 'SUDAH_DIKIRIM') {
+                                        $status = '
+                                        <div class="d-flex">
+                                            <span class="badge badge-primary">SUDAH DIKIRIM | Nomor Resi: ' . $t->no_resi . '</span>
+                                            <div class="align-self-center ml-2 update-status-selesai" data-id_transaksi="' . $t->id . '" role="button"><i class="fas fa-edit"></i></div>
+                                        </div>';
+                                    } else if ($t->status == 'SELESAI') {
+                                        $status = '<span class="badge badge-success">SELESAI</span>';
+                                    } else {
+                                        $status = '<span class="badge badge-danger">BATAL</span>';
+                                    }
+                                    ?>
+                                    <h5><?= $status ?></h5>
                                 </div>
                             </div>
                             <table class="table table-sm" width="100%">
@@ -217,6 +235,33 @@ $this->server_side = new ServerSideModel(); ?>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-selesai">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="form-selesai">
+                <div class="modal-header">
+                    <h4 class="modal-title">Konfirmasi Pesanan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h4>Apakah pesanan anda sudah sampai? </h4>
+                            <input type="hidden" class="form-control" name="id_transaksi" value=""></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak, Belum Sampai</button>
+                    <button type="submit" class="btn btn-primary">Ya, Sudah Sampai</button>
                 </div>
             </form>
         </div>

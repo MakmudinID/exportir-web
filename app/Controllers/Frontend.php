@@ -76,7 +76,8 @@ class Frontend extends BaseController
         //Kategori
         $data['title'] = 'Kategori';
         $data['main_content']   = 'frontend/kategori-produk-umkm';
-        $data['kategori'] = $this->db->query("select nama from tbl_kategori_umkm where id=?", array($id_kategori_umkm))->getRow();
+        $data['js'] = array("user-list-produk-kategori.js?r=" . uniqid());
+        $data['kategori'] = $this->db->query("select nama, id from tbl_kategori_umkm where id=?", array($id_kategori_umkm))->getRow();
         $data['produk_umkm'] = $this->server_side->getProdukByKategoriUMKM($id_kategori_umkm);
         if (count($data['produk_umkm']) > 0) {
             echo view('template/fruitkha', $data);
@@ -98,11 +99,11 @@ class Frontend extends BaseController
     public function list_produk_by_umkm()
     {
         $umkm = $this->request->getPost('umkm');
-        // $kategori = $this->request->getPost('kategori');
+        $kategori = $this->request->getPost('kategori');
         $keyword = $this->request->getPost('keyword');
         $sort_by = $this->request->getPost('sort_by');
 
-        $produk = $this->server_side->getProdukByUMKMfilter($umkm, $keyword, $sort_by);
+        $produk = $this->server_side->getProdukByUMKMfilter($umkm, $keyword, $sort_by, $kategori);
         $html = '';
 
         foreach ($produk as $p) {
@@ -198,6 +199,7 @@ class Frontend extends BaseController
         $data['title'] = 'Kerja Sama';
         $data['umkm'] = $this->server_side->getUMKMbyKodeTransaksi($slug);
         $data['transaksi'] = $this->server_side->transaksi_in_kode($slug);
+        $data['metode_bayar'] = $this->db->query("select * from tbl_metode_bayar where status=?", array('Active'))->getResult();
         $data['js'] = array("user-kerjasama.js?r=" . uniqid());
         $data['main_content']   = 'frontend/form-kerjasama';
         echo view('template/fruitkha', $data);
@@ -207,6 +209,7 @@ class Frontend extends BaseController
     {
         $total_tagihan = $this->request->getPost('total_tagihan');
         $kode_transaksi = $this->request->getPost('kode_transaksi');
+        $metode_bayar = $this->request->getPost('metode_bayar');
 
         $str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
@@ -221,7 +224,7 @@ class Frontend extends BaseController
         $tbl_transaksi_kerjasama['alamat'] = $this->request->getPost('alamat');
         $tbl_transaksi_kerjasama['email'] = $this->request->getPost('email');
         $tbl_transaksi_kerjasama['no_ktp'] = $this->request->getPost('nik');
-        $tbl_transaksi_kerjasama['status'] = 'BELUM_UPLOAD';
+        $tbl_transaksi_kerjasama['status'] = 'MENUNGGU_PERSETUJUAN';
 
         $id_kerjasama = $this->server_side->createRows($tbl_transaksi_kerjasama, 'tbl_transaksi_kerjasama');
         if (!$id_kerjasama) {
@@ -234,6 +237,7 @@ class Frontend extends BaseController
             $kode_bayar = 'INV' . date('ymd') . '-' . substr(str_shuffle($str), 0, 8) . '' . $i;
 
             $tbl_transaksi_pembayaran['id_pengguna'] = session()->get('id');
+            $tbl_transaksi_pembayaran['id_metode_bayar'] = $metode_bayar;
             $tbl_transaksi_pembayaran['no_kerjasama'] = $no_kerjasama;
             $tbl_transaksi_pembayaran['bayar_bulan_ke'] = $i;
             $tbl_transaksi_pembayaran['kode_bayar'] = $kode_bayar;
@@ -351,7 +355,7 @@ class Frontend extends BaseController
                         $tbl_transaksi_detail['qty'] = $d->qty;
                         $tbl_transaksi_detail['weight'] = $d->weight;
                         $tbl_transaksi_detail['harga'] = $d->harga;
-                        $tbl_transaksi_detail['subtotal'] = $d->harga;
+                        $tbl_transaksi_detail['subtotal'] = $d->subtotal;
 
                         $result = $this->server_side->createRows($tbl_transaksi_detail, 'tbl_transaksi_detail');
                         if (!$result) {
@@ -812,6 +816,7 @@ class Frontend extends BaseController
         $tbl_transaksi_pembayaran['kode_bayar'] = $kode_bayar;
 
         $datetime_now = date('Y-m-d H:i:s');
+        $date_now = date('Y-m-d');
 
         $tbl_transaksi_pembayaran['batas_bayar'] = date('Y-m-d H:i:s', strtotime($datetime_now . ' + 2 days'));
         $tbl_transaksi_pembayaran['total_tagihan'] = $this->server_side->jumlah_total_bayar($transaksi_list);
@@ -824,6 +829,7 @@ class Frontend extends BaseController
             $id_transaksi = $val;
             $tbl_transaksi['id_pembayaran'] = $id_pembayaran;
             $tbl_transaksi['status'] = 'BELUM_DIBAYAR';
+            $tbl_transaksi['tanggal_kirim'] = date('Y-m-d', strtotime($date_now . ' + 3 days'));
             $tbl_transaksi['kerjasama'] = 'T';
             $this->server_side->updateRows($id_transaksi, $tbl_transaksi, 'tbl_transaksi');
         }

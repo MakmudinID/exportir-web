@@ -25,16 +25,24 @@ jQuery(document).ready(function() {
             { "data": "foto" },
             { "data": "nama" },
             { "data": "harga" },
+            { "data": "harga_kerjasama" },
             { "data": "kategori" },
             { "data": "qty" },
             { "data": "aksi" },
         ],
         columnDefs: [{
-            targets: [0, 5],
-            orderable: false,
-            searchable: false,
-            className: 'text-center'
-        }],
+                targets: [0, 5],
+                orderable: false,
+                searchable: false,
+                className: 'text-center'
+            },
+            {
+                targets: [3, 4],
+                orderable: false,
+                searchable: false,
+                className: 'text-right'
+            }
+        ],
     });
 
     $(document).on('click', '.add', function() {
@@ -58,6 +66,7 @@ jQuery(document).ready(function() {
         $('[name="id_kategori"]').val($(this).data('id_kategori'));
         $('[name="nama"]').val($(this).data('nama'));
         $('[name="harga"]').val($(this).data('harga'));
+        $('[name="harga_kerjasama"]').val($(this).data('harga_kerjasama'));
         $('[name="deskripsi"]').summernote('code', $(this).data('deskripsi'));
         $('[name="qty"]').val($(this).data('qty'));
         $('[name="qty_min"]').val($(this).data('qty_min'));
@@ -124,6 +133,10 @@ jQuery(document).ready(function() {
             qty: {
                 required: true
             },
+            harga_kerjasama: {
+                required: true,
+                number: true
+            },
             qty_min: {
                 required: true
             },
@@ -134,7 +147,8 @@ jQuery(document).ready(function() {
                 required: true
             },
             harga: {
-                required: true
+                required: true,
+                number: true
             },
             status: {
                 required: true

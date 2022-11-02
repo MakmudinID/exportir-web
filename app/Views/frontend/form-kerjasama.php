@@ -101,6 +101,17 @@ $this->server_side = new ServerSideModel();
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="metode_bayar" class="col-sm-3 col-form-label align-self-center">Metode Bayar</label>
+                                <div class="col-sm-9 align-self-center">
+                                    <select class="form-control" name="metode_bayar" required>
+                                        <option value=""></option>
+                                        <?php foreach ($metode_bayar as $m) : ?>
+                                            <option value="<?= $m->id ?>"><?= $m->nama; ?> [<?= $m->nomor_rekening; ?>]</option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

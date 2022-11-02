@@ -175,3 +175,30 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-selesai">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="form-selesai">
+                <div class="modal-header">
+                    <h4 class="modal-title">Konfirmasi Pesanan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h4>Apakah pesanan anda sudah sampai? </h4>
+                            <input type="hidden" class="form-control" name="id_transaksi" value=""></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak, Belum Sampai</button>
+                    <button type="submit" class="btn btn-primary">Ya, Sudah Sampai</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
