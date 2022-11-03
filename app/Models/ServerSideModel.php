@@ -548,6 +548,18 @@ class ServerSideModel extends Model
         return $this->db->query("SELECT tbl_pengguna.id FROM tbl_transaksi JOIN tbl_umkm ON tbl_umkm.id = tbl_transaksi.id_umkm JOIN tbl_pengguna ON tbl_pengguna.id = tbl_umkm.id_pengguna WHERE kode_transaksi=?", array($kode_transaksi))->getRow()->id;
     }
 
+    public function check_chat($kode_transaksi){
+        $builder =  $this->db->table('tbl_chat');
+        $builder->SELECT('*');
+        $builder->where('tbl_chat.kode_transaksi', $kode_transaksi);
+        $num = $builder->countAllResults(false);
+        if($num > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public function verify($email, $password)
     {
         $builder =  $this->db->table('tbl_pengguna');

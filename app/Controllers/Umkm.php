@@ -278,6 +278,15 @@ class Umkm extends BaseController
 
         $kode_transaksi = $this->request->getPost('transaksi');
         //get id_umkm
+        $check = $this->server_side->check_chat($kode_transaksi);
+        if(!$check){
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan, Chatting untuk Kode Transaksi '.$kode_transaksi.' sudah ada!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+            echo json_encode($r);
+            return;
+        }
         $id_umkm = $this->server_side->getIdPenggunaUMKM($kode_transaksi);
 
         //create chat content
