@@ -144,7 +144,8 @@ class Umkm extends BaseController
             $row['tanggal_pengajuan'] = $field->create_date;
             $row['no_kerjasama'] = '<a target="_blank" href="' . base_url('reseller/pdf/' . $field->no_kerjasama) . '">' . $field->no_kerjasama . '</a>';
             $row['reseller'] = $field->reseller;
-            $progress = $this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama);
+
+            $progress = round($this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama));
 
             $row['progress'] = '
                 <div class="progress progress-sm active">
@@ -593,7 +594,7 @@ class Umkm extends BaseController
             $row['kategori'] = $field->nama_kategori;
             $row['qty'] = $field->qty . " " . $field->satuan;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
-            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-harga="' . $field->harga . '" data-harga_kerjasama="' . $field->harga_min . '"  data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="' . $field->qty . '" data-qty_min="' . $field->qty_min . '" data-satuan="' . $field->satuan . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-harga="' . $field->harga . '" data-weight="' . $field->weight . '" data-harga_kerjasama="' . $field->harga_min . '"  data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="' . $field->qty . '" data-qty_min="' . $field->qty_min . '" data-satuan="' . $field->satuan . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
             <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
             </div>';
             $data[] = $row;

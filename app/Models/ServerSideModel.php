@@ -473,6 +473,22 @@ class ServerSideModel extends Model
         return $q;
     }
 
+    public function getListUMKM($keyword)
+    {
+        $sql = "SELECT tbl_umkm.*, tbl_propinsi.province as propinsi, tbl_city.city_name as kota 
+                FROM tbl_umkm 
+                join tbl_propinsi on tbl_propinsi.province_id = tbl_umkm.province_id 
+                join tbl_city on tbl_city.city_id = tbl_umkm.city_id 
+                where tbl_umkm.status = 'ACTIVE' ";
+
+        if ($keyword != '') {
+            $sql .= "and tbl_umkm.nama like '%$keyword%' ";
+        }
+
+        $q = $this->db->query($sql)->getResult();
+        return $q;
+    }
+
 
     public function getKategoriBerita()
     {
@@ -482,7 +498,7 @@ class ServerSideModel extends Model
 
     public function getUMKM()
     {
-        $q = $this->db->query("SELECT * FROM tbl_umkm");
+        $q = $this->db->query("SELECT * FROM tbl_umkm WHERE status='ACTIVE'");
         return $q->getResult();
     }
 
@@ -506,13 +522,13 @@ class ServerSideModel extends Model
 
     public function getKategoriProduk()
     {
-        $q = $this->db->query("SELECT * FROM tbl_kategori_produk");
+        $q = $this->db->query("SELECT * FROM tbl_kategori_produk WHERE status='ACTIVE' ");
         return $q->getResult();
     }
 
     public function getKategoriProdukById($id)
     {
-        $q = $this->db->query("SELECT * FROM tbl_kategori_produk where id_umkm = $id");
+        $q = $this->db->query("SELECT * FROM tbl_kategori_produk where id_umkm = $id AND status='ACTIVE' ");
         return $q->getResult();
     }
 
@@ -779,7 +795,7 @@ class ServerSideModel extends Model
     protected function SELECTField($table, $SELECT, $where, $column_order, $column_search, $order, $join = NULL, $like = null, $notlike = null)
     {
         $this->builder = $this->db->table($table);
-        $this->builder->SELECT($SELECT);
+        $this->builder->select($SELECT);
 
         if ($join != NULL) {
             for ($i = 0; $i < count($join); $i++) {

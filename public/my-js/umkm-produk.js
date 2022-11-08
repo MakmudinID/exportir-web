@@ -72,6 +72,7 @@ jQuery(document).ready(function() {
         $('[name="qty_min"]').val($(this).data('qty_min'));
         $('[name="satuan"]').val($(this).data('satuan'));
         $('[name="status"]').val($(this).data('status'));
+        $('[name="weight"]').val($(this).data('weight'));
         $('[name="foto_"]').val($(this).data('foto'));
     });
 

@@ -98,7 +98,9 @@ class Admin extends BaseController
             array('tbl_pengguna', 'tbl_pengguna.id = tbl_umkm.id_pengguna'),
             array('tbl_kategori_umkm', 'tbl_kategori_umkm.id = tbl_umkm.id_kategori')
         );
-        $where = array();
+        $where = array(
+            array('tbl_umkm.status !=', 'DELETED')
+        );
         $column_order = array(NULL, 'nama_pengguna', 'tbl_umkm.nama', 'tbl_umkm.foto', 'tbl_umkm.deskripsi', 'tbl_umkm.status');
         $column_search = array('nama_pengguna', 'tbl_umkm.nama');
         $order = array('role' => 'desc');
@@ -126,7 +128,7 @@ class Admin extends BaseController
 
         $output = array(
             "draw" => $this->request->getPost('draw'),
-            "recordsTotal" => $this->server_side->countAll($table, $select, $where, $column_order, $column_search, $order, $join),
+            "recordsTotal" => $this->server_side->countFiltered($table, $select, $where, $column_order, $column_search, $order, $join),
             "recordsFiltered" => $this->server_side->countFiltered($table, $select, $where, $column_order, $column_search, $order, $join),
             "data" => $data,
         );
@@ -263,8 +265,142 @@ class Admin extends BaseController
         }
         $data['title'] = 'Produk';
         $data['js'] = array("admin-produk.js?r=" . uniqid());
+        $data['kategori_produk_umkm'] = $this->server_side->getKategoriProduk();
+        $data['umkm'] = $this->server_side->getUMKM();
         $data['main_content']   = 'admin/data/produk';
         echo view('template/adminlte', $data);
+    }
+
+    public function get_kategori_produk_umkm(){
+        $kategori = $this->server_side->getKategoriProdukById($this->request->getPost('id_umkm'));
+        echo '<option value="">- Pilih Kategori -</option>';
+        foreach($kategori as $k){
+            echo '<option value="'.$k->id.'">'.$k->nama.'</option>';
+        }
+        return;
+    }
+
+    public function create_produk()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+        $foto = $this->request->getFile('foto');
+        $id_umkm = htmlspecialchars($this->request->getPost('id_umkm'), ENT_QUOTES);
+        $data['id_umkm'] = $id_umkm;
+        $data['id_kategori']   = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
+        $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
+        $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
+        $data['qty']  = htmlspecialchars($this->request->getPost('qty'), ENT_QUOTES);
+        $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
+        $data['harga_min']  = htmlspecialchars($this->request->getPost('harga_kerjasama'), ENT_QUOTES);
+        $data['harga']  = htmlspecialchars($this->request->getPost('harga'), ENT_QUOTES);
+        $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
+        $data['weight']  = htmlspecialchars($this->request->getPost('weight'), ENT_QUOTES);
+        $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+
+        if ($foto->getName() != '') {
+            $foto->move('../public/assets/photo-produk/', $foto->getName());
+            $filepath = base_url() . '/assets/photo-produk/' . $foto->getName();
+            $path = $foto->getName();
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif' || 'JPEG') {
+                $data['foto'] = $filepath;
+            } else {
+                $r['result'] = false;
+                $r['title'] = 'Gagal!';
+                $r['icon'] = 'error';
+                $r['status'] = 'Format File Tidak Diijinkan!';
+            }
+        } else {
+            $data['foto'] = base_url('/assets/admin/img/avatar5.png');
+        }
+
+
+        $r['result'] = true;
+
+        $table = 'tbl_produk_umkm';
+        $result = $this->server_side->createRows($data, $table);
+
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
+    public function update_produk()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+        $foto = $this->request->getFile('foto');
+        $id = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
+        $id_umkm = htmlspecialchars($this->request->getPost('id_umkm'), ENT_QUOTES);
+        $data['id_umkm'] = $id_umkm;
+        $data['id_kategori']   = htmlspecialchars($this->request->getPost('id_kategori'), ENT_QUOTES);
+        $data['nama']   = htmlspecialchars($this->request->getPost('nama'), ENT_QUOTES);
+        $data['deskripsi']  = htmlspecialchars($this->request->getPost('deskripsi'), ENT_QUOTES);
+        $data['qty']  = htmlspecialchars($this->request->getPost('qty'), ENT_QUOTES);
+        $data['harga']  = htmlspecialchars($this->request->getPost('harga'), ENT_QUOTES);
+        $data['harga_min']  = htmlspecialchars($this->request->getPost('harga_kerjasama'), ENT_QUOTES);
+        $data['qty_min']  = htmlspecialchars($this->request->getPost('qty_min'), ENT_QUOTES);
+        $data['satuan']  = htmlspecialchars($this->request->getPost('satuan'), ENT_QUOTES);
+        $data['weight']  = htmlspecialchars($this->request->getPost('weight'), ENT_QUOTES);
+        $data['status']  = htmlspecialchars($this->request->getPost('status'), ENT_QUOTES);
+
+        if ($foto->getName() != '') {
+            $foto->move('../public/assets/photo-produk/', $foto->getName());
+            $filepath = base_url() . '/assets/photo-produk/' . $foto->getName();
+            $path = $foto->getName();
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'svg' || $ext == 'gif' || 'JPEG') {
+                $data['foto'] = $filepath;
+            } else {
+                $r['result'] = false;
+                $r['title'] = 'Gagal!';
+                $r['icon'] = 'error';
+                $r['status'] = 'Format File Tidak Diijinkan!';
+                echo json_encode($r);
+                return;
+            }
+        }
+
+        $r['result'] = true;
+
+        $table = 'tbl_produk_umkm';
+        $result = $this->server_side->updateRows($id, $data, $table);
+
+        if (!$result) {
+            $r['result'] = false;
+            $r['title'] = 'Maaf Gagal Menyimpan!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Simpan! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
+        return;
+    }
+
+    public function delete_produk()
+    {
+        if (session()->get('role') != 'SUPERADMIN') {
+            return redirect()->route('logout');
+        }
+        $table = 'tbl_produk_umkm';
+        $id_ = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
+        if ($this->server_side->deleteRows($id_, $table)) {
+            $r['title'] = 'Sukses!';
+            $r['icon'] = 'success';
+            $r['status'] = 'Berhasil di Hapus!';
+        } else {
+            $r['title'] = 'Maaf!';
+            $r['icon'] = 'error';
+            $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
+        }
+        echo json_encode($r);
     }
 
     public function produk_()
@@ -296,6 +432,10 @@ class Admin extends BaseController
             $row['umkm'] = $field->nama_umkm;
             $row['kategori'] = $field->nama_kategori;
             $row['qty'] = $field->qty . " " . $field->satuan;
+            $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
+            <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-id_umkm="' . $field->id_umkm . '" data-harga="' . $field->harga . '" data-harga_kerjasama="' . $field->harga_min . '"  data-id_kategori="' . $field->id_kategori . '" data-nama="' . $field->nama . '" data-deskripsi="' . $field->deskripsi . '" data-qty="' . $field->qty . '" data-qty_min="' . $field->qty_min . '" data-satuan="' . $field->satuan . '" data-weight="' . $field->weight . '" data-status="' . $field->status . '" data-foto="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
+            <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
+            </div>';
             $data[] = $row;
         }
 
@@ -431,18 +571,47 @@ class Admin extends BaseController
         if (session()->get('role') != 'SUPERADMIN') {
             return redirect()->route('logout');
         }
-        $table = 'tbl_pengguna';
+
+        $role = htmlspecialchars($this->request->getPost('role'), ENT_QUOTES);
         $id_ = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
-        if ($this->server_side->deleteRows($id_, $table)) {
-            $r['title'] = 'Sukses!';
-            $r['icon'] = 'success';
-            $r['status'] = 'Berhasil di Hapus!';
-        } else {
-            $r['title'] = 'Maaf!';
-            $r['icon'] = 'error';
-            $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
+
+        if($role == 'UMKM'){
+            $table_pengguna = 'tbl_pengguna';
+            $data_pengguna['status'] = 'DELETED';
+            $this->server_side->updateRows($id_, $data_pengguna, $table_pengguna);
+
+            $table = 'tbl_umkm';
+            $data_umkm['status'] = 'DELETED';
+            $result = $this->server_side->updateRowsByField('id_pengguna', $id_, $data_umkm, $table);
+            
+            if($result){
+                $r['title'] = 'Sukses!';
+                $r['icon'] = 'success';
+                $r['status'] = 'Berhasil di Hapus!';
+            }else{
+                $r['title'] = 'Maaf!';
+                $r['icon'] = 'error';
+                $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
+            }
+        }else{
+            $table_pengguna = 'tbl_pengguna';
+            $data_pengguna['status'] = 'DELETED';
+            $result = $this->server_side->updateRows($id_, $data_pengguna, $table_pengguna);
+
+            if($result){
+                $r['title'] = 'Sukses!';
+                $r['icon'] = 'success';
+                $r['status'] = 'Berhasil di Hapus!';
+            }else{
+                $r['title'] = 'Maaf!';
+                $r['icon'] = 'error';
+                $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
+            }
+
         }
+
         echo json_encode($r);
+        return;
     }
 
     public function user()
@@ -467,7 +636,9 @@ class Admin extends BaseController
         $table = 'tbl_pengguna';
         $select = '*';
         $join = NULL;
-        $where = array();
+        $where = array(
+            array('tbl_pengguna.status !=', 'DELETED')
+        );
         $column_order = array(NULL, 'foto', 'nama', 'email', 'role', 'status');
         $column_search = array('nama', 'email');
         $order = array('role' => 'desc');
@@ -486,7 +657,7 @@ class Admin extends BaseController
             $row['status'] = ($field->status == 'ACTIVE') ? $field->status : $field->status;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
             <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '" data-propinsi="' . $field->id_propinsi . '" data-kota="' . $field->id_kota . '" data-nama="' . $field->nama . '" data-email="' . $field->email . '" data-no_hp="' . $field->no_hp . '" data-role="' . $field->role . '" data-status="' . $field->status . '" data-photo="' . $field->foto . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
-            <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
+            <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '" data-role="' . $field->role . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
       </div>';
             $data[] = $row;
         }
@@ -957,7 +1128,11 @@ class Admin extends BaseController
         $table = 'tbl_kategori_umkm';
         $select = '*';
         $join = null;
-        $where = array();
+
+        $where = array(
+            array('tbl_kategori_umkm.status !=', 'DELETED')
+        );
+
         $column_order = array(NULL, 'nama', 'status');
         $column_search = array('nama');
         $order = array('nama' => 'desc');
@@ -974,7 +1149,7 @@ class Admin extends BaseController
             $row['status'] = ($field->status == 'ACTIVE') ? $field->status : $field->status;
             $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
             <div class="text-warning align-items-center text-decoration-none edit mr-1" data-id="' . $field->id . '"  data-nama="' . $field->nama . '" data-status="' . $field->status . '" role="button"><i class="fa fa-pencil-alt mr-1"></i> Edit</div>
-            <div class="text-danger align-items-center delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
+            <div class="text-danger align-items-center ml-2 delete" role="button" data-id="' . $field->id . '" data-nama="' . $field->nama . '"><i class="fa fa-trash-alt mr-1"></i> Delete</div>
       </div>';
             $data[] = $row;
         }
@@ -1395,7 +1570,7 @@ class Admin extends BaseController
             $row['tanggal_pengajuan'] = $field->create_date;
             $row['no_kerjasama'] = '<a target="_blank" href="' . base_url('reseller/pdf/' . $field->no_kerjasama) . '">' . $field->no_kerjasama . '</a>';
             $row['umkm'] = $field->nama_umkm;
-            $progress = $this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama);
+            $progress = round($this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama));
 
             $row['progress'] = '
                 <div class="progress progress-sm active">

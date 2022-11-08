@@ -495,7 +495,8 @@ class Reseller extends BaseController
             $row['tanggal_pengajuan'] = $field->create_date;
             $row['no_kerjasama'] = '<a target="_blank" href="'.base_url('reseller/pdf/'.$field->no_kerjasama).'">'.$field->no_kerjasama.'</a>';
             $row['umkm'] = $field->nama_umkm;
-            $progress = $this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama);
+
+            $progress = round($this->transaksi->progress($field->lama_kerjasama, $field->no_kerjasama));
 
             $row['progress'] = '
                 <div class="progress progress-sm active">

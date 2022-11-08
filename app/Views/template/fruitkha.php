@@ -82,6 +82,7 @@ $this->server_side = new ServerSideModel(); ?>
 										<?php endforeach; ?>
 									</ul>
 								</li>
+								<li <?=($title == 'UMKM') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('/list-umkm') ?>">UMKM</a></li>
 								<li <?=($title == 'Berita') ? 'class="current-list-item"' : ''?>><a href="<?= base_url('/list-berita') ?>">Berita</a></li>
 								<li>
 									<div class="header-icons">

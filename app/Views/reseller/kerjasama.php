@@ -41,8 +41,7 @@
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
                                         <option value="ALL">ALL</option>
-                                        <option value="BELUM_UPLOAD">Belum Unggah Perjanjian</option>
-                                        <option value="SUDAH_UPLOAD">Menunggu Persetujuan</option>
+                                        <option value="MENUNGGU_PERSETUJUAN">Menunggu Persetujuan</option>
                                         <option value="SUDAH_DISETUJUI">Kerjasama Disetujui</option>
                                         <option value="DITOLAK">Kerjasama Ditolak</option>
                                     </select>

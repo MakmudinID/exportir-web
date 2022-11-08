@@ -80,6 +80,10 @@ jQuery(document).ready(function() {
     });
 
     table = $('#table').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'excel', 'pdf', 'print'
+        ],
         ajax: {
             url: base_url + "/reseller/kerjasama_",
             type: "POST",

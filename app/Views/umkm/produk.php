@@ -22,7 +22,7 @@
                         <h3 class="card-title">DATA PRODUK</h3>
                         <div class="card-tools">
                             <button type="button" class="add btn btn-default" data-toggle="modal" data-target="#modal-default">
-                                Tambah Barang
+                                Tambah Produk
                             </button>
                         </div>
                     </div>

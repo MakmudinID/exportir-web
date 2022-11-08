@@ -169,8 +169,9 @@ class TransaksiModel extends Model
 
         $sql = "SELECT tbl_chat.*
         FROM tbl_chat
-        WHERE id_penerima IN ($id_pengguna)
-        OR id_pengirim IN ($id_pengguna)";
+        WHERE 1 
+        AND (id_penerima IN ($id_pengguna) OR id_pengirim IN ($id_pengguna)) 
+        ";
 
         $i = 0;
         if (isset($_POST['search']['value'])) {
@@ -191,6 +192,7 @@ class TransaksiModel extends Model
         } else {
             $sql .= " ORDER BY tbl_chat.create_date DESC ";
         }
+
 
         return $sql;
     }

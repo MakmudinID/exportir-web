@@ -134,6 +134,46 @@ class Frontend extends BaseController
         echo $html;
     }
 
+    public function list_umkm()
+    {
+        $data['js'] = array("user-list-umkm.js?r=" . uniqid());
+        $data['main_content']   = 'frontend/list-umkm';
+        $data['title'] = 'UMKM';
+        echo view('template/fruitkha', $data);
+    }
+
+    public function list_umkm_()
+    {
+        $keyword = $this->request->getPost('keyword');
+
+        $umkm = $this->server_side->getListUMKM($keyword);
+        $html = '';
+        foreach ($umkm as $b) {
+            $html .= '<div class="col-lg-4 col-md-6">
+                        <div class="single-latest-news">
+                            <a href="' . base_url('/profil-umkm/' . $b->slug) . '"><img src="' . $b->foto . '" alt="' . $b->nama . '" style="float: left;width:100%;height:200px;object-fit: cover; padding-bottom: 20px;"></a>
+                            <div class="news-text-box">
+                                <h3><a href="' . base_url('/profil-umkm/' . $b->slug) . '" class="text-dark">' . $b->nama . '</a></h3>
+                                <p class="excerpt">' . html_entity_decode($b->deskripsi) . '</p>
+                            </div>
+                        </div>
+                    </div>';
+        }
+
+        if (!empty($umkm)) {
+            echo $html;
+        } else {
+            $html .= '<div class="col-lg-12 col-md-12 abt-textcol-6 text-center">
+                            <div class="card">
+                                <div class="card-body">
+                                <p class="text-danger"><b>Pencarian "' . $keyword . '" tidak ditemukan</b></p>
+                                </div>
+                            </div>
+                        </div>';
+            echo $html;
+        }
+    }
+
     public function list_produk_()
     {
         $kategori = $this->request->getPost('kategori');
@@ -447,7 +487,7 @@ class Frontend extends BaseController
                                     <span class="date"><i class="fas fa-calendar"></i> ' . $b->create_date . '</span>
                                 </p>
                                 <p class="excerpt">' . html_entity_decode($b->ringkasan) . '</p>
-                                <a href="' . base_url('/berita/' . $b->id) . '" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+                                <a href="' . base_url('/berita/' . $b->id) . '" class="read-more-btn">Baca selengkapnya <i class="fas fa-angle-right"></i></a>
                             </div>
                         </div>
                     </div>';

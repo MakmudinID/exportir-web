@@ -22,6 +22,10 @@ jQuery(document).ready(function() {
     });
 
     table = $('#table').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'excel', 'pdf', 'print'
+        ],
         ajax: {
             url: base_url + "/umkm/transaksi_",
             type: "POST",

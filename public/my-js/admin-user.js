@@ -76,6 +76,7 @@ jQuery(document).ready(function() {
     $(document).on('click', '.delete', function() {
         var id = $(this).data('id');
         var nama = $(this).data('nama');
+        var role = $(this).data('role');
         Swal.fire({
             title: 'Anda Yakin?',
             html: "User " + nama + "<br><br><b>Akan Dihapus!</b>",
@@ -91,7 +92,8 @@ jQuery(document).ready(function() {
                     url: base_url + "/admin/delete_user",
                     type: "POST",
                     data: {
-                        id: id
+                        id: id,
+                        role: role,
                     },
                     dataType: "JSON",
                     success: function(data) {

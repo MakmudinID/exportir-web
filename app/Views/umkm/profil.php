@@ -32,7 +32,7 @@
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-header p-2">
-                        <h4>Data Profile</h4>
+                        <h4>Data Owner</h4>
                     </div>
                     <div class="card-body">
                         <form class="form-horizontal" id="edit-profil">

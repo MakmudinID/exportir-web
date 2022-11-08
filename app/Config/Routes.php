@@ -53,6 +53,8 @@ $routes->get('list-produk', 'Frontend::list_produk');
 $routes->post('list_produk_', 'Frontend::list_produk_');
 $routes->post('list_produk_by_umkm', 'Frontend::list_produk_by_umkm');
 $routes->get('list-berita', 'Frontend::list_berita');
+$routes->get('list-umkm', 'Frontend::list_umkm');
+$routes->post('list_umkm_', 'Frontend::list_umkm_');
 $routes->post('list_berita_', 'Frontend::list_berita_');
 $routes->get('berita/(:any)', 'Frontend::berita/$1');
 $routes->post('add-cart', 'Frontend::add_cart');
@@ -169,6 +171,12 @@ $routes->post('admin/update_status_transaksi', 'Admin::update_status_transaksi')
 $routes->post('admin/delete_umkm', 'Admin::delete_umkm');
 $routes->get('admin/kategori-umkm', 'Admin::kategori_umkm');
 $routes->post('admin/kategori_umkm_', 'Admin::kategori_umkm_');
+
+$routes->post('admin/create_produk', 'Admin::create_produk');
+$routes->post('admin/update_produk', 'Admin::update_produk');
+$routes->post('admin/delete_produk', 'Admin::delete_produk');
+$routes->post('get_kategori_produk_umkm', 'Admin::get_kategori_produk_umkm');
+
 $routes->post('admin/create_kategori_umkm', 'Admin::create_kategori_umkm');
 $routes->post('admin/update_kategori_umkm', 'Admin::update_kategori_umkm');
 $routes->post('admin/delete_kategori_umkm', 'Admin::delete_kategori_umkm');
