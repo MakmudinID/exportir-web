@@ -86,7 +86,7 @@ class Admin extends BaseController
         return;
     }
 
-    
+
     public function umkm_()
     {
         if (session()->get('role') != 'SUPERADMIN') {
@@ -101,8 +101,8 @@ class Admin extends BaseController
         $where = array(
             array('tbl_umkm.status !=', 'DELETED')
         );
-        $column_order = array(NULL, 'nama_pengguna', 'tbl_umkm.nama', 'tbl_umkm.foto', 'tbl_umkm.deskripsi', 'tbl_umkm.status');
-        $column_search = array('nama_pengguna', 'tbl_umkm.nama');
+        $column_order = array(NULL, 'tbl_pengguna.nama', 'tbl_umkm.nama', 'tbl_umkm.foto', 'tbl_umkm.deskripsi', 'tbl_umkm.status');
+        $column_search = array('tbl_pengguna.nama', 'tbl_umkm.nama');
         $order = array('role' => 'desc');
 
         $list = $this->server_side->limitRows($table, $select, $where, $column_order, $column_search, $order, $join);
@@ -244,7 +244,18 @@ class Admin extends BaseController
         }
         $table = 'tbl_umkm';
         $id_ = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
-        if ($this->server_side->deleteRows($id_, $table)) {
+
+        $umkm = $this->db->table('tbl_umkm')->getWhere(['id_pengguna' => $id_])->getRow();
+
+        $table_pengguna = 'tbl_pengguna';
+        $data_pengguna['status'] = 'DELETED';
+        $this->server_side->updateRows($umkm->id_pengguna, $data_pengguna, $table_pengguna);
+
+        $table = 'tbl_umkm';
+        $data_umkm['status'] = 'DELETED';
+        $result = $this->server_side->updateRowsByField('id', $id_, $data_umkm, $table);
+
+        if ($result) {
             $r['title'] = 'Sukses!';
             $r['icon'] = 'success';
             $r['status'] = 'Berhasil di Hapus!';
@@ -253,9 +264,19 @@ class Admin extends BaseController
             $r['icon'] = 'error';
             $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
         }
-        echo json_encode($r);
-    }
 
+        // if ($this->server_side->deleteRows($id_, $table)) {
+        //     $r['title'] = 'Sukses!';
+        //     $r['icon'] = 'success';
+        //     $r['status'] = 'Berhasil di Hapus!';
+        // } else {
+        //     $r['title'] = 'Maaf!';
+        //     $r['icon'] = 'error';
+        //     $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
+        // }
+        echo json_encode($r);
+        return;
+    }
 
     public function produk()
     {
@@ -271,11 +292,12 @@ class Admin extends BaseController
         echo view('template/adminlte', $data);
     }
 
-    public function get_kategori_produk_umkm(){
+    public function get_kategori_produk_umkm()
+    {
         $kategori = $this->server_side->getKategoriProdukById($this->request->getPost('id_umkm'));
         echo '<option value="">- Pilih Kategori -</option>';
-        foreach($kategori as $k){
-            echo '<option value="'.$k->id.'">'.$k->nama.'</option>';
+        foreach ($kategori as $k) {
+            echo '<option value="' . $k->id . '">' . $k->nama . '</option>';
         }
         return;
     }
@@ -575,7 +597,7 @@ class Admin extends BaseController
         $role = htmlspecialchars($this->request->getPost('role'), ENT_QUOTES);
         $id_ = htmlspecialchars($this->request->getPost('id'), ENT_QUOTES);
 
-        if($role == 'UMKM'){
+        if ($role == 'UMKM') {
             $table_pengguna = 'tbl_pengguna';
             $data_pengguna['status'] = 'DELETED';
             $this->server_side->updateRows($id_, $data_pengguna, $table_pengguna);
@@ -583,31 +605,30 @@ class Admin extends BaseController
             $table = 'tbl_umkm';
             $data_umkm['status'] = 'DELETED';
             $result = $this->server_side->updateRowsByField('id_pengguna', $id_, $data_umkm, $table);
-            
-            if($result){
+
+            if ($result) {
                 $r['title'] = 'Sukses!';
                 $r['icon'] = 'success';
                 $r['status'] = 'Berhasil di Hapus!';
-            }else{
+            } else {
                 $r['title'] = 'Maaf!';
                 $r['icon'] = 'error';
                 $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
             }
-        }else{
+        } else {
             $table_pengguna = 'tbl_pengguna';
             $data_pengguna['status'] = 'DELETED';
             $result = $this->server_side->updateRows($id_, $data_pengguna, $table_pengguna);
 
-            if($result){
+            if ($result) {
                 $r['title'] = 'Sukses!';
                 $r['icon'] = 'success';
                 $r['status'] = 'Berhasil di Hapus!';
-            }else{
+            } else {
                 $r['title'] = 'Maaf!';
                 $r['icon'] = 'error';
                 $r['status'] = '<br><b>Tidak dapat di Hapus! <br> Silakan hubungi Administrator.</b>';
             }
-
         }
 
         echo json_encode($r);
@@ -1511,7 +1532,7 @@ class Admin extends BaseController
         $status_kerjasama = $this->request->getPost('status_kerjasama');
         $no_kerjasama = $this->request->getPost('no_kerjasama');
 
-        if($status_kerjasama == 'SUDAH_DISETUJUI'){
+        if ($status_kerjasama == 'SUDAH_DISETUJUI') {
             $data['status'] = $status_kerjasama;
             $table = 'tbl_transaksi_kerjasama';
             $result = $this->server_side->updateRowsByField('no_kerjasama', $no_kerjasama, $data, $table);
@@ -1524,7 +1545,7 @@ class Admin extends BaseController
             }
             echo json_encode($r);
             return;
-        }else{
+        } else {
             $alasan_ditolak = $this->request->getPost('alasan_ditolak');
 
             $result = $this->server_side->updateBatalKerjasama($no_kerjasama, $alasan_ditolak);
