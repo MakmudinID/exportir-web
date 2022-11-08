@@ -222,6 +222,73 @@ class Umkm extends BaseController
         echo view('template/adminlte', $data);
     }
 
+    public function berita()
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Berita';
+        $data['js'] = array("umkm-berita.js?r=" . uniqid());
+        $data['kategori'] = $this->db->query('select * from tbl_berita_kategori')->getResult();
+        $data['main_content']   = 'umkm/berita';
+        echo view('template/adminlte', $data);
+    }
+
+    public function detail_berita($slug)
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $data['title'] = 'Berita';
+        $data['berita'] = $this->db->query('select tbl_berita.*, tbl_berita_kategori.nama as kategori from tbl_berita join tbl_berita_kategori on tbl_berita_kategori.id = tbl_berita.id_kategori where tbl_berita.slug=?', array($slug))->getRow();
+        $data['main_content']   = 'umkm/berita-detail';
+        echo view('template/adminlte', $data);
+    }
+
+    public function berita_()
+    {
+        if (session()->get('role') != 'UMKM') {
+            return redirect()->route('logout');
+        }
+        $table = 'tbl_berita';
+        $select = 'tbl_berita.*, tbl_berita_kategori.nama as nama_kategori';
+        $join = array(
+            array('tbl_berita_kategori', 'tbl_berita_kategori.id = tbl_berita.id_kategori')
+        );
+        $where = array(
+            array('tbl_berita.flag', 'INFO UMKM')
+        );
+        $column_order = array(NULL, NULL, 'tbl_berita.judul', 'nama_kategori', 'tbl_berita.slug', 'tbl_berita.flag', 'tbl_berita.penulis', 'tbl_berita.status');
+        $column_search = array('tbl_berita.judul', 'nama_kategori');
+        $order = array('tbl_berita.id' => 'desc');
+
+        $list = $this->server_side->limitRows($table, $select, $where, $column_order, $column_search, $order, $join);
+        // var_dump($list);die;
+        $data = array();
+        $no = $this->request->getPost('start');
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row['no'] = $no;
+            $row['judul'] = $field->judul . '<br><small>' . $field->create_date . '</small>';
+            $row['nama_kategori'] = $field->nama_kategori;
+            $row['aksi'] = '<div class="d-flex justify-content-center align-items-center">
+            <a class="text-info align-items-center text-decoration-none detail mr-1" href="' . base_url('/umkm/detail-berita/' . $field->slug) . '" role="button"><i class="fa fa-eye mr-1"></i> Detail</a>
+            </div>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => $this->server_side->countFiltered($table, $select, $where, $column_order, $column_search, $order, $join),
+            "recordsFiltered" => $this->server_side->countFiltered($table, $select, $where, $column_order, $column_search, $order, $join),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+
+
     public function chatting_()
     {
         if (session()->get('role') != 'UMKM') {
